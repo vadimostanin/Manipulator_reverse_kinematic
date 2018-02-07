@@ -59,6 +59,7 @@ private:
 
 	bool isCrossingLegsFound( const ShLeg& leg, uint32_t legIndex );
 	bool isFinalTooClose( const int32_t minDistance );
+	bool isFinalTooClose( ShLegManipulator manipulator, const int32_t minDistance );
 	bool isAccumulativeAngleTooBig( const double maxAngle );
 
 	void printLearningRates();
@@ -81,6 +82,7 @@ private:
 	std::vector<DerivFuncType> 	m_preDefinedDerivativeFunctions;
 
 	double m_minEcceptableDistance{1.0};
+	double m_minClosestDistance{15};
 };
 
 #endif /* SOLVER_H_ */

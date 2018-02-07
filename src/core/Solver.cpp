@@ -910,6 +910,8 @@ bool Solver::isPathPossble( ShLegManipulator manipulatorFrom, ShLegManipulator m
 {
 	assert( manipulatorFrom->size() == manipulatorTo->size() );
 
+	std::cout << __FUNCTION__ << std::endl;
+
 	auto manFromIter = std::begin( *manipulatorFrom );
 	auto manToIter = std::begin( *manipulatorTo );
 	const auto manToEndIter = std::end( *manipulatorTo );
@@ -944,6 +946,11 @@ bool Solver::isPathPossble( ShLegManipulator manipulatorFrom, ShLegManipulator m
 
 			(*manSimIter)->setAngleZY( (*manSimIter)->getAngleZY() + (*anglesDiffIter) );
 			anglesDiffIter++;
+		}
+		if( isFinalTooClose( manipulatorSimulated, m_minClosestDistance ) )
+		{
+			std::cout << "isPathPossble too close" << std::endl;
+			return false;
 		}
 	}
 
@@ -1162,7 +1169,7 @@ void Solver::backward( const std::vector<double> & angleErrors )
 
 //			const uint32_t legIter_i = std::distance( std::begin( *m_manipulator ), legIter );
 			bool crossed = false;//isCrossingLegsFound( *legIter, legIter_i );
-			bool tooClose = isFinalTooClose( 15 );
+			bool tooClose = isFinalTooClose( m_minClosestDistance );
 	//		bool tooBigAngle = isAccumulativeAngleTooBig( 360 );
 			if( true == crossed || true == tooClose/* || true == tooBigAngle*/ )
 			{
@@ -1200,7 +1207,7 @@ void Solver::backward( const std::vector<double> & angleErrors )
 
 //			const size_t legIter_i = std::distance( std::begin( *m_manipulator ), legIter );
 			bool crossed = false;//isCrossingLegsFound( *legIter, legIter_i );
-			bool tooClose = isFinalTooClose( 15 );
+			bool tooClose = isFinalTooClose( m_minClosestDistance );
 	//		bool tooBigAngle = isAccumulativeAngleTooBig( 360 );
 			if( true == crossed || true == tooClose/* || true == tooBigAngle*/ )
 			{
@@ -1245,18 +1252,23 @@ bool Solver::isCrossingLegsFound( const ShLeg& crossLeg, uint32_t legIndex )
 
 bool Solver::isFinalTooClose( const int32_t minDistance )
 {
+	return isFinalTooClose( m_manipulator, minDistance );
+}
+
+bool Solver::isFinalTooClose( ShLegManipulator manipulator, const int32_t minDistance )
+{
 	bool tooClose = false;
-	const auto & lastLeg = m_manipulator->getLastLeg();
-	const auto & preLastLeg = m_manipulator->getPreLastLeg();
+	const auto & lastLeg = manipulator->getLastLeg();
+	const auto & preLastLeg = manipulator->getPreLastLeg();
 	TypePrecision finalX, finalY, finalZ;
 	lastLeg->getCalulatedFinalPosition( finalX, finalY, finalZ );
 	finalX = (int)finalX;
 	finalY = (int)finalY;
 	finalZ = (int)finalZ;
-	const size_t legsCount = m_manipulator->size();
+	const size_t legsCount = manipulator->size();
 	for( size_t leg_i = 0 ; leg_i < legsCount ; leg_i++ )//cross legs checking
 	{
-		const auto &legLoop = (*m_manipulator)[leg_i];
+		const auto &legLoop = (*manipulator)[leg_i];
 		if( lastLeg == legLoop || preLastLeg == legLoop )
 		{
 			continue;
@@ -1298,7 +1310,7 @@ bool Solver::isFinalTooClose( const int32_t minDistance )
 		if( true == isBelongToSegment && distance <= minDistance )
 		{
 			tooClose = true;
-			std::cout << "leg " << legLoop->getLevel() << ", distance=" << distance << std::endl;
+//			std::cout << "leg " << legLoop->getLevel() << ", distance=" << distance << std::endl;
 			break;
 		}
 
