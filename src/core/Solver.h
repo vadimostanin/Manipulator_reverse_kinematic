@@ -10,6 +10,7 @@
 
 #include "LegManipulator.h"
 #include "DerivativeFuncsStorage.h"
+#include "ErrorFuncStorage.h"
 #include <ginac.h>
 #include <symbol.h>
 
@@ -40,8 +41,8 @@ public:
 
 	std::string generateErroFunctionDerivatives();
 
-	double getErrorFunctionValue();
-	double getErrorFunctionValue( ShLegManipulator manipulator );
+	double getErrorFunctionValue( TypePrecision targetX, TypePrecision targetY, TypePrecision targetZ );
+	double getErrorFunctionValue( ShLegManipulator manipulator, TypePrecision targetX, TypePrecision targetY, TypePrecision targetZ );
 
 	ShLegManipulator getCurrentManipulator() const;
 
@@ -83,6 +84,7 @@ private:
 	std::vector<GiNaC::ex> 		m_errorDerivativeFunctions;
 	GiNaC::ex 					m_errorFunction;
 	std::vector<DerivFuncType> 	m_preDefinedDerivativeFunctions;
+	ErroFuncType				m_preDefinedErrorFunction;
 
 	double m_minEcceptableDistance{1.0};
 	double m_minClosestDistance{15};

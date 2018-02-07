@@ -27,6 +27,9 @@ void Solver::fillPredefinedDerErrorFunctions()
 {
 	DerivativeFuncsStorage funcsStorage;
 	funcsStorage.getFunc( m_manipulator->size(), m_preDefinedDerivativeFunctions );
+
+	ErrorFuncStorage errorStorage;
+	errorStorage.getFunc( m_manipulator->size(), m_preDefinedErrorFunction );
 }
 
 void Solver::initPreSolv( int32_t x, int32_t y, int32_t z )
@@ -564,8 +567,8 @@ void Solver::shuffleReverseIncrementLegs( uint32_t legsCount )
 void Solver::solveFromCurrent( int32_t x, int32_t y, int32_t z, double epsilon, uint32_t maxSteps, SolveEndCb cbPerStep )
 {
 //	int size = m_manipulator->size();
-	initGiNaCVars();
-	initGiNaCErrorFunction( x, y, z );
+//	initGiNaCVars();
+//	initGiNaCErrorFunction( x, y, z );
 	std::vector<double> errorCurrent;
 	std::vector<double> errorPrev;
 
@@ -627,14 +630,14 @@ void Solver::solveContiniouslyShuffling( int32_t x, int32_t y, int32_t z, double
 {
 	solveFromCurrent( x, y, z, epsilon, maxStepsPerSolving );
 
-	double distance = getErrorFunctionValue();
+	double distance = getErrorFunctionValue( x, y, z );
 	uint32_t solvingCounter = 0;
 	while( distance > m_minEcceptableDistance && solvingCounter < maxSolvingCount )
 	{
 	    shuffleLegs();
 	    solveFromCurrent( x, y, z, epsilon, maxStepsPerSolving );
 
-	    distance = getErrorFunctionValue();
+	    distance = getErrorFunctionValue( x, y, z );
 
 	    solvingCounter++;
 	}
@@ -645,14 +648,14 @@ void Solver::solvePerpendicularShuffling( int32_t x, int32_t y, int32_t z, doubl
 {
 	solvePerpendicular( x, y, z, angle, epsilon, maxStepsPerSolving );
 
-	double distance = getErrorFunctionValue();
+	double distance = getErrorFunctionValue( x, y, z );
 	uint32_t solvingCounter = 0;
 	while( distance > m_minEcceptableDistance && solvingCounter < maxSolvingCount )
 	{
 	    shuffleLegs();
 	    solvePerpendicular( x, y, z, angle, epsilon, maxStepsPerSolving );
 
-	    distance = getErrorFunctionValue();
+	    distance = getErrorFunctionValue( x, y, z );
 
 	    solvingCounter++;
 	}
@@ -670,7 +673,7 @@ void Solver::solveContiniouslyShufflingLessError( int32_t x, int32_t y, int32_t 
 	setCurrentManipulator( clonedManipulator );
 
 	solveFromCurrent( x, y, z, epsilon, maxStepsPerSolving, empty );
-	if( getErrorFunctionValue() < m_minEcceptableDistance && isPathPossble( originManipulator, clonedManipulator ) )
+	if( getErrorFunctionValue( x, y, z ) < m_minEcceptableDistance && isPathPossble( originManipulator, clonedManipulator ) )
 	{
 		solvedManipulators.push_back( clonedManipulator );
 	}
@@ -682,7 +685,7 @@ void Solver::solveContiniouslyShufflingLessError( int32_t x, int32_t y, int32_t 
 		setCurrentManipulator( clonedManipulator );
 		shuffleLegs();
 		solveFromCurrent( x, y, z, epsilon, maxStepsPerSolving, empty );
-		if( getErrorFunctionValue() < m_minEcceptableDistance && isPathPossble( originManipulator, clonedManipulator ) )
+		if( getErrorFunctionValue( x, y, z ) < m_minEcceptableDistance && isPathPossble( originManipulator, clonedManipulator ) )
 		{
 			solvedManipulators.push_back( clonedManipulator );
 		}
@@ -721,7 +724,7 @@ void Solver::solveContiniouslyShufflingLessAngle( int32_t x, int32_t y, int32_t 
 	setCurrentManipulator( clonedManipulator );
 
 	solveFromCurrent( x, y, z, epsilon, maxStepsPerSolving, empty );
-	if( getErrorFunctionValue() < m_minEcceptableDistance && isPathPossble( originManipulator, clonedManipulator ) )
+	if( getErrorFunctionValue( x, y, z ) < m_minEcceptableDistance && isPathPossble( originManipulator, clonedManipulator ) )
 	{
 		solvedManipulators.push_back( clonedManipulator );
 	}
@@ -733,7 +736,7 @@ void Solver::solveContiniouslyShufflingLessAngle( int32_t x, int32_t y, int32_t 
 		setCurrentManipulator( clonedManipulator );
 		shuffleLegs();
 		solveFromCurrent( x, y, z, epsilon, maxStepsPerSolving, empty );
-		if( getErrorFunctionValue() < m_minEcceptableDistance && isPathPossble( originManipulator, clonedManipulator ) )
+		if( getErrorFunctionValue( x, y, z ) < m_minEcceptableDistance && isPathPossble( originManipulator, clonedManipulator ) )
 		{
 			solvedManipulators.push_back( clonedManipulator );
 		}
@@ -799,7 +802,7 @@ void Solver::solveContIterShufLessAngle( int32_t x, int32_t y, int32_t z, double
 	setCurrentManipulator( clonedManipulator );
 
 	solveFromCurrent( x, y, z, epsilon, maxStepsPerSolving, empty );
-	if( getErrorFunctionValue() < m_minEcceptableDistance && isPathPossble( originManipulator, clonedManipulator ) )
+	if( getErrorFunctionValue( x, y, z ) < m_minEcceptableDistance && isPathPossble( originManipulator, clonedManipulator ) )
 	{
 		solvedManipulators.push_back( clonedManipulator );
 	}
@@ -814,7 +817,7 @@ void Solver::solveContIterShufLessAngle( int32_t x, int32_t y, int32_t z, double
 			const uint32_t legFromEnd = legCount - leg_i - 1;
 			shuffleLeg( (*m_manipulator)[legFromEnd] );
 			solveFromCurrent( x, y, z, epsilon, maxStepsPerSolving, empty );
-			if( getErrorFunctionValue() < m_minEcceptableDistance && isPathPossble( originManipulator, clonedManipulator ) )
+			if( getErrorFunctionValue( x, y, z ) < m_minEcceptableDistance && isPathPossble( originManipulator, clonedManipulator ) )
 			{
 				solvedManipulators.push_back( clonedManipulator );
 			}
@@ -826,7 +829,7 @@ void Solver::solveContIterShufLessAngle( int32_t x, int32_t y, int32_t z, double
 			const uint32_t legsCount = leg_i + 1;
 			shuffleReverseIncrementLegs( legsCount );
 			solveFromCurrent( x, y, z, epsilon, maxStepsPerSolving, empty );
-			if( getErrorFunctionValue() < m_minEcceptableDistance && isPathPossble( originManipulator, clonedManipulator ) )
+			if( getErrorFunctionValue( x, y, z ) < m_minEcceptableDistance && isPathPossble( originManipulator, clonedManipulator ) )
 			{
 				solvedManipulators.push_back( clonedManipulator );
 			}
@@ -897,7 +900,7 @@ void Solver::solveContIterShuf( int32_t x, int32_t y, int32_t z, double epsilon,
 		setCurrentManipulator( clonedManipulator );
 
 		solveFromCurrent( x, y, z, epsilon, maxStepsPerSolving, empty );
-		if( getErrorFunctionValue() < m_minEcceptableDistance && isPathPossble( originManipulator, clonedManipulator ) )
+		if( getErrorFunctionValue( x, y, z ) < m_minEcceptableDistance && isPathPossble( originManipulator, clonedManipulator ) )
 		{
 			manipulatorFound = true;
 			break;
@@ -917,7 +920,7 @@ void Solver::solveContIterShuf( int32_t x, int32_t y, int32_t z, double epsilon,
 				const uint32_t legFromEnd = legCount - leg_i - 1;
 				shuffleLeg( (*m_manipulator)[legFromEnd] );
 				solveFromCurrent( x, y, z, epsilon, maxStepsPerSolving, empty );
-				if( getErrorFunctionValue() < m_minEcceptableDistance && isPathPossble( originManipulator, clonedManipulator ) )
+				if( getErrorFunctionValue( x, y, z ) < m_minEcceptableDistance && isPathPossble( originManipulator, clonedManipulator ) )
 				{
 					manipulatorFound = true;
 					break;
@@ -934,7 +937,7 @@ void Solver::solveContIterShuf( int32_t x, int32_t y, int32_t z, double epsilon,
 				const uint32_t legsCount = leg_i + 1;
 				shuffleReverseIncrementLegs( legsCount );
 				solveFromCurrent( x, y, z, epsilon, maxStepsPerSolving, empty );
-				if( getErrorFunctionValue() < m_minEcceptableDistance && isPathPossble( originManipulator, clonedManipulator ) )
+				if( getErrorFunctionValue( x, y, z ) < m_minEcceptableDistance && isPathPossble( originManipulator, clonedManipulator ) )
 				{
 					manipulatorFound = true;
 					break;
@@ -998,7 +1001,10 @@ bool Solver::isPathPossble( ShLegManipulator manipulatorFrom, ShLegManipulator m
 		}
 	}
 
-	double error = getErrorFunctionValue( manipulatorSimulated );
+	TypePrecision x, y, z;
+	manipulatorTo->getLastLeg()->getCalulatedFinalPosition( x, y, z );
+
+	double error = getErrorFunctionValue( manipulatorSimulated, x, y, z );
 	bool pathPossible = false;
 	if( error <= m_minEcceptableDistance )
 	{
@@ -1481,40 +1487,51 @@ std::vector<double> Solver::getError()
 	return m_errors;
 }
 
-double Solver::getErrorFunctionValue()
+double Solver::getErrorFunctionValue( TypePrecision targetX, TypePrecision targetY, TypePrecision targetZ )
 {
-	return getErrorFunctionValue( m_manipulator );
+	return getErrorFunctionValue( m_manipulator, targetX, targetY, targetZ );
 }
 
-double Solver::getErrorFunctionValue( ShLegManipulator manipulator )
+//double Solver::getErrorFunctionValue( ShLegManipulator manipulator )
+//{
+//	GiNaC::lst anglesValues;
+//	auto legIter = std::begin( *manipulator );
+//	auto angleXYSymbolIter = std::begin( m_ginacXYoZAngles );
+//	auto angleXZSymbolIter = std::begin( m_ginacXZoYAngles );
+//	for(  ; legIter != std::end( *manipulator ) ; legIter++, angleXYSymbolIter++, angleXZSymbolIter++ )
+//	{
+//		{
+//			const double angle = (*legIter)->getAngleXY();
+//			const double radian = Utils::deg2Rad( angle );
+//
+//			anglesValues.append( (**angleXYSymbolIter) == radian );
+//		}
+//		{
+//			const double angle = (*legIter)->getAngleXZ();
+//			const double radian = Utils::deg2Rad( angle );
+//
+//			anglesValues.append( (**angleXZSymbolIter) == radian );
+//		}
+//	}
+//	std::cout << "m_errorFunction=" << m_errorFunction << std::endl;
+//	GiNaC::ex f = GiNaC::evalf( m_errorFunction.subs( anglesValues ) );
+//	double result = 0.0f;
+//	if (GiNaC::is_a<GiNaC::numeric>(f))
+//	{
+//		result = GiNaC::ex_to<GiNaC::numeric>(f).to_double();
+//		std::cout << "error=" << result << std::endl;
+//	}
+//	return result;
+//}
+
+double Solver::getErrorFunctionValue( ShLegManipulator manipulator, TypePrecision targetX, TypePrecision targetY, TypePrecision targetZ )
 {
 	GiNaC::lst anglesValues;
-	auto legIter = std::begin( *manipulator );
-	auto angleXYSymbolIter = std::begin( m_ginacXYoZAngles );
-	auto angleXZSymbolIter = std::begin( m_ginacXZoYAngles );
-	for(  ; legIter != std::end( *manipulator ) ; legIter++, angleXYSymbolIter++, angleXZSymbolIter++ )
-	{
-		{
-			const double angle = (*legIter)->getAngleXY();
-			const double radian = Utils::deg2Rad( angle );
-
-			anglesValues.append( (**angleXYSymbolIter) == radian );
-		}
-		{
-			const double angle = (*legIter)->getAngleXZ();
-			const double radian = Utils::deg2Rad( angle );
-
-			anglesValues.append( (**angleXZSymbolIter) == radian );
-		}
-	}
-
-	GiNaC::ex f = GiNaC::evalf( m_errorFunction.subs( anglesValues ) );
-	double result = 0.0f;
-	if (GiNaC::is_a<GiNaC::numeric>(f))
-	{
-		result = GiNaC::ex_to<GiNaC::numeric>(f).to_double();
-			std::cout << "error=" << result << std::endl;
-	}
+//	auto legIter = std::begin( *manipulator );
+	std::vector<double> params;
+	fillParams( targetX, targetY, targetZ, params );
+	double result = m_preDefinedErrorFunction( params );
+	std::cout << "error=" << result << std::endl;
 	return result;
 }
 

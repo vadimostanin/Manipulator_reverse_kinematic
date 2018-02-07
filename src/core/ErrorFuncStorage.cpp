@@ -17,9 +17,8 @@ ErrorFuncStorage::~ErrorFuncStorage()
 {
 }
 
-void ErrorFuncStorage::getFunc( int legsCount, std::vector<ErroFuncType> & funcs )
+void ErrorFuncStorage::getFunc( int32_t legsCount, ErroFuncType & func )
 {
-	funcs.clear();
 	switch( legsCount )
 	{
 		case 1:
@@ -31,7 +30,7 @@ void ErrorFuncStorage::getFunc( int legsCount, std::vector<ErroFuncType> & funcs
 		case 4:
 			break;
 		case 5:
-			funcs.push_back( ErrorFunctions::error_Legs_5 );
+			func = ErrorFunctions::error_Legs_5 ;
 			break;
 		case 6:
 			break;

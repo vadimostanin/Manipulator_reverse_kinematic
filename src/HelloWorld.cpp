@@ -40,7 +40,8 @@ void onOptimize( HelloWorld * lpHelloWorld )
 //	LegsMgr::get().print();
 	TypePrecision finalX, finalY, finalZ;
 	lpHelloWorld->m_solver.getCurrentManipulator()->getLastLeg()->getCalulatedFinalPosition( finalX, finalY, finalZ );
-	double distance = Utils::distance( finalX, finalY, finalZ, lpHelloWorld->m_XYoZArea.getX(), lpHelloWorld->m_desirablePoint.getY(), lpHelloWorld->m_desirablePoint.getZ() );
+	double distance = lpHelloWorld->m_solver.getErrorFunctionValue( lpHelloWorld->m_desirablePoint.getX(), lpHelloWorld->m_desirablePoint.getY(), lpHelloWorld->m_desirablePoint.getZ() );
+//	Utils::distance( finalX, finalY, finalZ, lpHelloWorld->m_XYoZArea.getX(), lpHelloWorld->m_desirablePoint.getY(), lpHelloWorld->m_desirablePoint.getZ() );
 //	std::cout << "Distance=" << distance << ", error=" << lpHelloWorld->m_solver.getErrorFunctionValue() << std::endl;
 	lpHelloWorld->m_solver.getCurrentManipulator()->print();
 	if( distance > 1.0 )
@@ -127,7 +128,7 @@ void onShuffledSolve( HelloWorld * lpHelloWorld)
 //	LegsMgr::get().getLastLeg()->getCalulatedFinalPosition( finalX, finalY, finalZ );
 //	double flippedFinalY = finalY;
 //	double distance = Utils::distance( finalX, flippedFinalY, lpHelloWorld->m_XYoZArea.getX(), flippedY );
-	std::cout << "error=" << lpHelloWorld->m_solver.getErrorFunctionValue() << std::endl;
+	std::cout << "error=" << lpHelloWorld->m_solver.getErrorFunctionValue( lpHelloWorld->m_desirablePoint.getX(), lpHelloWorld->m_desirablePoint.getY(), lpHelloWorld->m_desirablePoint.getZ() ) << std::endl;
 }
 
 ShLegManipulator global_clonedLegs;
@@ -162,7 +163,7 @@ void onShuffledLessErrorSolve( HelloWorld * lpHelloWorld)
 			}
 	);
 	std::cout << "after solve" << std::endl;
-	std::cout << "error=" << lpHelloWorld->m_solver.getErrorFunctionValue() << std::endl;
+	std::cout << "error=" << lpHelloWorld->m_solver.getErrorFunctionValue( lpHelloWorld->m_desirablePoint.getX(), lpHelloWorld->m_desirablePoint.getY(), lpHelloWorld->m_desirablePoint.getZ() ) << std::endl;
 }
 
 void onShuffledLessAngleSolve( HelloWorld * lpHelloWorld)
@@ -178,7 +179,7 @@ void onShuffledLessAngleSolve( HelloWorld * lpHelloWorld)
 			}
 	);
 	std::cout << "after solve" << std::endl;
-	std::cout << "error=" << lpHelloWorld->m_solver.getErrorFunctionValue() << std::endl;
+	std::cout << "error=" << lpHelloWorld->m_solver.getErrorFunctionValue( lpHelloWorld->m_desirablePoint.getX(), lpHelloWorld->m_desirablePoint.getY(), lpHelloWorld->m_desirablePoint.getZ() ) << std::endl;
 }
 
 void onContIterShuffledLessAngleSolve( HelloWorld * lpHelloWorld)
@@ -194,7 +195,7 @@ void onContIterShuffledLessAngleSolve( HelloWorld * lpHelloWorld)
 			}
 	);
 	std::cout << "after solve" << std::endl;
-	std::cout << "error=" << lpHelloWorld->m_solver.getErrorFunctionValue() << std::endl;
+	std::cout << "error=" << lpHelloWorld->m_solver.getErrorFunctionValue( lpHelloWorld->m_desirablePoint.getX(), lpHelloWorld->m_desirablePoint.getY(), lpHelloWorld->m_desirablePoint.getZ() ) << std::endl;
 }
 
 void onContIterShuffledSolve( HelloWorld * lpHelloWorld)
@@ -210,7 +211,7 @@ void onContIterShuffledSolve( HelloWorld * lpHelloWorld)
 			}
 	);
 	std::cout << "after solve" << std::endl;
-	std::cout << "error=" << lpHelloWorld->m_solver.getErrorFunctionValue() << std::endl;
+	std::cout << "error=" << lpHelloWorld->m_solver.getErrorFunctionValue( lpHelloWorld->m_desirablePoint.getX(), lpHelloWorld->m_desirablePoint.getY(), lpHelloWorld->m_desirablePoint.getZ() ) << std::endl;
 }
 
 
@@ -245,13 +246,13 @@ bool onXYoZButtonPressed(GdkEventButton* event, HelloWorld * lpHelloWorld)
 //			std::vector<double> varAngles = ManipulatorUniConverter::getFormatedAngles( lpHelloWorld->m_solver.getCurrentManipulator() );
 //			InterpolatedMove::get().setInitialVars( varAngles );
 //		}
-		onOptimize( lpHelloWorld );
+//		onOptimize( lpHelloWorld );
 //		onOptimizeClone( lpHelloWorld );
 //		onShuffledSolve( lpHelloWorld );
 //		onShuffledLessErrorSolve( lpHelloWorld );
 //		onShuffledLessAngleSolve( lpHelloWorld );
-//		onContIterShuffledLessAngleSolve( lpHelloWorld );
-		onContIterShuffledSolve( lpHelloWorld );
+		onContIterShuffledLessAngleSolve( lpHelloWorld );
+//		onContIterShuffledSolve( lpHelloWorld );
 //		onPerpendicularSolve( lpHelloWorld );
 		{
 			std::vector<double> varAngles = ManipulatorUniConverter::getFormatedAngles( lpHelloWorld->m_solver.getCurrentManipulator() );
@@ -289,14 +290,13 @@ bool onXYoZButtonMove(GdkEventMotion* event, HelloWorld * lpHelloWorld)
 		Leg3DDrawWindow::solveForX = event->x;
 		Leg3DDrawWindow::solveForY = event->y;
 
-		lpHelloWorld->redraw();
 //		onOptimize( lpHelloWorld );
 //		onOptimizeClone( lpHelloWorld );
 //		onShuffledSolve( lpHelloWorld );
 //		onShuffledLessErrorSolve( lpHelloWorld );
 //		onShuffledLessAngleSolve( lpHelloWorld );
 //		onPerpendicularSolve( lpHelloWorld );
-
+		lpHelloWorld->redraw();
 	}
 	catch( std::exception & ex )
 	{
@@ -334,6 +334,8 @@ bool onXZoYButtonPressed(GdkEventButton* event, HelloWorld * lpHelloWorld)
 	std::vector<double>varAngles = ManipulatorUniConverter::getFormatedAngles( lpHelloWorld->m_solver.getCurrentManipulator() );
 	InterpolatedMove2::get().setVars( varAngles );
 
+	lpHelloWorld->redraw();
+
 	return true;
 }
 
@@ -357,6 +359,8 @@ bool onXZoYButtonMove(GdkEventMotion* event, HelloWorld * lpHelloWorld)
 //	onShuffledLessErrorSolve( lpHelloWorld );
 //	onShuffledLessAngleSolve( lpHelloWorld );
 //	onPerpendicularSolve( lpHelloWorld );
+
+	lpHelloWorld->redraw();
 
 	return true;
 }

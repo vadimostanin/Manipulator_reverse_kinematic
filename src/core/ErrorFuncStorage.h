@@ -19,7 +19,7 @@ public:
 	ErrorFuncStorage();
 	virtual ~ErrorFuncStorage();
 
-	void getFunc( int legsCount, std::vector<ErroFuncType> & funcs );
+	void getFunc( int32_t legsCount, ErroFuncType & funcs );
 };
 
 #endif /* CORE_ERRORFUNCSTORAGE_H_ */
