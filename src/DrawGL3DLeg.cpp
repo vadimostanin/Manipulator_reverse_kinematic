@@ -20,6 +20,11 @@ DrawGL3DLeg::~DrawGL3DLeg()
 {
 }
 
+ShLeg DrawGL3DLeg::getLeg() const
+{
+	return m_Leg;
+}
+
 void DrawGL3DLeg::drawLeg( int x, int y, int z, int width, int thickness, int height ) const
 {
 	glTranslatef( x, y, z );

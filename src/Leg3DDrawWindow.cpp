@@ -199,14 +199,17 @@ void Leg3DDrawWindow::init(void)
 }
 void Leg3DDrawWindow::renderScene(void)
 {
+	TypePrecision initialPosX, initialPosY, initialPosZ;
+	lpThis->m_drawLegs[0]->getLeg()->getInitialPosition( initialPosX, initialPosY, initialPosZ );
+
 	//очистить буфер цвета и глубины
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	// обнулить трансформацию
 //	glLoadIdentity();
 	glPushMatrix();
 	// установить камеру
-	gluLookAt( std::cos( Utils::deg2Rad( cameraAngleAroundY ) ) * ( 200.0 + cameraToX ), 450.0 + cameraToY, std::sin( Utils::deg2Rad( cameraAngleAroundY ) ) * ( 100.0 ),  /* eye is at (0,0,5) */
-			 1.0 + cameraFromX, 5.0 + cameraFromY, 0.0 + cameraFromZ,      /* center is at (0,0,0) */
+	gluLookAt( initialPosX + std::cos( Utils::deg2Rad( cameraAngleAroundY ) ) * ( 200.0 + cameraToX ), 450.0 + cameraToY, std::sin( Utils::deg2Rad( cameraAngleAroundY ) ) * ( 100.0 ),  /* eye is at (0,0,5) */
+			initialPosX + 1.0 + cameraFromX, 5.0 + cameraFromY, 0.0 + cameraFromZ,      /* center is at (0,0,0) */
 	    0.0, 1.0, 0.0);      /* up is in positive Y direction */
 
   /* Use depth buffering for hidden surface elimination. */
@@ -216,10 +219,10 @@ void Leg3DDrawWindow::renderScene(void)
 	glColor3f(0.9f, 0.9f, 0.9f);
 	// полигон (plaine)
 	glBegin(GL_QUADS);
-		glVertex3f(-50.0f, 0.0f, -50.0f);
-		glVertex3f(-50.0f, 0.0f,  50.0f);
-		glVertex3f( 50.0f, 0.0f,  50.0f);
-		glVertex3f( 50.0f, 0.0f, -50.0f);
+		glVertex3f( initialPosX + -50.0f, 0.0f, -50.0f);
+		glVertex3f( initialPosX + -50.0f, 0.0f,  50.0f);
+		glVertex3f( initialPosX +  50.0f, 0.0f,  50.0f);
+		glVertex3f( initialPosX +  50.0f, 0.0f, -50.0f);
 	glEnd();
 
 	for( const auto & drawLeg : lpThis->m_drawLegs )

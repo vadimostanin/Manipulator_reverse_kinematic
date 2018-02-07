@@ -162,7 +162,7 @@ void Solver::initGiNaCErrorFunction( int32_t targetX, int32_t targetY, int32_t t
 
 			anglesLengthedOffsettedX += currAngleLengthX;
 
-//			std::cout << "anglesLengthedOffsettedX=" << anglesLengthedOffsettedX << std::endl;
+			std::cout << "anglesLengthedOffsettedX=" << anglesLengthedOffsettedX << std::endl;
 		}
 
 		{
@@ -224,7 +224,7 @@ void Solver::initGiNaCErrorFunction( int32_t targetX, int32_t targetY, int32_t t
 //	std::cout << "exComponentZ=" << exComponentZ << std::endl;
 
 	GiNaC::ex errorFunction = GiNaC::sqrt( GiNaC::pow( exComponentX, 2 ) + GiNaC::pow( exComponentY, 2 ) + GiNaC::pow( exComponentZ, 2 ) );//GiNaC::sqrt( GiNaC::pow( 100 * GiNaC::cos( angle_0 ) + 200 - 258, 2 ) + GiNaC::pow( 100 * GiNaC::sin( angle_0 ) + 200 - 279, 2 ) );
-//	std::cout << "errorFunction=" << errorFunction << std::endl;
+	std::cout << "errorFunction=" << errorFunction << std::endl;
 	m_errorFunction = errorFunction;
 
 	m_errorDerivativeFunctions.clear();
@@ -303,7 +303,7 @@ std::string Solver::generateErroFunctionDerivatives()
 
 			anglesLengthedOffsettedX += currAngleLengthX;
 
-//			std::cout << "anglesLengthedOffsettedX=" << anglesLengthedOffsettedX << std::endl;
+			std::cout << "anglesLengthedOffsettedX=" << anglesLengthedOffsettedX << std::endl;
 		}
 
 		{
@@ -346,7 +346,7 @@ std::string Solver::generateErroFunctionDerivatives()
 	}
 
 	exComponentX = anglesLengthedOffsettedX - symbolTargetX;
-//	std::cout << "exComponentX=" << exComponentX << std::endl;
+	std::cout << "exComponentX=" << exComponentX << std::endl;
 
 	exComponentY = anglesLengthedOffsettedY - symbolTargetY;
 //	std::cout << "exComponentY=" << exComponentY << std::endl;
@@ -355,6 +355,46 @@ std::string Solver::generateErroFunctionDerivatives()
 //	std::cout << "exComponentZ=" << exComponentZ << std::endl;
 
 	GiNaC::ex errorFunction = GiNaC::sqrt( GiNaC::pow( exComponentX, 2 ) + GiNaC::pow( exComponentY, 2 ) + GiNaC::pow( exComponentZ, 2 ) );//GiNaC::sqrt( GiNaC::pow( 100 * GiNaC::cos( angle_0 ) + 200 - 258, 2 ) + GiNaC::pow( 100 * GiNaC::sin( angle_0 ) + 200 - 279, 2 ) );
+
+	std::stringstream sErrorFunction;
+	{
+		size_t anglesCount = m_ginacXYoZAngles.size();
+
+//		std::cout << "derivative=" << derivative << std::endl;
+
+		sErrorFunction << "\n";
+		sErrorFunction << "double error_Legs_" + std::to_string( anglesCount ) + "( std::vector<double> & params )\n";
+		sErrorFunction << "{\n";
+		sErrorFunction << "\tassert( params.size() == " + std::to_string( m_ginacXYoZAngles.size() * 4 + 9 ) + " );\n\n";
+		sErrorFunction << "\tdouble initialX       = params[ 0 ];\n";
+		sErrorFunction << "\tdouble initialY       = params[ 1 ];\n";
+		sErrorFunction << "\tdouble initialZ       = params[ 2 ];\n";
+		sErrorFunction << "\tdouble initialOffsetX = params[ 3 ];\n";
+		sErrorFunction << "\tdouble initialOffsetY = params[ 4 ];\n";
+		sErrorFunction << "\tdouble initialOffsetZ = params[ 5 ];\n";
+		sErrorFunction << "\tdouble targetX        = params[ 6 ];\n";
+		sErrorFunction << "\tdouble targetY        = params[ 7 ];\n";
+		sErrorFunction << "\tdouble targetZ        = params[ 8 ];\n";
+
+		for( size_t angle_i = 0 ; angle_i < anglesCount ; angle_i++ )
+		{
+			sErrorFunction << "\tdouble length_" + std::to_string( angle_i ) + " = params[ 9 + " + std::to_string( angle_i * 4 + 0 ) + " ];\n";
+			sErrorFunction << "\tdouble angleXY_" + std::to_string( angle_i ) + " = params[ 9 + " + std::to_string( angle_i * 4 + 1 ) + " ];\n";
+			sErrorFunction << "\tdouble angleXZ_" + std::to_string( angle_i ) + " = params[ 9 + " + std::to_string( angle_i * 4 + 2 ) + " ];\n";
+			sErrorFunction << "\tdouble angleZY_" + std::to_string( angle_i ) + " = params[ 9 + " + std::to_string( angle_i * 4 + 3 ) + " ];\n";
+		}
+		sErrorFunction << "\n";
+		sErrorFunction << "\tdouble result = " << errorFunction << ";\n";
+		sErrorFunction << "\n";
+		sErrorFunction << "\treturn result;\n";
+		sErrorFunction << "}\n";
+
+
+		GiNaC::FUNCP_1P fp;
+		GiNaC::compile_ex( errorFunction, GiNaC::symbol(), fp, std::string( "error_Legs_" ) + std::to_string( anglesCount ) + ".txt" );
+	}
+
+
 //	std::cout << "errorFunction=" << errorFunction << std::endl;
 
 	std::stringstream sDerivates;
@@ -447,7 +487,7 @@ std::string Solver::generateErroFunctionDerivatives()
 
 
 
-	return std::move( sDerivates.str() );
+	return std::move( sErrorFunction.str() + sDerivates.str() );
 }
 
 void Solver::printLearningRates()
@@ -882,6 +922,10 @@ void Solver::solveContIterShuf( int32_t x, int32_t y, int32_t z, double epsilon,
 					manipulatorFound = true;
 					break;
 				}
+			}
+			if( true == manipulatorFound )
+			{
+				break;
 			}
 			for( uint32_t i = 0 ; i < 2 ; i ++ )
 			{

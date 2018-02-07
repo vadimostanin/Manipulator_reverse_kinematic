@@ -245,7 +245,7 @@ bool onXYoZButtonPressed(GdkEventButton* event, HelloWorld * lpHelloWorld)
 //			std::vector<double> varAngles = ManipulatorUniConverter::getFormatedAngles( lpHelloWorld->m_solver.getCurrentManipulator() );
 //			InterpolatedMove::get().setInitialVars( varAngles );
 //		}
-//		onOptimize( lpHelloWorld );
+		onOptimize( lpHelloWorld );
 //		onOptimizeClone( lpHelloWorld );
 //		onShuffledSolve( lpHelloWorld );
 //		onShuffledLessErrorSolve( lpHelloWorld );
@@ -258,7 +258,7 @@ bool onXYoZButtonPressed(GdkEventButton* event, HelloWorld * lpHelloWorld)
 			InterpolatedMove2::get().setVars( varAngles );
 		}
 
-		initiatedManipulatorClone->print();
+		lpHelloWorld->m_solver.getCurrentManipulator()->print();
 		LegsMgr::get().getManipulator()->deepAssign( initiatedManipulatorClone );
 
 		lpHelloWorld->redraw();
@@ -449,18 +449,18 @@ HelloWorld::HelloWorld()
   m_XZoYArea.signal_motion_notify_event().connect( sigc::bind<HelloWorld*>( sigc::ptr_fun( &onXZoYButtonMove ), this ) );
 
 
-  this->set_size_request( 800, 600 );
+  this->set_size_request( 1000, 600 );
 
 
   m_scrolledXYoZArea.set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_ALWAYS);
   m_scrolledXYoZArea.set_border_width(6);
   m_scrolledXYoZArea.add( m_XYoZArea );
-  m_scrolledXYoZArea.set_size_request(300, -1);
+  m_scrolledXYoZArea.set_size_request(400, -1);
 
   m_scrolledXZoYArea.set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_ALWAYS);
   m_scrolledXZoYArea.set_border_width(6);
   m_scrolledXZoYArea.add( m_XZoYArea );
-  m_scrolledXZoYArea.set_size_request(300, -1);
+  m_scrolledXZoYArea.set_size_request(400, -1);
 
 
   m_HBox.pack_start( m_scrolledXYoZArea );

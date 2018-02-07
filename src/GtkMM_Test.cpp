@@ -23,6 +23,8 @@ using namespace std;
 #include "core/InterpolatedMove2.h"
 #include "core/ManipulatorUniConverter.h"
 
+#include "FailedBehaviours.h"
+
 int main( int argc, char ** argv)
 {
 //	{
@@ -87,6 +89,12 @@ int main( int argc, char ** argv)
 
 //	return 0;
 	std::srand( time( nullptr ) );
+
+//	FailedBehaviours failedBehaviours;
+//	failedBehaviours.runBehaviours();
+//
+//	return 0;
+
 	auto app = Gtk::Application::create("org.gtkmm.example");
 
 	LegsMgr::get().getManipulator()->add( 100 );
@@ -104,13 +112,12 @@ int main( int argc, char ** argv)
 
 //	LegsMgr::get().getManipulator()->getLeg( 0 )->setAngleXYLimits( - 180 + 60, 180 - 60 ).setAngleXZLimits( -360, 360 ).setAngleXZEnable( true );
 	LegsMgr::get().getManipulator()->getLeg( 0 )->setAngleXYLimits( 0, 180 ).setAngleXZLimits( -360, 360 )
-			                  .setAngleXZEnable( true ).setAngleXY( 0.0 );
+			                  .setAngleXZEnable( true ).setAngleXY( 0.0 ).setInitialPosition( 200, 0, 0 );
 	LegsMgr::get().getManipulator()->getLeg( 1 )->setAngleXYLimits( - 180 + 30, 180 - 30 ).setAngleXZLimits( 0, 0 );
 	LegsMgr::get().getManipulator()->getLeg( 2 )->setAngleXYLimits( - 180 + 60, 180 - 60 ).setAngleXZLimits( 0, 0 );
 	LegsMgr::get().getManipulator()->getLeg( 3 )->setAngleXYLimits( - 180 + 60, 180 - 60 ).setAngleXZLimits( 0, 0 );
 	LegsMgr::get().getManipulator()->getLeg( 4 )->setAngleXYLimits( - 180 + 60, 180 - 60 ).setAngleXZLimits( 0, 0 );
 
-	LegsMgr::get().getManipulator()->getLeg( 0 )->setInitialPosition( 0, 0, 0 );
 //	LegsMgr::get().getManipulator()->getLeg( 1 )->setInitialOffsets( 0.0, 0.0, 20.0 );
 
 	std::vector<double> varAngles = ManipulatorUniConverter::getFormatedAngles( LegsMgr::get().getManipulator() );

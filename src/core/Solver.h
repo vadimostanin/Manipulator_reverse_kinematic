@@ -44,6 +44,9 @@ public:
 	double getErrorFunctionValue( ShLegManipulator manipulator );
 
 	ShLegManipulator getCurrentManipulator() const;
+
+	bool isPathPossble( ShLegManipulator manipulatorFrom, ShLegManipulator manipulatorTo );
+
 private:
 	void fillPredefinedDerErrorFunctions();
 	std::vector<double> oneStep( int32_t x, int32_t y, int32_t z );
@@ -70,7 +73,7 @@ private:
 
 	void setCurrentManipulator( ShLegManipulator manipulator );
 
-	bool isPathPossble( ShLegManipulator manipulatorFrom, ShLegManipulator manipulatorTo );
+
 
 	std::vector<double> 		m_errors;
 	std::vector<double> 		m_learningRates;

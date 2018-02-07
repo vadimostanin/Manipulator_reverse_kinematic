@@ -22,6 +22,7 @@ public:
 	DrawGL3DLeg( ShLeg shLeg );
 	virtual ~DrawGL3DLeg();
 	void render() const;
+	ShLeg getLeg() const;
 private:
 	void drawLeg( int x, int y, int z, int width, int thickness, int height ) const;
 

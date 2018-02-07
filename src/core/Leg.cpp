@@ -434,5 +434,5 @@ void Leg::print()
 {
 	TypePrecision finalX, finalY, finalZ;
 	this->getCalulatedFinalPosition( finalX, finalY, finalZ );
-	std::cout << "level=" << m_level << ", angleXY=" << m_angleXY << ", m_angleXZ=" << m_angleXZ << ", initial=( " << m_initialX << ", " << m_initialY << " ), final=( " << finalX << ", " << finalY << " )" << std::endl;
+	std::cout << "level=" << m_level << ", angleXY=" << m_angleXY << ", m_angleXZ=" << m_angleXZ << ", initial=( " << m_initialX << ", " << m_initialY << " ), final=( " << finalX << ", " << finalY << ", " << finalZ << "" << " )" << std::endl;
 }
