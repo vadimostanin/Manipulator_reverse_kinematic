@@ -210,9 +210,10 @@ module stepmotors_plate()
     translate( [ 0, 0, 80 ] )
       cylinder( r = stepmotors_plate_diameter / 2, h = 10 );
     main_shaft();
+    stepmotor_legs();
   }
 }
-
+stepmotors_plate();
 module stepmotor_leg_1()
 {
   union()
@@ -229,8 +230,9 @@ module stepmotor_legs()
   {
     for( i = [ 0 : motor_count ] )
     {
+      offsetZ = 2;
       rotate( 360 / motor_count * i, [ 0, 0, 1 ] )
-        translate( [ 0, 45, 90 ] )
+        translate( [ 0, 45, 90 - offsetZ ] )
         rotate( 45, [ 0, 0, 1 ] )
           stepmotor();
     }
@@ -266,7 +268,7 @@ module all_together()
     }
 }
 //render()
-all_together();
+*all_together();
 *difference()
 {
     translate( [ 29.5, 0, 0 ] )
