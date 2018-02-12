@@ -1,1 +1,1 @@
-OPENSCADPATH=/home/vadym_ostanin/workspace_cpp/Manipulator_reverse_kinematic/physical_designs/dependencies/Threaded\ Library/:/home/vadym_ostanin/workspace_cpp/Manipulator_reverse_kinematic/physical_designs/dependencies/MCAD/ openscad /home/vadym_ostanin/workspace_cpp/Manipulator_reverse_kinematic/physical_designs/manipulator_1.scad
+OPENSCADPATH=./physical_designs/dependencies/Threaded\ Library/:./physical_designs/dependencies/MCAD/ openscad ./physical_designs/manipulator_1.scad
