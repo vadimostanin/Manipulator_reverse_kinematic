@@ -5,10 +5,10 @@ wormgear_rotateXZoYgear_fn = $fn;
 use <Thread_Library.scad>
 use <involute_gears.scad>
 
-shell_width = 170;
-shell_length = 170;
+shell_width = 175;
+shell_length = 175;
 shell_height = 170;
-shell_wall_thickness = 10;
+shell_wall_thickness = 15;
 shell_bottom = 10;/*dno*/
 shell_bottom_ballbear_outer = 40;
 shell_bottom_ballbear_inner = 20;
@@ -16,9 +16,9 @@ shell_bottom_ballbear_height = 5;
 shell_flange_second_thickness = 4;
 mainshaft_length = 200;
 mainshaft_diameter = shell_bottom_ballbear_inner;
-stepmotor_width = 35;
-stepmotor_length = 35;
-stepmotor_height = 34;
+stepmotor_width = 35 + 1;
+stepmotor_length = 35 + 1;
+stepmotor_height = 34 + 1;
 stepmotor_shaft_length = 24;
 stepmotor_shaft_diameter = 3.5;
 stepmotors_plate_diameter = 148;
@@ -29,39 +29,61 @@ rotarygear_ballbear_height = 3.5;
 module shell()
 {
   color( [ 0.1, 0.4, 0.8 ] )
-  difference()
   {
-    translate( [ 0, 0, shell_height / 2 ] )
-      cube( [ shell_width, shell_length, shell_height ], center = true );
-    translate( [ 0, 0, shell_bottom ] )
-      translate( [ 0, 0, shell_height / 2 ] )
-        cube( [ shell_width - 2 * shell_wall_thickness, shell_length - 2 * shell_wall_thickness, shell_height ], center = true );
-    hull()
-    {
-      shell_bottom_ballbear();
-    }
-    stepmotor_rotate_base();
-    wormgear_rotaryXZoYgear_holder();
+      difference()
+      {
+          union()
+          {
+            difference()
+            {
+              translate( [ 0, 0, shell_height / 2 ] )
+                cube( [ shell_width, shell_length, shell_height ], center = true );
+              translate( [ 0, 0, shell_bottom ] )
+                translate( [ 0, 0, shell_height / 2 ] )
+                  cube( [ shell_width - 2 * shell_wall_thickness, shell_length - 2 * shell_wall_thickness, shell_height ], center = true );
+
+            }
+            translate( [ 0, 0, 0 ] )
+              ballbear( shell_width + 70, shell_width -  2 * shell_wall_thickness, shell_height );
+          }
+          difference()
+          {
+             translate( [ 0, 0, shell_height / 2 ] )
+               cube( [ shell_width + 70, shell_width + 70, shell_height + 0.1 ], center = true );
+
+             translate( [ 0, 0, shell_height / 2 ] )
+               cube( [ shell_width + 0, shell_width + 0, shell_height + 0.1 ], center = true );
+          }
+          translate( [ 0, 0, - 0.1 ] )
+            ballbear( shell_width + 80, shell_width + 20, shell_height + 0.2 );
+          
+          
+
+          
+          hull()
+          {
+            shell_bottom_ballbear();
+          }
+          
+          wormgear_rotaryXZoYgear_holder();
+          
+      }
   }
+  
+color( [ 0.1, 0.4, 0.8 ] )
   difference()
   {
-    translate( [ 0, 0, shell_bottom ] )
-      translate( [ -(shell_width - 2 * shell_wall_thickness ) / 2, -(shell_length - 2 * shell_wall_thickness ) / 2, 0 ] )
-      cube( [ shell_width - 2 * shell_wall_thickness, shell_length - 2 * shell_wall_thickness, 35 - 0.01 ] );
     flange_thickness = 8;
     translate( [ 0, 0, shell_bottom ] )
-      translate( [ -(shell_width - 2 * shell_wall_thickness ) / 2 + flange_thickness, -(shell_length - 2 * shell_wall_thickness ) / 2 + flange_thickness, 0 - 0.01 ] )
-      cube( [ shell_width - 2 * shell_wall_thickness - 2 * flange_thickness, shell_length - 2 * shell_wall_thickness - 2 * flange_thickness, 35 + 0.02 ] );
+    translate( [ 0, 0, 0 ] )
+      ballbear( shell_width - 2 * shell_wall_thickness, shell_width - 2 * shell_wall_thickness - 2 * flange_thickness, 35 - 0.01 );
   }
+  color( [ 0.1, 0.4, 0.8 ] )
   difference()
   {
     translate( [ 0, 0, shell_bottom ] )
-      translate( [ -(shell_width - 2 * shell_wall_thickness ) / 2, -(shell_length - 2 * shell_wall_thickness ) / 2, 35  ] )
-      cube( [ shell_width - 2 * shell_wall_thickness, shell_length - 2 * shell_wall_thickness, 35 - 0.01  ] );
-    
-    translate( [ 0, 0, shell_bottom ] )
-      translate( [ -(shell_width - 2 * shell_wall_thickness ) / 2 + shell_flange_second_thickness, -(shell_length - 2 * shell_wall_thickness ) / 2 + shell_flange_second_thickness, 35 - 0.01 ] )
-      cube( [ shell_width - 2 * shell_wall_thickness - 2 * shell_flange_second_thickness, shell_length - 2 * shell_wall_thickness - 2 * shell_flange_second_thickness, 35 + 0.02 ] );
+      translate( [ 0, 0, 35  ] )
+      ballbear( shell_width - 2 * shell_wall_thickness, shell_width - 2 * shell_wall_thickness - 2 * shell_flange_second_thickness, 35 - 0.01 );
   }
 }
 //shell();
@@ -318,7 +340,15 @@ module all_together()
     {
         union()
         {
-            shell();
+            difference()
+            {
+              shell();
+              stepmotor_rotate_base();
+              translate( [ 0, 0, 3 ] )
+                stepmotor_rotate_base();
+              translate( [ 0, -20, 3 ] )
+                stepmotor_rotate_base();
+            }
 
             stepmotor_rotate_base();
             shell_bottom_ballbear();
@@ -342,7 +372,7 @@ module all_together()
 *            rotarygear_ballbear_2();
 
             main_shaft();
-            separator_plate();
+//            separator_plate();
             separator_plate_ballbear();
             stepmotors_plate();
             stepmotor_legs(); 
@@ -364,3 +394,33 @@ all_together();
     main_shaft();
     stepmotor_rotate_base();
 }
+
+
+module test_1()
+{
+    difference()
+    {
+      union()
+      {
+        difference()
+        {
+         cube( [ 10, 10, 10 ] );
+         translate( [ 0.5, 0.5, 1 ] )
+           cube( [ 9, 9, 10.01 ] );
+        }
+        translate( [ 5, 5, 0 ] )
+          ballbear( 15, 9, 10 );
+      }
+      difference()
+      {
+          translate( [ -3, -3, 0 ] )
+       cube( [ 18, 18, 12 ] );
+       translate( [ 0, 0, 0 ] )
+         cube( [ 10, 10, 11.01 ] );
+      }
+    translate( [ 5, 5, -0.02 ] )
+        ballbear( 14, 11, 10.03 );      
+    }
+
+}
+*test_1();
