@@ -39,7 +39,7 @@ void Solver::initPreSolv( int32_t x, int32_t y, int32_t z )
 	m_learningRates.clear();
 	const size_t legsCount = m_manipulator->size();
 
-	const double deltaAngleMax = 0.05f;
+	const double deltaAngleMax = m_ratioRadiansPer1PixelError * this->getErrorFunctionValue( x, y, z );
 //	const double minError = 0.0000001;
 	std::vector<double> errors = forwardv3( x, y, z );
 	for( auto error : errors )

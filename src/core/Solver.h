@@ -47,10 +47,10 @@ public:
 	ShLegManipulator getCurrentManipulator() const;
 
 	bool isPathPossble( ShLegManipulator manipulatorFrom, ShLegManipulator manipulatorTo );
-
+	std::vector<double> oneStep( int32_t x, int32_t y, int32_t z );// temporary in public, need to be private
 private:
 	void fillPredefinedDerErrorFunctions();
-	std::vector<double> oneStep( int32_t x, int32_t y, int32_t z );
+
 	void updateLearningRate( const std::vector<double> & angleErrors );
 	void initPreSolv( int32_t x, int32_t y, int32_t z );
 	void fillParams( int32_t targetX, int32_t targetY, int32_t targetZ, std::vector<double> & params );
@@ -88,6 +88,8 @@ private:
 
 	double m_minEcceptableDistance{1.0};
 	double m_minClosestDistance{15};
+	static constexpr float m_ratioRadiansPer1PixelError{0.001};// Begins angles searching with 0.5 radians = 28 degrees
+														   // if distance = 100 pixels
 };
 
 #endif /* SOLVER_H_ */
