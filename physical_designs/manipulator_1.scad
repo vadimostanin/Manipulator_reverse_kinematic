@@ -68,7 +68,7 @@ module shell()
       }
   }
   
-  color( [ 0.1, 0.4, 0.8 ] )
+  *color( [ 0.1, 0.4, 0.8 ] )
   difference()
   {
     flange_thickness = 20;
@@ -106,11 +106,27 @@ module stepmotor_rotate_base()
         offset_z = 3;
         translate( [ 27 + stepmotor_width / 2, 67, shell_bottom - offset_z ] )
           translate( [ 0, 0, stepmotor_height / 2 ] )
-            rotate( 90, [ 1, 0, 0 ] )        
+            rotate( 90, [ 1, 0, 0 ] )
               stepmotor();
     }
 }
 
+module stepmotor_rotate_base_shell_hole()
+{
+  union()
+  {
+        offset_z = 3;
+    translate( [ 27 + stepmotor_width / 2, 36, shell_bottom - offset_z ] )
+      translate( [ 0, 0, stepmotor_height / 2 ] )
+        rotate( 90, [ 1, 0, 0 ] )
+    scale( [ 1.0, 1.0, -2.0 ] )
+      translate( [ 0, 0, stepmotor_height / 2 ] )
+    {
+        cube( [ stepmotor_width, stepmotor_length, stepmotor_height ], center = true );
+    }
+  }
+}
+*stepmotor_rotate_base_shell_hole();
 module ballbear( outter_diameter, inner_diameter, height )
 {
   offset = 0.01;
@@ -161,7 +177,7 @@ module main_shaft()
 
 module plane_cut()
 {
-    translate( [ 100, -330, -0.1 ] )
+    translate( [ 20, -0, -0.1 ] )
     rotate( 90, [ 0, 0, 1 ] )
       cube( [ 300, 300, 300 ] );
 }
@@ -344,7 +360,7 @@ module all_together()
             {
               shell();
               stepmotor_rotate_base();
-              translate( [ 0, 0, 3 ] )
+              *translate( [ 0, 0, 3 ] )
                 {
                     hull()
                     {
@@ -354,7 +370,7 @@ module all_together()
                 stepmotor_rotate_base();
               *translate( [ 0, -stepmotor_width / 2, 3 ] )
                 stepmotor_rotate_base();
-              translate( [ -stepmotor_length / 2, 0, 3 ] )
+              *translate( [ -stepmotor_length / 2, 0, 3 ] )
                 {
                     hull()
                     {
@@ -369,6 +385,7 @@ module all_together()
               {
                wormgear_rotaryXZoYgear_holder();
               }
+              stepmotor_rotate_base_shell_hole();
             }
 
             stepmotor_rotate_base();
@@ -393,10 +410,10 @@ module all_together()
 *            rotarygear_ballbear_2();
 
             main_shaft();
-            separator_plate();
+*            separator_plate();
 *            separator_plate_ballbear();
-            stepmotors_plate();
-            stepmotor_legs(); 
+*            stepmotors_plate();
+*            stepmotor_legs(); 
 
         }
 
