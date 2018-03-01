@@ -16,7 +16,7 @@
 
 Solver::Solver( const ShLegManipulator & manipulator ) : m_manipulator( manipulator )
 {
-
+	fillPredefinedDerErrorFunctions();
 }
 
 Solver::~Solver()
@@ -34,8 +34,6 @@ void Solver::fillPredefinedDerErrorFunctions()
 
 void Solver::initPreSolv( int32_t x, int32_t y, int32_t z )
 {
-	fillPredefinedDerErrorFunctions();
-
 	m_learningRates.clear();
 	const size_t legsCount = m_manipulator->size();
 
@@ -589,7 +587,7 @@ void Solver::solveFromCurrent( int32_t x, int32_t y, int32_t z, double epsilon, 
 		stepsCounter++;
 //		std::cout << "accumulatedCurrentError=" << accumulatedCurrentError << std::endl;
 	}
-	while( std::abs( accumulatedPrevError - accumulatedCurrentError ) >= epsilon &&
+	while( /*std::abs( accumulatedPrevError - accumulatedCurrentError ) >= epsilon && */ getErrorFunctionValue( x, y, z ) >= epsilon &&
 		   stepsCounter < maxSteps );
 
 
@@ -1531,7 +1529,6 @@ double Solver::getErrorFunctionValue( ShLegManipulator manipulator, TypePrecisio
 	std::vector<double> params;
 	fillParams( targetX, targetY, targetZ, params );
 	double result = m_preDefinedErrorFunction( params );
-	std::cout << "error=" << result << std::endl;
 	return result;
 }
 

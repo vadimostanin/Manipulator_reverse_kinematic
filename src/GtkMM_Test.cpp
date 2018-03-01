@@ -24,6 +24,7 @@ using namespace std;
 #include "core/ManipulatorUniConverter.h"
 
 #include "FailedBehaviours.h"
+#include "tests/Tests.h"
 
 int main( int argc, char ** argv)
 {
@@ -94,6 +95,11 @@ int main( int argc, char ** argv)
 //	failedBehaviours.runBehaviours();
 //
 //	return 0;
+
+	Tests tests;
+	tests.run1();
+
+	return 0;
 
 	auto app = Gtk::Application::create("org.gtkmm.example");
 
