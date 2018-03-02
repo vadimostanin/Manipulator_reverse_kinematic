@@ -104,12 +104,13 @@ int main( int argc, char ** argv)
 //	    return 0;
 //	}
 
-//	{
-//	    Tests tests;
+	{
+	    Tests tests;
 //	    tests.run1();
-//
-//	    return 0;
-//  }
+	    tests.run2();
+
+	    return 0;
+  }
 
 	auto app = Gtk::Application::create("org.gtkmm.example");
 

@@ -250,12 +250,12 @@ bool onXYoZButtonPressed(GdkEventButton* event, HelloWorld * lpHelloWorld)
 //			std::vector<double> varAngles = ManipulatorUniConverter::getFormatedAngles( lpHelloWorld->m_solver.getCurrentManipulator() );
 //			InterpolatedMove::get().setInitialVars( varAngles );
 //		}
-//		onOptimize( lpHelloWorld );
+		onOptimize( lpHelloWorld );
 //		onOptimizeClone( lpHelloWorld );
 //		onShuffledSolve( lpHelloWorld );
 //		onShuffledLessErrorSolve( lpHelloWorld );
 //		onShuffledLessAngleSolve( lpHelloWorld );
-		onContIterShuffledLessAngleSolve( lpHelloWorld );
+//		onContIterShuffledLessAngleSolve( lpHelloWorld );
 //		onContIterShuffledSolve( lpHelloWorld );
 //		onPerpendicularSolve( lpHelloWorld );
 		{
@@ -294,9 +294,9 @@ bool onXYoZButtonMove(GdkEventMotion* event, HelloWorld * lpHelloWorld)
 		Leg3DDrawWindow::solveForX = event->x;
 		Leg3DDrawWindow::solveForY = event->y;
 
-//		onOptimize( lpHelloWorld );
+		onOptimize( lpHelloWorld );
 //		onOptimizeClone( lpHelloWorld );
-		onShuffledSolve( lpHelloWorld );
+//		onShuffledSolve( lpHelloWorld );
 //		onShuffledLessErrorSolve( lpHelloWorld );
 //		onShuffledLessAngleSolve( lpHelloWorld );
 //		onPerpendicularSolve( lpHelloWorld );

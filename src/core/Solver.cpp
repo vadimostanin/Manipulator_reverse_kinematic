@@ -1215,8 +1215,8 @@ void Solver::backward( const std::vector<double> & angleErrors )
 
 			(*legIter)->setAngleXY( angleNew );
 
-//			const uint32_t legIter_i = std::distance( std::begin( *m_manipulator ), legIter );
-			bool crossed = false;//isCrossingLegsFound( *legIter, legIter_i );
+			const uint32_t legIter_i = std::distance( std::begin( *m_manipulator ), legIter );
+			bool crossed = isCrossingLegsFound( *legIter, legIter_i );
 			bool tooClose = isFinalTooClose( m_minClosestDistance );
 	//		bool tooBigAngle = isAccumulativeAngleTooBig( 360 );
 			if( true == crossed || true == tooClose/* || true == tooBigAngle*/ )
@@ -1277,7 +1277,7 @@ bool Solver::isCrossingLegsFound( const ShLeg& crossLeg, uint32_t legIndex )
 	for( uint32_t leg_i = 0 ; leg_i < legsCount ; leg_i++ )//cross legs checking
 	{
 		ShLeg legLoop = (*m_manipulator)[leg_i];
-		const uint32_t crossLegDist = legIndex - leg_i;
+		const int32_t crossLegDist = legIndex - leg_i;
 		const uint32_t legsDistance = crossLegDist < 0 ? ( -1 ) * crossLegDist : crossLegDist;
 		if( legsDistance < 2 )
 		{

@@ -14,6 +14,7 @@ public:
 	Tests();
 	virtual ~Tests();
 	void run1();
+	void run2();
 };
 
 #endif /* TESTS_H_ */
