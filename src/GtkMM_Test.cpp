@@ -26,6 +26,13 @@ using namespace std;
 #include "FailedBehaviours.h"
 #include "tests/Tests.h"
 
+void onGenerate( HelloWorld * lpHelloWorld )
+{
+	std::string sFunction = lpHelloWorld->m_solver.generateErroFunctionDerivatives();
+	std::cout << "sFunction" << sFunction << std::endl;
+	abort();
+}
+
 int main( int argc, char ** argv)
 {
 //	{
@@ -90,24 +97,32 @@ int main( int argc, char ** argv)
 
 //	return 0;
 	std::srand( time( nullptr ) );
-
-//	FailedBehaviours failedBehaviours;
-//	failedBehaviours.runBehaviours();
+//	{
+//	    FailedBehaviours failedBehaviours;
+//	    failedBehaviours.runBehaviours();
 //
-//	return 0;
+//	    return 0;
+//	}
 
-	Tests tests;
-	tests.run1();
-
-	return 0;
+//	{
+//	    Tests tests;
+//	    tests.run1();
+//
+//	    return 0;
+//  }
 
 	auto app = Gtk::Application::create("org.gtkmm.example");
 
 	LegsMgr::get().getManipulator()->add( 100 );
+	LegsMgr::get().getManipulator()->add( 80 );
 	LegsMgr::get().getManipulator()->add( 75 );
-	LegsMgr::get().getManipulator()->add( 50 );
+	LegsMgr::get().getManipulator()->add( 70 );
+	LegsMgr::get().getManipulator()->add( 65 );
+	LegsMgr::get().getManipulator()->add( 60 );
+	LegsMgr::get().getManipulator()->add( 55 );
+	LegsMgr::get().getManipulator()->add( 40 );
+	LegsMgr::get().getManipulator()->add( 35 );
 	LegsMgr::get().getManipulator()->add( 30 );
-	LegsMgr::get().getManipulator()->add( 20 );
 //	LegsMgr::get().add( 100 );
 //	LegsMgr::get().add( 100 );
 //	LegsMgr::get().add( 100 );
@@ -131,6 +146,7 @@ int main( int argc, char ** argv)
 	InterpolatedMove::init( varAngles.size() );
 
 	HelloWorld helloworld;
+//	onGenerate( &helloworld );// call it to fill the generate error and deraivative function at DerivativeFunctions and ErrorFunctions
 	try
 	{
 	  //Shows the window and returns when it is closed.

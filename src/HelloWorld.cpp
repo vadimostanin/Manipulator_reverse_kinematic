@@ -18,12 +18,6 @@
 
 void onOptimize( HelloWorld * lpHelloWorld )
 {
-//	std::string sFunction = lpHelloWorld->m_solver.generateErroFunctionDerivatives();
-//	std::cout << "sFunction" << sFunction << std::endl;
-//
-//	abort();
-//	return;
-
 //	std::cout << "Optimize by: x=" << lpHelloWorld->m_XYoZArea.getX() << ", y=" << lpHelloWorld->m_XYoZArea.getY() << std::endl;
 	double epsilonChangeError = 0.1;
 //	std::cout << "before solve" << std::endl;
@@ -383,7 +377,6 @@ HelloWorld::HelloWorld()
   m_VBoxButtons(Gtk::ORIENTATION_VERTICAL, 6),
   m_AngleScale( Gtk::Orientation::ORIENTATION_VERTICAL)
 {
-
 	m_XYoZArea.updateDrawLegs( *LegsMgr::get().getManipulator() );
 	m_XZoYArea.updateDrawLegs( *LegsMgr::get().getManipulator() );
 	m_gl3DLegsDrawWindow.updateDrawLegs( *LegsMgr::get().getManipulator() );

@@ -71,6 +71,26 @@ void DerivativeFuncsStorage::getFunc( int legsCount, std::vector<DerivFuncType> 
 		case 9:
 			break;
 		case 10:
+			funcs.push_back( DerivativeFunctions::derivative_XY_10_Legs_0 );
+			funcs.push_back( DerivativeFunctions::derivative_XZ_10_Legs_0 );
+			funcs.push_back( DerivativeFunctions::derivative_XY_10_Legs_1 );
+			funcs.push_back( DerivativeFunctions::derivative_XZ_10_Legs_1 );
+			funcs.push_back( DerivativeFunctions::derivative_XY_10_Legs_2 );
+			funcs.push_back( DerivativeFunctions::derivative_XZ_10_Legs_2 );
+			funcs.push_back( DerivativeFunctions::derivative_XY_10_Legs_3 );
+			funcs.push_back( DerivativeFunctions::derivative_XZ_10_Legs_3 );
+			funcs.push_back( DerivativeFunctions::derivative_XY_10_Legs_4 );
+			funcs.push_back( DerivativeFunctions::derivative_XZ_10_Legs_4 );
+			funcs.push_back( DerivativeFunctions::derivative_XY_10_Legs_5 );
+			funcs.push_back( DerivativeFunctions::derivative_XZ_10_Legs_5 );
+			funcs.push_back( DerivativeFunctions::derivative_XY_10_Legs_6 );
+			funcs.push_back( DerivativeFunctions::derivative_XZ_10_Legs_6 );
+			funcs.push_back( DerivativeFunctions::derivative_XY_10_Legs_7 );
+			funcs.push_back( DerivativeFunctions::derivative_XZ_10_Legs_7 );
+			funcs.push_back( DerivativeFunctions::derivative_XY_10_Legs_8 );
+			funcs.push_back( DerivativeFunctions::derivative_XZ_10_Legs_8 );
+			funcs.push_back( DerivativeFunctions::derivative_XY_10_Legs_9 );
+			funcs.push_back( DerivativeFunctions::derivative_XZ_10_Legs_9 );
 			break;
 		default:
 			assert( false );

@@ -41,6 +41,7 @@ void ErrorFuncStorage::getFunc( int32_t legsCount, ErroFuncType & func )
 		case 9:
 			break;
 		case 10:
+			func = ErrorFunctions::error_Legs_10 ;
 			break;
 		default:
 			assert( false );

@@ -14,6 +14,7 @@ class ErrorFunctions
 {
 public:
 	static double error_Legs_5( std::vector<double> & params );
+	static double error_Legs_10( std::vector<double> & params );
 };
 
 #endif /* CORE_ERRORFUNCTIONS_H_ */
