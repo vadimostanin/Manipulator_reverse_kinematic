@@ -389,19 +389,35 @@ inline bool intersect_1 (int a, int b, int c, int d) {
 	return std::max( a, c ) <= std::min( b, d );
 }
 
+//bool Leg::isCrossing( const Leg & leg )
+//{
+//	pt a, b, c, d, tmp;
+//	leg.getInitialPosition( a.x, a.y, tmp.x );
+//	leg.getCalulatedFinalPosition( b.x, b.y, tmp.x );
+//	getInitialPosition( c.x, c.y, tmp.x );
+//	getCalulatedFinalPosition( d.x, d.y, tmp.x );
+//
+//	bool croossCandidate = intersect_1 (a.x, b.x, c.x, d.x)
+//	&& intersect_1 (a.y, b.y, c.y, d.y)
+//	&& area(a,b,c) * area(a,b,d) <= 0
+//	&& area(c,d,a) * area(c,d,b) <= 0;
+//
+//	bool isBeginEndTouch = ( a.x == d.x && a.y == d.y ) || ( b.x == c.x && b.y == c.y );
+//
+//	bool crossed = croossCandidate && ( false == isBeginEndTouch );
+//
+//	return crossed;
+//}
+#include "HardFire.h"
 bool Leg::isCrossing( const Leg & leg )
 {
-	pt a, b, c, d, tmp;
+	point a, b, c, d, tmp;
 	leg.getInitialPosition( a.x, a.y, tmp.x );
 	leg.getCalulatedFinalPosition( b.x, b.y, tmp.x );
 	getInitialPosition( c.x, c.y, tmp.x );
 	getCalulatedFinalPosition( d.x, d.y, tmp.x );
 
-	bool croossCandidate = intersect_1 (a.x, b.x, c.x, d.x)
-	&& intersect_1 (a.y, b.y, c.y, d.y)
-	&& area(a,b,c) * area(a,b,d) <= 0
-	&& area(c,d,a) * area(c,d,b) <= 0;
-
+	bool croossCandidate = cross_segment( a, b, c, d, tmp );
 	bool isBeginEndTouch = ( a.x == d.x && a.y == d.y ) || ( b.x == c.x && b.y == c.y );
 
 	bool crossed = croossCandidate && ( false == isBeginEndTouch );

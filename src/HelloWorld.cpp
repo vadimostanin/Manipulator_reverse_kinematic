@@ -232,7 +232,9 @@ bool onXYoZButtonPressed(GdkEventButton* event, HelloWorld * lpHelloWorld)
 	try
 	{
 //		std::cout << "on_my_button_press_event" << std::endl;
-		lpHelloWorld->m_XYoZArea.setX( event->x );
+		event->x = 106;
+		event->y = 332;
+		lpHelloWorld->m_XYoZArea.setX( event->x );//106, 332
 		lpHelloWorld->m_XYoZArea.setY( event->y );
 
 		lpHelloWorld->m_XZoYArea.setX( event->x );
