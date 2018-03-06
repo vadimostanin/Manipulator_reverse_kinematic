@@ -9,6 +9,41 @@
 #include <cassert>
 #include <cmath>
 
+double ErrorFunctions::error_Legs_4( std::vector<double> & params )
+{
+	assert( params.size() == 25 );
+
+	double initialX       = params[ 0 ];
+	double initialY       = params[ 1 ];
+	double initialZ       = params[ 2 ];
+	double initialOffsetX = params[ 3 ];
+	double initialOffsetY = params[ 4 ];
+	double initialOffsetZ = params[ 5 ];
+	double targetX        = params[ 6 ];
+	double targetY        = params[ 7 ];
+	double targetZ        = params[ 8 ];
+	double length_0 = params[ 9 + 0 ];
+	double angleXY_0 = params[ 9 + 1 ];
+	double angleXZ_0 = params[ 9 + 2 ];
+	double angleZY_0 = params[ 9 + 3 ];
+	double length_1 = params[ 9 + 4 ];
+	double angleXY_1 = params[ 9 + 5 ];
+	double angleXZ_1 = params[ 9 + 6 ];
+	double angleZY_1 = params[ 9 + 7 ];
+	double length_2 = params[ 9 + 8 ];
+	double angleXY_2 = params[ 9 + 9 ];
+	double angleXZ_2 = params[ 9 + 10 ];
+	double angleZY_2 = params[ 9 + 11 ];
+	double length_3 = params[ 9 + 12 ];
+	double angleXY_3 = params[ 9 + 13 ];
+	double angleXZ_3 = params[ 9 + 14 ];
+	double angleZY_3 = params[ 9 + 15 ];
+
+	double result = pow( pow( sin( angleXZ_0+angleXZ_2+angleXZ_1)*cos( angleXY_2+angleXY_1+angleXY_0)*length_2+4.0*initialOffsetZ+initialZ+length_3*sin( angleXZ_0+angleXZ_2+angleXZ_1+angleXZ_3)*cos( angleXY_2+angleXY_1+angleXY_3+angleXY_0)+sin( angleXZ_0+angleXZ_1)*length_1*cos( angleXY_1+angleXY_0)-targetZ+length_0*cos(angleXY_0)*sin(angleXZ_0),2.0)+pow( 4.0*initialOffsetY+sin( angleXY_2+angleXY_1+angleXY_0)*length_2+sin( angleXY_1+angleXY_0)*length_1+initialY-targetY+length_3*sin( angleXY_2+angleXY_1+angleXY_3+angleXY_0)+length_0*sin(angleXY_0),2.0)+pow( length_3*cos( angleXZ_0+angleXZ_2+angleXZ_1+angleXZ_3)*cos( angleXY_2+angleXY_1+angleXY_3+angleXY_0)+cos( angleXY_2+angleXY_1+angleXY_0)*cos( angleXZ_0+angleXZ_2+angleXZ_1)*length_2+length_1*cos( angleXY_1+angleXY_0)*cos( angleXZ_0+angleXZ_1)+length_0*cos(angleXZ_0)*cos(angleXY_0)+4.0*initialOffsetX+initialX-targetX,2.0),(1.0/2.0));
+
+	return result;
+}
+
 double ErrorFunctions::error_Legs_5( std::vector<double> & params )
 {
 	assert( params.size() == 29 );

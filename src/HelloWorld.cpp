@@ -62,7 +62,7 @@ void onPerpendicularSolve( HelloWorld * lpHelloWorld )
 //				lpHelloWorld->redraw();
 //			}
 //	);
-	lpHelloWorld->m_solver.solvePerpendicularShuffling( lpHelloWorld->m_desirablePoint.getX(), lpHelloWorld->m_desirablePoint.getY(), lpHelloWorld->m_desirablePoint.getZ(), lpHelloWorld->m_XYoZArea.getAngle(), epsilonChangeError, 1000, 10,
+	lpHelloWorld->m_solver.solvePerpendicular( lpHelloWorld->m_desirablePoint.getX(), lpHelloWorld->m_desirablePoint.getY(), lpHelloWorld->m_desirablePoint.getZ(), lpHelloWorld->m_XYoZArea.getAngle(), epsilonChangeError, 1000,
 			[&lpHelloWorld]( const std::vector<double> & error )
 			{
 				lpHelloWorld->redraw();
@@ -83,7 +83,7 @@ void onOneStep( HelloWorld * lpHelloWorld )
 	static bool temp = false;
 	if( false == temp )
 	{
-		lpHelloWorld->m_solver.solveFromCurrent( lpHelloWorld->m_desirablePoint.getX(), lpHelloWorld->m_desirablePoint.getY(), lpHelloWorld->m_desirablePoint.getZ(), epsilonChangeError, 1,
+		lpHelloWorld->m_solver.solvePerpendicular( lpHelloWorld->m_desirablePoint.getX(), lpHelloWorld->m_desirablePoint.getY(), lpHelloWorld->m_desirablePoint.getZ(), lpHelloWorld->m_XYoZArea.getAngle(), epsilonChangeError, 1,
 				[&lpHelloWorld]( const std::vector<double> & error )
 				{
 
@@ -258,8 +258,8 @@ bool onXYoZButtonPressed(GdkEventButton* event, HelloWorld * lpHelloWorld)
 //		onShuffledLessErrorSolve( lpHelloWorld );
 //		onShuffledLessAngleSolve( lpHelloWorld );
 //		onContIterShuffledLessAngleSolve( lpHelloWorld );
-		onContIterShuffledSolve( lpHelloWorld );
-//		onPerpendicularSolve( lpHelloWorld );
+//		onContIterShuffledSolve( lpHelloWorld );
+		onPerpendicularSolve( lpHelloWorld );
 		{
 //			std::vector<double> varAngles = ManipulatorUniConverter::getFormatedAngles( lpHelloWorld->m_solver.getCurrentManipulator() );
 //			InterpolatedMove2::get().setVars( varAngles );
@@ -413,7 +413,7 @@ HelloWorld::HelloWorld()
 
   m_AngleScale.set_digits( 0 );
   m_AngleScale.set_draw_value( true );
-  m_AngleScale.Range::set_range( -90, 90 );
+  m_AngleScale.Range::set_range( -135, 135 );
   m_AngleScale.show();
   m_AngleScale.signal_change_value().connect( sigc::bind<HelloWorld*>( sigc::ptr_fun( &onAngleChangeValue ), this ) );
 

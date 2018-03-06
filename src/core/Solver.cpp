@@ -25,6 +25,8 @@ Solver::~Solver()
 
 void Solver::fillPredefinedDerErrorFunctions()
 {
+	m_preDefinedDerivativeFunctions.clear();
+
 	DerivativeFuncsStorage funcsStorage;
 	funcsStorage.getFunc( m_manipulator->size(), m_preDefinedDerivativeFunctions );
 
@@ -579,8 +581,8 @@ void Solver::solveFromCurrent( int32_t x, int32_t y, int32_t z, double epsilon, 
 	do
 	{
 		errorPrev = errorCurrent;
-//		errorCurrent = oneStep( x, y, z );
-		errorCurrent = oneStepV2( x, y, z );
+		errorCurrent = oneStep( x, y, z );
+//		errorCurrent = oneStepV2( x, y, z );
 
 //		accumulatedPrevError = accumulatedCurrentError;
 //		accumulatedCurrentError = std::accumulate( std::begin( errorCurrent ), std::end( errorCurrent ), 0.0 );
@@ -609,10 +611,11 @@ void Solver::solvePerpendicular( int32_t x, int32_t y, int32_t z, double angle, 
 
 
 	ShLegManipulator legsOrigin = m_manipulator;
-	LegManipulator legMinusLast( std::begin( *m_manipulator ), std::prev( std::end( *m_manipulator ) ) );
-	m_manipulator.reset( &legMinusLast );
+	ShLegManipulator legMinusLast = std::make_shared<LegManipulator>( std::begin( *m_manipulator ), std::prev( std::end( *m_manipulator ) ) );
+	m_manipulator = legMinusLast;
 
-
+	fillPredefinedDerErrorFunctions();
+	initPreSolv( x, y, z );
 	solveFromCurrent( withoutLastLegX, withoutLastLegY, withoutLastLegZ, epsilon, maxSteps, cbPerStep );
 
 	double lastLegAccumulativeAngle = lastLeg->getAccumulativeParentAngleXY();
@@ -622,7 +625,10 @@ void Solver::solvePerpendicular( int32_t x, int32_t y, int32_t z, double angle, 
 
 //	std::cout << "normalLastLegAngle=" << normalLastLegAngle << std::endl;
 
+	m_manipulator.reset();
 	m_manipulator = legsOrigin;
+	fillPredefinedDerErrorFunctions();
+	initPreSolv( x, y, z );
 }
 
 void Solver::solveContiniouslyShuffling( int32_t x, int32_t y, int32_t z, double epsilon, uint32_t maxStepsPerSolving, uint32_t maxSolvingCount, SolveEndCb cbPerStep )
