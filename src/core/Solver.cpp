@@ -572,17 +572,18 @@ void Solver::solveFromCurrent( int32_t x, int32_t y, int32_t z, double epsilon, 
 
 	initPreSolv( x, y, z );
 
-	double accumulatedCurrentError = 0.0;
-	double accumulatedPrevError = 0.0;
+//	double accumulatedCurrentError = 0.0;
+//	double accumulatedPrevError = 0.0;
 	uint32_t stepsCounter = 0;
 //	printLearningRates();
 	do
 	{
 		errorPrev = errorCurrent;
-		errorCurrent = oneStep( x, y, z );
+//		errorCurrent = oneStep( x, y, z );
+		errorCurrent = oneStepV2( x, y, z );
 
-		accumulatedPrevError = accumulatedCurrentError;
-		accumulatedCurrentError = std::accumulate( std::begin( errorCurrent ), std::end( errorCurrent ), 0.0 );
+//		accumulatedPrevError = accumulatedCurrentError;
+//		accumulatedCurrentError = std::accumulate( std::begin( errorCurrent ), std::end( errorCurrent ), 0.0 );
 
 		stepsCounter++;
 //		std::cout << "accumulatedCurrentError=" << accumulatedCurrentError << std::endl;
@@ -1022,9 +1023,24 @@ std::vector<double> Solver::oneStep( int32_t x, int32_t y, int32_t z )
 	return m_errors;
 }
 
+std::vector<double> Solver::oneStepV2( int32_t x, int32_t y, int32_t z )
+{
+	std::vector<double> errorsPerLeg( m_anglesPerLeg );
+	const uint32_t legsCount = m_manipulator->size();
+	for( uint32_t leg_i = 0 ; leg_i < legsCount ; leg_i++ )
+	{
+		errorsPerLeg = forwardLegv3( leg_i, x, y, z );
+		backwardLeg( leg_i, errorsPerLeg );
+	}
+	m_errors = forwardv3( x, y, z );
+	updateLearningRate( m_errors );
+
+	return m_errors;
+}
+
 std::vector<double> Solver::forwardv3( int32_t targetX, int32_t targetY, int32_t targetZ )
 {
-	std::vector<double> errors( m_manipulator->size() * 2, 0.0 );
+	std::vector<double> errors( m_manipulator->size() * m_anglesPerLeg, 0.0 );
 
 	assert( m_preDefinedDerivativeFunctions.size() == errors.size() );
 
@@ -1040,6 +1056,18 @@ std::vector<double> Solver::forwardv3( int32_t targetX, int32_t targetY, int32_t
 		(*errorIter) = (*derivativeIter)( params );
 //			std::cout << "errorIter=" << (*errorIter) << std::endl;
 	}
+
+	return errors;
+}
+
+std::vector<double> Solver::forwardLegv3( uint32_t legIndex, int32_t targetX, int32_t targetY, int32_t targetZ )
+{
+	std::vector<double> errors( m_anglesPerLeg );
+
+	std::vector<double> params;//offsetX, offsetY, targetX, targetY, length * m_leg.size(), angle * m_leg.size()
+	fillParams( targetX, targetY, targetZ, params );
+	errors[ 0 ] = m_preDefinedDerivativeFunctions[ legIndex * m_anglesPerLeg ]( params );
+	errors[ 1 ] = m_preDefinedDerivativeFunctions[ legIndex * m_anglesPerLeg + 1 ]( params );
 
 	return errors;
 }
@@ -1078,7 +1106,7 @@ std::vector<double> Solver::forwardv2( int32_t expectedX, int32_t expectedY, int
 {
 	assert( m_ginacXYoZAngles.size() == m_manipulator->size() );
 
-	std::vector<double> errors( m_manipulator->size() * 2, 0.0 );//angles XYoZ and angles XZoY
+	std::vector<double> errors( m_manipulator->size() * m_anglesPerLeg, 0.0 );//angles XYoZ and angles XZoY
 
 	assert( m_errorDerivativeFunctions.size() == errors.size() );//error of angles XYoZ and angles XZoY
 
@@ -1171,10 +1199,107 @@ std::vector<double> Solver::forwardv1( int32_t expectedX, int32_t expectedY )
 	return errors;
 }
 
+void Solver::backwardLeg( uint32_t legIndex, const std::vector<double> & angleErrors )
+{
+	assert( m_anglesPerLeg == angleErrors.size() );
+
+//	std::stringstream ioss;
+//	copy(angleErrors.begin(), angleErrors.end(),
+//	     std::ostream_iterator<double>(ioss,","));
+//	std::cout << ioss.str() << std::endl;
+
+	auto legIter = std::begin( *m_manipulator ) + legIndex;
+	auto errorIter = std::begin( angleErrors );
+	auto learningRateIter = std::begin( m_learningRates );
+
+//	auto legIter = std::prev( std::end( *m_manipulator ) );
+//	auto errorIter = std::prev( std::end( angleErrors ) );
+//	auto learningRateIter = std::prev( std::end( m_learningRates ) );
+//	int angle_i = 0;
+	do
+	{
+		{
+			//update angle XYoZ
+			double angleXYoZ = (*legIter)->getAngleXY();
+			double radianXYoZ = Utils::deg2Rad( angleXYoZ );
+
+			double gradient = *errorIter;
+	//		std::cout << "gradient=" << gradient << std::endl;
+
+			double radianDelta = gradient * (*learningRateIter);
+			double radianNew = radianXYoZ - radianDelta;
+
+			if( true == std::isnan( std::abs( radianNew ) ) )
+			{
+				continue;//skip iteration
+			}
+	//		std::cout << "radianNew=" << radianNew << std::endl;
+			double angleNew = Utils::rad2Deg( radianNew );
+
+	//		std::cout << "angleDelta=" << Utils::rad2Deg( radianDelta ) << std::endl;
+	//		std::cout << "backward radianNew=" << radianNew << std::endl;
+
+			(*legIter)->setAngleXY( angleNew );
+
+			const uint32_t legIter_i = std::distance( std::begin( *m_manipulator ), legIter );
+			bool crossed = isCrossingLegsFound( *legIter, legIter_i );
+			bool tooClose = isFinalTooClose( m_minClosestDistance );
+	//		bool tooBigAngle = isAccumulativeAngleTooBig( 360 );
+			if( true == crossed || true == tooClose/* || true == tooBigAngle*/ )
+			{
+//				std::cout << crossed << " == crossed || " << tooClose << " == tooClose" << std::endl;
+	//			std::cout << "before" << std::endl;
+	//			(*legIter)->print();
+				(*legIter)->setAngleXY( angleXYoZ );//revert old angle
+	//			std::cout << "after" << std::endl;
+	//			(*legIter)->print();
+			}
+		}
+
+		{
+			//update angle XZoY
+			double angleXZoY = (*legIter)->getAngleXZ();
+			double radianXZoY = Utils::deg2Rad( angleXZoY );
+
+			double gradient = *(errorIter + 1 );
+	//		std::cout << "gradient=" << gradient << std::endl;
+
+			double radianDelta = gradient * (*( learningRateIter + 1 ) );
+			double radianNew = radianXZoY - radianDelta;
+
+			if( true == std::isnan( std::abs( radianNew ) ) )
+			{
+				continue;//skip iteration
+			}
+	//		std::cout << "radianNew=" << radianNew << std::endl;
+			double angleNew = Utils::rad2Deg( radianNew );
+
+	//		std::cout << "angleDelta=" << Utils::rad2Deg( radianDelta ) << std::endl;
+	//		std::cout << "backward radianNew=" << radianNew << std::endl;
+
+			(*legIter)->setAngleXZ( angleNew );
+
+//			const size_t legIter_i = std::distance( std::begin( *m_manipulator ), legIter );
+			bool crossed = false;//isCrossingLegsFound( *legIter, legIter_i );
+			bool tooClose = isFinalTooClose( m_minClosestDistance );
+	//		bool tooBigAngle = isAccumulativeAngleTooBig( 360 );
+			if( true == crossed || true == tooClose/* || true == tooBigAngle*/ )
+			{
+				std::cout << crossed << " == crossed || " << tooClose << " == tooClose" << std::endl;
+	//			std::cout << "before" << std::endl;
+	//			(*legIter)->print();
+				(*legIter)->setAngleXZ( angleXZoY );//revert old angle
+	//			std::cout << "after" << std::endl;
+	//			(*legIter)->print();
+			}
+		}
+	}while( false );
+}
+
 void Solver::backward( const std::vector<double> & angleErrors )
 {
-	assert( m_manipulator->size() * 2 == angleErrors.size() );
-	assert( m_manipulator->size() * 2 == m_learningRates.size() );
+	assert( m_manipulator->size() * m_anglesPerLeg == angleErrors.size() );
+	assert( m_manipulator->size() * m_anglesPerLeg == m_learningRates.size() );
 
 //	std::stringstream ioss;
 //	copy(angleErrors.begin(), angleErrors.end(),
@@ -1189,8 +1314,8 @@ void Solver::backward( const std::vector<double> & angleErrors )
 //	auto errorIter = std::prev( std::end( angleErrors ) );
 //	auto learningRateIter = std::prev( std::end( m_learningRates ) );
 //	int angle_i = 0;
-	for(  ; legIter != std::end( *m_manipulator ) ; legIter++, errorIter += 2, learningRateIter += 2 )
-//	for(  ; legIter != std::prev( std::begin( *m_manipulator ) ) ; legIter--, errorIter -= 2, learningRateIter -= 2 )
+	for(  ; legIter != std::end( *m_manipulator ) ; legIter++, errorIter += m_anglesPerLeg, learningRateIter += m_anglesPerLeg )
+//	for(  ; legIter != std::prev( std::begin( *m_manipulator ) ) ; legIter--, errorIter -= m_anglesPerLeg, learningRateIter -= m_anglesPerLeg )
 	{
 		{
 			//update angle XYoZ

@@ -104,26 +104,35 @@ int main( int argc, char ** argv)
 //	    return 0;
 //	}
 
-	{
-	    Tests tests;
-//	    tests.run1();
-	    tests.run2();
-
-	    return 0;
-  }
+//	{
+//	    Tests tests;
+////	    tests.run1();
+//	    tests.run2();
+//
+//	    return 0;
+//  }
 
 	auto app = Gtk::Application::create("org.gtkmm.example");
 
-	LegsMgr::get().getManipulator()->add( 100 );
-	LegsMgr::get().getManipulator()->add( 80 );
-	LegsMgr::get().getManipulator()->add( 75 );
-	LegsMgr::get().getManipulator()->add( 70 );
-	LegsMgr::get().getManipulator()->add( 65 );
-	LegsMgr::get().getManipulator()->add( 60 );
-	LegsMgr::get().getManipulator()->add( 55 );
-	LegsMgr::get().getManipulator()->add( 40 );
-	LegsMgr::get().getManipulator()->add( 35 );
-	LegsMgr::get().getManipulator()->add( 30 );
+//	{
+//		LegsMgr::get().getManipulator()->add( 100 );
+//		LegsMgr::get().getManipulator()->add( 80 );
+//		LegsMgr::get().getManipulator()->add( 75 );
+//		LegsMgr::get().getManipulator()->add( 70 );
+//		LegsMgr::get().getManipulator()->add( 65 );
+//		LegsMgr::get().getManipulator()->add( 60 );
+//		LegsMgr::get().getManipulator()->add( 55 );
+//		LegsMgr::get().getManipulator()->add( 40 );
+//		LegsMgr::get().getManipulator()->add( 35 );
+//		LegsMgr::get().getManipulator()->add( 30 );
+//	}
+	{
+		LegsMgr::get().getManipulator()->add( 100 );
+		LegsMgr::get().getManipulator()->add( 80 );
+		LegsMgr::get().getManipulator()->add( 60 );
+		LegsMgr::get().getManipulator()->add( 40 );
+		LegsMgr::get().getManipulator()->add( 20 );
+	}
 //	LegsMgr::get().add( 100 );
 //	LegsMgr::get().add( 100 );
 //	LegsMgr::get().add( 100 );

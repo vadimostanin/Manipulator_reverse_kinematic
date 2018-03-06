@@ -48,16 +48,19 @@ public:
 
 	bool isPathPossble( ShLegManipulator manipulatorFrom, ShLegManipulator manipulatorTo );
 	std::vector<double> oneStep( int32_t x, int32_t y, int32_t z );// temporary in public, need to be private
+	std::vector<double> oneStepV2( int32_t x, int32_t y, int32_t z );
 private:
 	void fillPredefinedDerErrorFunctions();
 
 	void updateLearningRate( const std::vector<double> & angleErrors );
 	void initPreSolv( int32_t x, int32_t y, int32_t z );
 	void fillParams( int32_t targetX, int32_t targetY, int32_t targetZ, std::vector<double> & params );
+	std::vector<double> forwardLegv3( uint32_t legIndex, int32_t targetX, int32_t targetY, int32_t targetZ );
 	std::vector<double> forwardv3( int32_t expectedX, int32_t expectedY, int32_t expectedZ );
 	std::vector<double> forwardv2( int32_t expectedX, int32_t expectedY, int32_t expectedZ );
 	std::vector<double> forwardv1( int32_t x, int32_t y );
-	void backward( const std::vector<double> & error );
+	void backward( const std::vector<double> & angleErrors );
+	void backwardLeg( uint32_t legIndex, const std::vector<double> & angleErrors );
 	void initGiNaCVars();
 	void initGiNaCErrorFunction( int32_t targetX, int32_t targetY, int32_t targetZ );
 
@@ -90,6 +93,8 @@ private:
 	double m_minClosestDistance{15};
 	static constexpr float m_ratioRadiansPer1PixelError{0.001};// Begins angles searching with 0.5 radians = 28 degrees
 														   // if distance = 100 pixels
+
+	static constexpr uint32_t m_anglesPerLeg{2};
 };
 
 #endif /* SOLVER_H_ */

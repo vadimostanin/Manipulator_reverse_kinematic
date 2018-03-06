@@ -93,7 +93,7 @@ void onOneStep( HelloWorld * lpHelloWorld )
 	}
 	else
 	{
-		lpHelloWorld->m_solver.oneStep( lpHelloWorld->m_desirablePoint.getX(), lpHelloWorld->m_desirablePoint.getY(), lpHelloWorld->m_desirablePoint.getZ() );
+		lpHelloWorld->m_solver.oneStepV2( lpHelloWorld->m_desirablePoint.getX(), lpHelloWorld->m_desirablePoint.getY(), lpHelloWorld->m_desirablePoint.getZ() );
 	}
 	lpHelloWorld->redraw();
 	std::cout << "after solve" << std::endl;
@@ -232,8 +232,8 @@ bool onXYoZButtonPressed(GdkEventButton* event, HelloWorld * lpHelloWorld)
 	try
 	{
 //		std::cout << "on_my_button_press_event" << std::endl;
-		event->x = 106;
-		event->y = 332;
+//		event->x = 106;
+//		event->y = 332;
 		lpHelloWorld->m_XYoZArea.setX( event->x );//106, 332
 		lpHelloWorld->m_XYoZArea.setY( event->y );
 
@@ -252,13 +252,13 @@ bool onXYoZButtonPressed(GdkEventButton* event, HelloWorld * lpHelloWorld)
 //			std::vector<double> varAngles = ManipulatorUniConverter::getFormatedAngles( lpHelloWorld->m_solver.getCurrentManipulator() );
 //			InterpolatedMove::get().setInitialVars( varAngles );
 //		}
-		onOptimize( lpHelloWorld );
+//		onOptimize( lpHelloWorld );
 //		onOptimizeClone( lpHelloWorld );
 //		onShuffledSolve( lpHelloWorld );
 //		onShuffledLessErrorSolve( lpHelloWorld );
 //		onShuffledLessAngleSolve( lpHelloWorld );
 //		onContIterShuffledLessAngleSolve( lpHelloWorld );
-//		onContIterShuffledSolve( lpHelloWorld );
+		onContIterShuffledSolve( lpHelloWorld );
 //		onPerpendicularSolve( lpHelloWorld );
 		{
 //			std::vector<double> varAngles = ManipulatorUniConverter::getFormatedAngles( lpHelloWorld->m_solver.getCurrentManipulator() );
@@ -284,6 +284,8 @@ bool onXYoZButtonMove(GdkEventMotion* event, HelloWorld * lpHelloWorld)
 {
 	try
 	{
+//		event->x = 106;
+//		event->y = 332;
 //		std::cout << "on_my_button_press_event" << std::endl;
 		lpHelloWorld->m_XYoZArea.setX( event->x );
 		lpHelloWorld->m_XYoZArea.setY( event->y );
@@ -296,7 +298,7 @@ bool onXYoZButtonMove(GdkEventMotion* event, HelloWorld * lpHelloWorld)
 		Leg3DDrawWindow::solveForX = event->x;
 		Leg3DDrawWindow::solveForY = event->y;
 
-		onOptimize( lpHelloWorld );
+//		onOptimize( lpHelloWorld );
 //		onOptimizeClone( lpHelloWorld );
 //		onShuffledSolve( lpHelloWorld );
 //		onShuffledLessErrorSolve( lpHelloWorld );
@@ -453,7 +455,7 @@ HelloWorld::HelloWorld()
   m_interpolateButton.signal_clicked().connect( sigc::bind<HelloWorld*>( sigc::ptr_fun( &onInterpolateExp5 ), this ) );
 
   m_XYoZArea.signal_button_press_event().connect( sigc::bind<HelloWorld*>( sigc::ptr_fun( &onXYoZButtonPressed ), this ) );
-  m_XYoZArea.signal_motion_notify_event().connect( sigc::bind<HelloWorld*>( sigc::ptr_fun( &onXYoZButtonMove ), this ) );
+//  m_XYoZArea.signal_motion_notify_event().connect( sigc::bind<HelloWorld*>( sigc::ptr_fun( &onXYoZButtonMove ), this ) );
 
   m_XZoYArea.signal_button_press_event().connect( sigc::bind<HelloWorld*>( sigc::ptr_fun( &onXZoYButtonPressed ), this ) );
   m_XZoYArea.signal_motion_notify_event().connect( sigc::bind<HelloWorld*>( sigc::ptr_fun( &onXZoYButtonMove ), this ) );
