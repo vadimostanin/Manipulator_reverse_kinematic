@@ -581,8 +581,8 @@ void Solver::solveFromCurrent( int32_t x, int32_t y, int32_t z, double epsilon, 
 	do
 	{
 		errorPrev = errorCurrent;
-		errorCurrent = oneStep( x, y, z );
-//		errorCurrent = oneStepV2( x, y, z );
+//		errorCurrent = oneStep( x, y, z );
+		errorCurrent = oneStepV2( x, y, z );
 
 //		accumulatedPrevError = accumulatedCurrentError;
 //		accumulatedCurrentError = std::accumulate( std::begin( errorCurrent ), std::end( errorCurrent ), 0.0 );
@@ -1316,12 +1316,12 @@ void Solver::backward( const std::vector<double> & angleErrors )
 	auto errorIter = std::begin( angleErrors );
 	auto learningRateIter = std::begin( m_learningRates );
 
-//	auto legIter = std::prev( std::end( *m_manipulator ) );
-//	auto errorIter = std::prev( std::end( angleErrors ) );
-//	auto learningRateIter = std::prev( std::end( m_learningRates ) );
+//	auto legIter = m_manipulator->rbegin();
+//	auto errorIter = angleErrors.rbegin();
+//	auto learningRateIter = m_learningRates.rbegin();
 //	int angle_i = 0;
 	for(  ; legIter != std::end( *m_manipulator ) ; legIter++, errorIter += m_anglesPerLeg, learningRateIter += m_anglesPerLeg )
-//	for(  ; legIter != std::prev( std::begin( *m_manipulator ) ) ; legIter--, errorIter -= m_anglesPerLeg, learningRateIter -= m_anglesPerLeg )
+//	for(  ; legIter != m_manipulator->rend() ; legIter++, errorIter += m_anglesPerLeg, learningRateIter += m_anglesPerLeg )
 	{
 		{
 			//update angle XYoZ
@@ -1329,9 +1329,11 @@ void Solver::backward( const std::vector<double> & angleErrors )
 			double radianXYoZ = Utils::deg2Rad( angleXYoZ );
 
 			double gradient = *errorIter;
+//			double gradient = *(errorIter + 1);
 	//		std::cout << "gradient=" << gradient << std::endl;
 
 			double radianDelta = gradient * (*learningRateIter);
+//			double radianDelta = gradient * (*learningRateIter + 1);
 			double radianNew = radianXYoZ - radianDelta;
 
 			if( true == std::isnan( std::abs( radianNew ) ) )
@@ -1346,8 +1348,8 @@ void Solver::backward( const std::vector<double> & angleErrors )
 
 			(*legIter)->setAngleXY( angleNew );
 
-			const uint32_t legIter_i = std::distance( std::begin( *m_manipulator ), legIter );
-			bool crossed = isCrossingLegsFound( *legIter, legIter_i );
+//			const uint32_t legIter_i = std::distance( std::begin( *m_manipulator ), legIter );
+			bool crossed = false;//isCrossingLegsFound( *legIter, legIter_i );
 			bool tooClose = isFinalTooClose( m_minClosestDistance );
 	//		bool tooBigAngle = isAccumulativeAngleTooBig( 360 );
 			if( true == crossed || true == tooClose/* || true == tooBigAngle*/ )
@@ -1367,9 +1369,11 @@ void Solver::backward( const std::vector<double> & angleErrors )
 			double radianXZoY = Utils::deg2Rad( angleXZoY );
 
 			double gradient = *(errorIter + 1 );
+//			double gradient = *errorIter;
 	//		std::cout << "gradient=" << gradient << std::endl;
 
 			double radianDelta = gradient * (*( learningRateIter + 1 ) );
+//			double radianDelta = gradient * (*learningRateIter);
 			double radianNew = radianXZoY - radianDelta;
 
 			if( true == std::isnan( std::abs( radianNew ) ) )

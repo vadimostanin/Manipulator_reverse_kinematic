@@ -147,7 +147,7 @@ int main( int argc, char ** argv)
 	LegsMgr::get().getManipulator()->getLeg( 1 )->setAngleXYLimits( - 180 + 30, 180 - 30 ).setAngleXZLimits( 0, 0 );
 	LegsMgr::get().getManipulator()->getLeg( 2 )->setAngleXYLimits( - 180 + 60, 180 - 60 ).setAngleXZLimits( 0, 0 );
 	LegsMgr::get().getManipulator()->getLeg( 3 )->setAngleXYLimits( - 180 + 60, 180 - 60 ).setAngleXZLimits( 0, 0 );
-	LegsMgr::get().getManipulator()->getLeg( 4 )->setAngleXYLimits( - 180 + 60, 180 - 60 ).setAngleXZLimits( 0, 0 );
+	LegsMgr::get().getManipulator()->getLeg( 4 )->setAngleXYLimits( - 180 + 30, 180 - 30 ).setAngleXZLimits( 0, 0 );
 
 //	LegsMgr::get().getManipulator()->getLeg( 1 )->setInitialOffsets( 0.0, 0.0, 20.0 );
 
