@@ -11,6 +11,7 @@
 #include "LegManipulator.h"
 #include "DerivativeFuncsStorage.h"
 #include "ErrorFuncStorage.h"
+#include "ContrainsTooClose.h"
 #include <ginac.h>
 #include <symbol.h>
 
@@ -65,8 +66,6 @@ private:
 	void initGiNaCErrorFunction( int32_t targetX, int32_t targetY, int32_t targetZ );
 
 	bool isCrossingLegsFound( const ShLeg& leg, uint32_t legIndex );
-	bool isFinalTooClose( const int32_t minDistance );
-	bool isFinalTooClose( ShLegManipulator manipulator, const int32_t minDistance );
 	bool isAccumulativeAngleTooBig( const double maxAngle );
 
 	void printLearningRates();
@@ -90,11 +89,13 @@ private:
 	ErroFuncType				m_preDefinedErrorFunction;
 
 	double m_minEcceptableDistance{1.0};
-	double m_minClosestDistance{15};
+
 	static constexpr float m_ratioRadiansPer1PixelError{0.001};// Begins angles searching with 0.5 radians = 28 degrees
 														   // if distance = 100 pixels
 
 	static constexpr uint32_t m_anglesPerLeg{2};
+
+	ContrainsTooClose m_constrinTooClose;
 };
 
 #endif /* SOLVER_H_ */
