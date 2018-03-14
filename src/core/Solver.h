@@ -63,7 +63,7 @@ private:
 	void backward( const std::vector<double> & angleErrors );
 	void backwardLeg( uint32_t legIndex, const std::vector<double> & angleErrors );
 	void initGiNaCVars();
-	void initGiNaCErrorFunction( int32_t targetX, int32_t targetY, int32_t targetZ );
+	void initGiNaCErrorFunction( int32_t targetX, int32_t targetY, int32_t targetZ, bool isAngled = false, double angleDegree = 0.0 );
 
 	bool isCrossingLegsFound( const ShLeg& leg, uint32_t legIndex );
 	bool isAccumulativeAngleTooBig( const double maxAngle );

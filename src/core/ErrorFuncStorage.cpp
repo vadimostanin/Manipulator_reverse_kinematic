@@ -24,8 +24,10 @@ void ErrorFuncStorage::getFunc( int32_t legsCount, ErroFuncType & func )
 		case 1:
 			break;
 		case 2:
+			func = ErrorFunctions::error_Legs_2;
 			break;
 		case 3:
+			func = ErrorFunctions::error_Legs_3;
 			break;
 		case 4:
 			func = ErrorFunctions::error_Legs_4 ;
