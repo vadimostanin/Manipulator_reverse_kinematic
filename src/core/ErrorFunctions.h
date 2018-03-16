@@ -13,6 +13,7 @@
 class ErrorFunctions
 {
 public:
+	static double error_Legs_1( std::vector<double> & params );
 	static double error_Legs_2( std::vector<double> & params );
 	static double error_Legs_3( std::vector<double> & params );
 	static double error_Legs_4( std::vector<double> & params );

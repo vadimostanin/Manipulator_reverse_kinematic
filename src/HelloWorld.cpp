@@ -62,12 +62,19 @@ void onPerpendicularSolve( HelloWorld * lpHelloWorld )
 //				lpHelloWorld->redraw();
 //			}
 //	);
-	lpHelloWorld->m_solver.solvePerpendicular( lpHelloWorld->m_desirablePoint.getX(), lpHelloWorld->m_desirablePoint.getY(), lpHelloWorld->m_desirablePoint.getZ(), lpHelloWorld->m_XYoZArea.getAngle(), epsilonChangeError, 1000,
-			[&lpHelloWorld]( const std::vector<double> & error )
-			{
-				lpHelloWorld->redraw();
-			}
-	);
+	try
+	{
+		lpHelloWorld->m_solver.solvePerpendicularNative( lpHelloWorld->m_desirablePoint.getX(), lpHelloWorld->m_desirablePoint.getY(), lpHelloWorld->m_desirablePoint.getZ(), lpHelloWorld->m_XYoZArea.getAngle(), epsilonChangeError, 100,
+				[&lpHelloWorld]( const std::vector<double> & error )
+				{
+					lpHelloWorld->redraw();
+				}
+		);
+	}
+	catch(std::exception & ex )
+	{
+		std::cout << ex.what() << std::endl;
+	}
 //	std::cout << "after solve" << std::endl;
 //	LegsMgr::get().print();
 //	TypePrecision finalX, finalY, finalZ;
@@ -252,14 +259,14 @@ bool onXYoZButtonPressed(GdkEventButton* event, HelloWorld * lpHelloWorld)
 //			std::vector<double> varAngles = ManipulatorUniConverter::getFormatedAngles( lpHelloWorld->m_solver.getCurrentManipulator() );
 //			InterpolatedMove::get().setInitialVars( varAngles );
 //		}
-//		onOptimize( lpHelloWorld );
+		onOptimize( lpHelloWorld );
 //		onOptimizeClone( lpHelloWorld );
 //		onShuffledSolve( lpHelloWorld );
 //		onShuffledLessErrorSolve( lpHelloWorld );
 //		onShuffledLessAngleSolve( lpHelloWorld );
 //		onContIterShuffledLessAngleSolve( lpHelloWorld );
 //		onContIterShuffledSolve( lpHelloWorld );
-		onPerpendicularSolve( lpHelloWorld );
+//		onPerpendicularSolve( lpHelloWorld );
 		{
 //			std::vector<double> varAngles = ManipulatorUniConverter::getFormatedAngles( lpHelloWorld->m_solver.getCurrentManipulator() );
 //			InterpolatedMove2::get().setVars( varAngles );
@@ -362,7 +369,7 @@ bool onXZoYButtonMove(GdkEventMotion* event, HelloWorld * lpHelloWorld)
 	Leg3DDrawWindow::solveForX = event->x;
 	Leg3DDrawWindow::solveForZ = event->y;
 
-	onOptimize( lpHelloWorld );
+//	onOptimize( lpHelloWorld );
 //	onOptimizeClone( lpHelloWorld );
 //	onShuffledSolve( lpHelloWorld );
 //	onShuffledLessErrorSolve( lpHelloWorld );

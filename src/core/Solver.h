@@ -29,10 +29,12 @@ public:
 	std::vector<double> getError();
 
 	void solveFromCurrent( int32_t x, int32_t y, int32_t z, double epsilon = 0.01, uint32_t maxSteps = 1000, SolveEndCb cbPerStep = empty );
+	void solveFromCurrentAngled( int32_t x, int32_t y, int32_t z, double angleDegree, double epsilon = 0.01, uint32_t maxSteps = 1000, SolveEndCb cbPerStep = empty );
 	void solveContiniouslyShuffling( int32_t x, int32_t y, int32_t z, double epsilon = 0.01, uint32_t maxStepsPerSolving = 1000, uint32_t maxSolvingCount = 10, SolveEndCb cbPerStep = empty );
 
-	void solvePerpendicular( int32_t x, int32_t y, int32_t z, double angle, double epsilon = 0.01, uint32_t maxSteps = 1000, SolveEndCb cbPerStep = empty );
-	void solvePerpendicularShuffling( int32_t x, int32_t y, int32_t z, double angle, double epsilon = 0.01, uint32_t maxStepsPerSolving = 1000, uint32_t maxSolvingCount = 10, SolveEndCb cbPerStep = empty );
+	void solvePerpendicular( int32_t x, int32_t y, int32_t z, double angleDegree, double epsilon = 0.01, uint32_t maxSteps = 1000, SolveEndCb cbPerStep = empty );
+	void solvePerpendicularNative( int32_t x, int32_t y, int32_t z, double angleDegree, double epsilon = 0.01, uint32_t maxSteps = 1000, SolveEndCb cbPerStep = empty );
+	void solvePerpendicularShuffling( int32_t x, int32_t y, int32_t z, double angleDegree, double epsilon = 0.01, uint32_t maxStepsPerSolving = 1000, uint32_t maxSolvingCount = 10, SolveEndCb cbPerStep = empty );
 
 	void solveContiniouslyShufflingLessError( int32_t x, int32_t y, int32_t z, double epsilon = 0.01, uint32_t maxStepsPerSolving = 1000, uint32_t maxSolvingCount = 10, SolveEndCb cbPerStep = empty );
 	void solveContiniouslyShufflingLessAngle( int32_t x, int32_t y, int32_t z, double epsilon = 0.01, uint32_t maxStepsPerSolving = 1000, uint32_t maxSolvingCount = 10, SolveEndCb cbPerStep = empty );
@@ -48,22 +50,22 @@ public:
 	ShLegManipulator getCurrentManipulator() const;
 
 	bool isPathPossble( ShLegManipulator manipulatorFrom, ShLegManipulator manipulatorTo );
-	std::vector<double> oneStep( int32_t x, int32_t y, int32_t z );// temporary in public, need to be private
+	std::vector<double> oneStep( int32_t x, int32_t y, int32_t z, bool angled = false, double angleDegree = 0.0 );// temporary in public, need to be private
 	std::vector<double> oneStepV2( int32_t x, int32_t y, int32_t z );
 private:
 	void fillPredefinedDerErrorFunctions();
 
 	void updateLearningRate( const std::vector<double> & angleErrors );
-	void initPreSolv( int32_t x, int32_t y, int32_t z );
+	void initPreSolv( int32_t x, int32_t y, int32_t z, bool angled = false, double angleDegree = 0.0 );
 	void fillParams( int32_t targetX, int32_t targetY, int32_t targetZ, std::vector<double> & params );
 	std::vector<double> forwardLegv3( uint32_t legIndex, int32_t targetX, int32_t targetY, int32_t targetZ );
-	std::vector<double> forwardv3( int32_t expectedX, int32_t expectedY, int32_t expectedZ );
-	std::vector<double> forwardv2( int32_t expectedX, int32_t expectedY, int32_t expectedZ );
+	std::vector<double> forwardv3( int32_t expectedX, int32_t expectedY, int32_t expectedZ, bool angled = false, double angleDegree = 0.0 );
+	std::vector<double> forwardv2( int32_t expectedX, int32_t expectedY, int32_t expectedZ, bool angled = false, double angleDegree = 0.0 );
 	std::vector<double> forwardv1( int32_t x, int32_t y );
 	void backward( const std::vector<double> & angleErrors );
 	void backwardLeg( uint32_t legIndex, const std::vector<double> & angleErrors );
 	void initGiNaCVars();
-	void initGiNaCErrorFunction( int32_t targetX, int32_t targetY, int32_t targetZ, bool isAngled = false, double angleDegree = 0.0 );
+	void initGiNaCErrorFunction( bool isAngled = false );
 
 	bool isCrossingLegsFound( const ShLeg& leg, uint32_t legIndex );
 	bool isAccumulativeAngleTooBig( const double maxAngle );
@@ -83,6 +85,10 @@ private:
 	ShLegManipulator 			m_manipulator;
 	std::vector<ShSymbol> 		m_ginacXYoZAngles;
 	std::vector<ShSymbol> 		m_ginacXZoYAngles;
+	GiNaC::symbol               m_ginacTargetX{"targetX"};
+	GiNaC::symbol               m_ginacTargetY{"targetY"};
+	GiNaC::symbol               m_ginacTargetZ{"targetZ"};
+	GiNaC::symbol               m_ginacAngleDegree{"angleDegree"};
 	std::vector<GiNaC::ex> 		m_errorDerivativeFunctions;
 	GiNaC::ex 					m_errorFunction;
 	std::vector<DerivFuncType> 	m_preDefinedDerivativeFunctions;

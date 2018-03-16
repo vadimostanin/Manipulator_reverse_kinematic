@@ -9,6 +9,29 @@
 #include <cassert>
 #include <cmath>
 
+double ErrorFunctions::error_Legs_1( std::vector<double> & params )
+{
+	assert( params.size() == 13 );
+
+	double initialX       = params[ 0 ];
+	double initialY       = params[ 1 ];
+	double initialZ       = params[ 2 ];
+	double initialOffsetX = params[ 3 ];
+	double initialOffsetY = params[ 4 ];
+	double initialOffsetZ = params[ 5 ];
+	double targetX        = params[ 6 ];
+	double targetY        = params[ 7 ];
+	double targetZ        = params[ 8 ];
+	double length_0 = params[ 9 + 0 ];
+	double angleXY_0 = params[ 9 + 1 ];
+	double angleXZ_0 = params[ 9 + 2 ];
+	double angleZY_0 = params[ 9 + 3 ];
+
+	double result = pow( pow( targetY-length_0*sin(angleXY_0)-initialOffsetY-initialY,2.0)+pow( initialOffsetX+initialX-targetX+length_0*cos(angleXZ_0)*cos(angleXY_0),2.0)+pow( initialOffsetZ+initialZ-targetZ+length_0*cos(angleXY_0)*sin(angleXZ_0),2.0),(1.0/2.0));
+
+	return result;
+}
+
 double ErrorFunctions::error_Legs_2( std::vector<double> & params )
 {
 	assert( params.size() == 17 );

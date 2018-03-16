@@ -128,8 +128,8 @@ int main( int argc, char ** argv)
 //	}
 	{
 		LegsMgr::get().getManipulator()->add( 100 );
-		LegsMgr::get().getManipulator()->add( 80 );
-		LegsMgr::get().getManipulator()->add( 60 );
+//		LegsMgr::get().getManipulator()->add( 80 );
+//		LegsMgr::get().getManipulator()->add( 60 );
 //		LegsMgr::get().getManipulator()->add( 40 );
 //		LegsMgr::get().getManipulator()->add( 20 );
 	}
@@ -141,10 +141,10 @@ int main( int argc, char ** argv)
 //	LegsMgr::get().add( 100 );
 	LegsMgr::get().getManipulator()->pair();
 
-	LegsMgr::get().getManipulator()->getLeg( 0 )->setAngleXYLimits( 0, 180 ).setAngleXZLimits( -360, 360 )
+	LegsMgr::get().getManipulator()->getLeg( 0 )->setAngleXYLimits( -180, 180 ).setAngleXZLimits( -360, 360 )
 			                  .setAngleXZEnable( true ).setInitialPosition( 200, 100, 0 );
-	LegsMgr::get().getManipulator()->getLeg( 1 )->setAngleXYLimits( - 180 + 30, 180 - 30 ).setAngleXZLimits( 0, 0 );
-	LegsMgr::get().getManipulator()->getLeg( 2 )->setAngleXYLimits( - 180 + 30, 180 - 30 ).setAngleXZLimits( 0, 0 );
+//	LegsMgr::get().getManipulator()->getLeg( 1 )->setAngleXYLimits( - 180 + 30, 180 - 30 ).setAngleXZLimits( 0, 0 );
+//	LegsMgr::get().getManipulator()->getLeg( 2 )->setAngleXYLimits( - 180 + 30, 180 - 30 ).setAngleXZLimits( 0, 0 );
 //	LegsMgr::get().getManipulator()->getLeg( 3 )->setAngleXYLimits( - 180 + 60, 180 - 60 ).setAngleXZLimits( 0, 0 );
 //	LegsMgr::get().getManipulator()->getLeg( 4 )->setAngleXYLimits( - 180 + 30, 180 - 30 ).setAngleXZLimits( 0, 0 );
 
@@ -155,7 +155,7 @@ int main( int argc, char ** argv)
 	InterpolatedMove::init( varAngles.size() );
 
 	HelloWorld helloworld;
-//	onGenerate( &helloworld );// call it to fill the generate error and deraivative function at DerivativeFunctions and ErrorFunctions
+//	onGenerate( &helloworld );// call it to fill the generate error and derivative function at DerivativeFunctions and ErrorFunctions
 	try
 	{
 	  //Shows the window and returns when it is closed.
