@@ -44,9 +44,9 @@ void Solver::initPreSolv( int32_t x, int32_t y, int32_t z, bool angled, double a
 //		std::cout << "derivative=" << derivative << std::endl;
 //	}
 
-	const double deltaAngleMax = m_ratioRadiansPer1PixelError * this->getErrorFunctionValue( x, y, z );
+	const double deltaAngleMax = m_ratioRadiansPer1PixelError * this->getErrorFunctionValue( x, y, z, angled, angleDegree );
 //	const double minError = 0.0000001;
-	std::vector<double> errors = forwardv3( x, y, z, angled, angleDegree );
+	std::vector<double> errors = forwardv2( x, y, z, angled, angleDegree );
 	for( auto error : errors )
 	{
 //		std::cout << "error=" << error << "; ";
@@ -240,11 +240,11 @@ void Solver::initGiNaCErrorFunction( bool isAngled )
 
 	if( true == isAngled )
 	{
-		errorFunction += GiNaC::pow( GiNaC::asin( GiNaC::sin( m_ginacAngleDegree + M_PI - sumXYoZAngles ) ) + M_PI / 2.0, 2 );
+		errorFunction += GiNaC::pow( GiNaC::asin( GiNaC::sin( m_ginacAngleDegree + M_PI - sumXYoZAngles ) ) + M_PI / 2.0, 2 ) * 1;
 	}
 	m_errorFunction = errorFunction;
 
-	std::cout << "errorFunction=" << m_errorFunction << std::endl;
+//	std::cout << "errorFunction=" << m_errorFunction << std::endl;
 	m_errorDerivativeFunctions.clear();
 
 	auto angleXYSymbolIter = std::begin( m_ginacXYoZAngles );
@@ -642,13 +642,13 @@ void Solver::solveFromCurrentAngled( int32_t x, int32_t y, int32_t z, double ang
 		stepsCounter++;
 //		std::cout << "accumulatedCurrentError=" << accumulatedCurrentError << std::endl;
 	}
-	while( /*std::abs( accumulatedPrevError - accumulatedCurrentError ) >= epsilon && */ getErrorFunctionValue( x, y, z ) >= epsilon &&
+	while( /*std::abs( accumulatedPrevError - accumulatedCurrentError ) >= epsilon && */ getErrorFunctionValue( x, y, z, true, angleDegree ) >= epsilon &&
 		   stepsCounter < maxSteps );
 
 
 	cbPerStep( getError() );
 
-	std::cout << "stepsCounter=" << stepsCounter << ", error=" << getErrorFunctionValue( x, y, z ) << std::endl;
+	std::cout << "stepsCounter=" << stepsCounter << ", error=" << getErrorFunctionValue( x, y, z, true, angleDegree ) << std::endl;
 //	printLearningRates();
 //	std::cout << std::endl << std::endl;
 }
@@ -724,6 +724,24 @@ void Solver::solvePerpendicularShuffling( int32_t x, int32_t y, int32_t z, doubl
 	    solvePerpendicular( x, y, z, angleDegree, epsilon, maxStepsPerSolving );
 
 	    distance = getErrorFunctionValue( x, y, z );
+
+	    solvingCounter++;
+	}
+	cbPerStep( getError() );
+}
+
+void Solver::solvePerpendicularNativeShuffling( int32_t x, int32_t y, int32_t z, double angleDegree, double epsilon, uint32_t maxStepsPerSolving, uint32_t maxSolvingCount, SolveEndCb cbPerStep )
+{
+	solvePerpendicularNative( x, y, z, angleDegree, epsilon, maxStepsPerSolving );
+
+	double distance = getErrorFunctionValue( x, y, z, angleDegree );
+	uint32_t solvingCounter = 0;
+	while( distance > m_minEcceptableDistance && solvingCounter < maxSolvingCount )
+	{
+	    shuffleLegs();
+	    solvePerpendicularNative( x, y, z, angleDegree, epsilon, maxStepsPerSolving );
+
+	    distance = getErrorFunctionValue( x, y, z, angleDegree );
 
 	    solvingCounter++;
 	}
@@ -1085,13 +1103,13 @@ bool Solver::isPathPossble( ShLegManipulator manipulatorFrom, ShLegManipulator m
 std::vector<double> Solver::oneStep( int32_t x, int32_t y, int32_t z, bool angled, double angleDegree )
 {
 //	std::cout << __FUNCTION__ << " 1" << std::endl;
-	m_errors = forwardv3( x, y, z, angled, angleDegree );
+	m_errors = forwardv2( x, y, z, angled, angleDegree );
 //	std::cout << __FUNCTION__ << " 2" << std::endl;
 	updateLearningRate( m_errors );
 //	std::cout << __FUNCTION__ << " 3" << std::endl;
 	backward( m_errors );
 //	std::cout << __FUNCTION__ << " 4" << std::endl;
-	m_errors = forwardv3( x, y, z, angled, angleDegree );
+	m_errors = forwardv2( x, y, z, angled, angleDegree );
 //	std::cout << __FUNCTION__ << " 5" << std::endl;
 
 	return m_errors;
@@ -1206,7 +1224,7 @@ std::vector<double> Solver::forwardv2( int32_t expectedX, int32_t expectedY, int
 			const double angle = (*legIter)->getAngleXZ();
 			const double radian = Utils::deg2Rad( angle );
 
-//			functionVars.append( (**angleXZSymbolIter) == radian );
+			functionVars.append( (**angleXZSymbolIter) == radian );
 		}
 //		std::cout << __FUNCTION__ << " 5" << std::endl;
 	}
@@ -1237,7 +1255,7 @@ std::vector<double> Solver::forwardv2( int32_t expectedX, int32_t expectedY, int
 //			std::cout << "errorIter=" << (*errorIter) << std::endl;
 		}
 	}
-	std::cout << __FUNCTION__ << " 10" << std::endl;
+//	std::cout << __FUNCTION__ << " 10" << std::endl;
 
 	return errors;
 }
@@ -1429,7 +1447,7 @@ void Solver::backward( const std::vector<double> & angleErrors )
 			{
 				continue;//skip iteration
 			}
-			std::cout << "radianNew=" << radianNew << std::endl;
+//			std::cout << "radianNew=" << radianNew << std::endl;
 			double angleNew = Utils::rad2Deg( radianNew );
 
 	//		std::cout << "angleDelta=" << Utils::rad2Deg( radianDelta ) << std::endl;
@@ -1641,52 +1659,61 @@ std::vector<double> Solver::getError()
 	return m_errors;
 }
 
-double Solver::getErrorFunctionValue( TypePrecision targetX, TypePrecision targetY, TypePrecision targetZ )
+double Solver::getErrorFunctionValue( TypePrecision targetX, TypePrecision targetY, TypePrecision targetZ, bool angled, double angleDegree )
 {
-	return getErrorFunctionValue( m_manipulator, targetX, targetY, targetZ );
+	return getErrorFunctionValue( m_manipulator, targetX, targetY, targetZ, angled, angleDegree );
 }
 
-//double Solver::getErrorFunctionValue( ShLegManipulator manipulator )
-//{
-//	GiNaC::lst anglesValues;
-//	auto legIter = std::begin( *manipulator );
-//	auto angleXYSymbolIter = std::begin( m_ginacXYoZAngles );
-//	auto angleXZSymbolIter = std::begin( m_ginacXZoYAngles );
-//	for(  ; legIter != std::end( *manipulator ) ; legIter++, angleXYSymbolIter++, angleXZSymbolIter++ )
-//	{
-//		{
-//			const double angle = (*legIter)->getAngleXY();
-//			const double radian = Utils::deg2Rad( angle );
-//
-//			anglesValues.append( (**angleXYSymbolIter) == radian );
-//		}
-//		{
-//			const double angle = (*legIter)->getAngleXZ();
-//			const double radian = Utils::deg2Rad( angle );
-//
-//			anglesValues.append( (**angleXZSymbolIter) == radian );
-//		}
-//	}
-//	std::cout << "m_errorFunction=" << m_errorFunction << std::endl;
-//	GiNaC::ex f = GiNaC::evalf( m_errorFunction.subs( anglesValues ) );
-//	double result = 0.0f;
-//	if (GiNaC::is_a<GiNaC::numeric>(f))
-//	{
-//		result = GiNaC::ex_to<GiNaC::numeric>(f).to_double();
-//		std::cout << "error=" << result << std::endl;
-//	}
-//	return result;
-//}
-
-double Solver::getErrorFunctionValue( ShLegManipulator manipulator, TypePrecision targetX, TypePrecision targetY, TypePrecision targetZ )
+double Solver::getErrorFunctionValue( ShLegManipulator manipulator, TypePrecision targetX, TypePrecision targetY, TypePrecision targetZ, bool angled, double angleDegree )
 {
-	GiNaC::lst anglesValues;
-//	auto legIter = std::begin( *manipulator );
-	std::vector<double> params;
-	fillParams( targetX, targetY, targetZ, params );
-	double result = m_preDefinedErrorFunction( params );
+	GiNaC::lst functionVars;
+	auto legIter = std::begin( *manipulator );
+	auto angleXYSymbolIter = std::begin( m_ginacXYoZAngles );
+	auto angleXZSymbolIter = std::begin( m_ginacXZoYAngles );
+	for(  ; legIter != std::end( *manipulator ) ; legIter++, angleXYSymbolIter++, angleXZSymbolIter++ )
+	{
+		{
+			const double angle = (*legIter)->getAngleXY();
+			const double radian = Utils::deg2Rad( angle );
+
+			functionVars.append( (**angleXYSymbolIter) == radian );
+		}
+		{
+			const double angle = (*legIter)->getAngleXZ();
+			const double radian = Utils::deg2Rad( angle );
+
+			functionVars.append( (**angleXZSymbolIter) == radian );
+		}
+	}
+	functionVars.append( m_ginacTargetX == targetX );
+	functionVars.append( m_ginacTargetY == targetY );
+	functionVars.append( m_ginacTargetZ == targetZ );
+
+	if( true == angled )
+	{
+		functionVars.append( m_ginacAngleDegree == Utils::deg2Rad( angleDegree ) );
+	}
+
+//	std::cout << "m_errorFunction=" << m_errorFunction << std::endl;
+	GiNaC::ex f = GiNaC::evalf( m_errorFunction.subs( functionVars ) );
+	double result = 0.0f;
+	if (GiNaC::is_a<GiNaC::numeric>(f))
+	{
+		result = GiNaC::ex_to<GiNaC::numeric>(f).to_double();
+		std::cout << "error=" << result << std::endl;
+	}
 	return result;
 }
+
+//double Solver::getErrorFunctionValue( ShLegManipulator manipulator, TypePrecision targetX, TypePrecision targetY, TypePrecision targetZ, bool angled, double angleDegree )
+//{
+//	GiNaC::lst anglesValues;
+////	auto legIter = std::begin( *manipulator );
+//	std::vector<double> params;
+//	fillParams( targetX, targetY, targetZ, params );
+//	double result = m_preDefinedErrorFunction( params );
+//	return result;
+//}
 
 void Solver::setCurrentManipulator( ShLegManipulator manipulator )
 {

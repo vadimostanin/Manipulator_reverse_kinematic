@@ -53,15 +53,6 @@ void onOptimize( HelloWorld * lpHelloWorld )
 void onPerpendicularSolve( HelloWorld * lpHelloWorld )
 {
 	double epsilonChangeError = 0.0001;
-//	std::cout << "before solve" << std::endl;
-//	LegsMgr::get().print();
-//	double flippedY = lpHelloWorld->m_XYoZArea.getY();//Utils::flipY( lpHelloWorld->m_XYoZArea.getY(), lpHelloWorld->m_XYoZArea.get_allocated_height() );
-//	lpHelloWorld->m_solver.solvePerpendicular( lpHelloWorld->m_XYoZArea.getX(), flippedY, lpHelloWorld->m_XYoZArea.getAngle(), epsilonChangeError, 1000,
-//			[&lpHelloWorld]( std::vector<double> error )
-//			{
-//				lpHelloWorld->redraw();
-//			}
-//	);
 	try
 	{
 		lpHelloWorld->m_solver.solvePerpendicularNative( lpHelloWorld->m_desirablePoint.getX(), lpHelloWorld->m_desirablePoint.getY(), lpHelloWorld->m_desirablePoint.getZ(), lpHelloWorld->m_XYoZArea.getAngle(), epsilonChangeError, 100,
@@ -75,12 +66,24 @@ void onPerpendicularSolve( HelloWorld * lpHelloWorld )
 	{
 		std::cout << ex.what() << std::endl;
 	}
-//	std::cout << "after solve" << std::endl;
-//	LegsMgr::get().print();
-//	TypePrecision finalX, finalY, finalZ;
-//	LegsMgr::get().getLastLeg()->getCalulatedFinalPosition( finalX, finalY, finalZ );
-//	double distance = Utils::distance( finalX, finalY, lpHelloWorld->m_desirablePoint.getX(), lpHelloWorld->m_desirablePoint.getY() );
-//	std::cout << "Distance=" << distance << std::endl;
+}
+
+void onPerpendicularShuffleSolve( HelloWorld * lpHelloWorld )
+{
+	double epsilonChangeError = 0.0001;
+	try
+	{
+		lpHelloWorld->m_solver.solvePerpendicularNativeShuffling( lpHelloWorld->m_desirablePoint.getX(), lpHelloWorld->m_desirablePoint.getY(), lpHelloWorld->m_desirablePoint.getZ(), lpHelloWorld->m_XYoZArea.getAngle(), epsilonChangeError, 100, 10,
+				[&lpHelloWorld]( const std::vector<double> & error )
+				{
+					lpHelloWorld->redraw();
+				}
+		);
+	}
+	catch(std::exception & ex )
+	{
+		std::cout << ex.what() << std::endl;
+	}
 }
 
 void onOneStep( HelloWorld * lpHelloWorld )
@@ -259,7 +262,7 @@ bool onXYoZButtonPressed(GdkEventButton* event, HelloWorld * lpHelloWorld)
 //			std::vector<double> varAngles = ManipulatorUniConverter::getFormatedAngles( lpHelloWorld->m_solver.getCurrentManipulator() );
 //			InterpolatedMove::get().setInitialVars( varAngles );
 //		}
-		onOptimize( lpHelloWorld );
+//		onOptimize( lpHelloWorld );
 //		onOptimizeClone( lpHelloWorld );
 //		onShuffledSolve( lpHelloWorld );
 //		onShuffledLessErrorSolve( lpHelloWorld );
@@ -267,6 +270,7 @@ bool onXYoZButtonPressed(GdkEventButton* event, HelloWorld * lpHelloWorld)
 //		onContIterShuffledLessAngleSolve( lpHelloWorld );
 //		onContIterShuffledSolve( lpHelloWorld );
 //		onPerpendicularSolve( lpHelloWorld );
+		onPerpendicularShuffleSolve( lpHelloWorld );
 		{
 //			std::vector<double> varAngles = ManipulatorUniConverter::getFormatedAngles( lpHelloWorld->m_solver.getCurrentManipulator() );
 //			InterpolatedMove2::get().setVars( varAngles );
@@ -420,7 +424,7 @@ HelloWorld::HelloWorld()
 
   m_AngleScale.set_digits( 0 );
   m_AngleScale.set_draw_value( true );
-  m_AngleScale.Range::set_range( -135, 135 );
+  m_AngleScale.Range::set_range( -360, 360 );
   m_AngleScale.show();
   m_AngleScale.signal_change_value().connect( sigc::bind<HelloWorld*>( sigc::ptr_fun( &onAngleChangeValue ), this ) );
 

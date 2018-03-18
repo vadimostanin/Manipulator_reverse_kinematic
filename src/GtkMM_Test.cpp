@@ -128,10 +128,10 @@ int main( int argc, char ** argv)
 //	}
 	{
 		LegsMgr::get().getManipulator()->add( 100 );
-//		LegsMgr::get().getManipulator()->add( 80 );
-//		LegsMgr::get().getManipulator()->add( 60 );
-//		LegsMgr::get().getManipulator()->add( 40 );
-//		LegsMgr::get().getManipulator()->add( 20 );
+		LegsMgr::get().getManipulator()->add( 80 );
+		LegsMgr::get().getManipulator()->add( 60 );
+		LegsMgr::get().getManipulator()->add( 40 );
+		LegsMgr::get().getManipulator()->add( 20 );
 	}
 //	LegsMgr::get().add( 100 );
 //	LegsMgr::get().add( 100 );
@@ -141,8 +141,8 @@ int main( int argc, char ** argv)
 //	LegsMgr::get().add( 100 );
 	LegsMgr::get().getManipulator()->pair();
 
-	LegsMgr::get().getManipulator()->getLeg( 0 )->setAngleXYLimits( -180, 180 ).setAngleXZLimits( -360, 360 )
-			                  .setAngleXZEnable( true ).setInitialPosition( 200, 100, 0 );
+	LegsMgr::get().getManipulator()->getLeg( 0 )->setAngleXYLimits( -18000, 18000 ).setAngleXZLimits( -360, 360 )
+			                  .setAngleXZEnable( true ).setInitialPosition( 100, 100, 0 );
 //	LegsMgr::get().getManipulator()->getLeg( 1 )->setAngleXYLimits( - 180 + 30, 180 - 30 ).setAngleXZLimits( 0, 0 );
 //	LegsMgr::get().getManipulator()->getLeg( 2 )->setAngleXYLimits( - 180 + 30, 180 - 30 ).setAngleXZLimits( 0, 0 );
 //	LegsMgr::get().getManipulator()->getLeg( 3 )->setAngleXYLimits( - 180 + 60, 180 - 60 ).setAngleXZLimits( 0, 0 );

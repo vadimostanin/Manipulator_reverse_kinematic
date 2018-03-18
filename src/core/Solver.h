@@ -35,6 +35,7 @@ public:
 	void solvePerpendicular( int32_t x, int32_t y, int32_t z, double angleDegree, double epsilon = 0.01, uint32_t maxSteps = 1000, SolveEndCb cbPerStep = empty );
 	void solvePerpendicularNative( int32_t x, int32_t y, int32_t z, double angleDegree, double epsilon = 0.01, uint32_t maxSteps = 1000, SolveEndCb cbPerStep = empty );
 	void solvePerpendicularShuffling( int32_t x, int32_t y, int32_t z, double angleDegree, double epsilon = 0.01, uint32_t maxStepsPerSolving = 1000, uint32_t maxSolvingCount = 10, SolveEndCb cbPerStep = empty );
+	void solvePerpendicularNativeShuffling( int32_t x, int32_t y, int32_t z, double angleDegree, double epsilon = 0.01, uint32_t maxStepsPerSolving = 1000, uint32_t maxSolvingCount = 10, SolveEndCb cbPerStep = empty );
 
 	void solveContiniouslyShufflingLessError( int32_t x, int32_t y, int32_t z, double epsilon = 0.01, uint32_t maxStepsPerSolving = 1000, uint32_t maxSolvingCount = 10, SolveEndCb cbPerStep = empty );
 	void solveContiniouslyShufflingLessAngle( int32_t x, int32_t y, int32_t z, double epsilon = 0.01, uint32_t maxStepsPerSolving = 1000, uint32_t maxSolvingCount = 10, SolveEndCb cbPerStep = empty );
@@ -44,8 +45,8 @@ public:
 
 	std::string generateErroFunctionDerivatives();
 
-	double getErrorFunctionValue( TypePrecision targetX, TypePrecision targetY, TypePrecision targetZ );
-	double getErrorFunctionValue( ShLegManipulator manipulator, TypePrecision targetX, TypePrecision targetY, TypePrecision targetZ );
+	double getErrorFunctionValue( TypePrecision targetX, TypePrecision targetY, TypePrecision targetZ, bool angled = false, double angleDegree = 0.0 );
+	double getErrorFunctionValue( ShLegManipulator manipulator, TypePrecision targetX, TypePrecision targetY, TypePrecision targetZ, bool angled = false, double angleDegree = 0.0 );
 
 	ShLegManipulator getCurrentManipulator() const;
 
@@ -94,7 +95,7 @@ private:
 	std::vector<DerivFuncType> 	m_preDefinedDerivativeFunctions;
 	ErroFuncType				m_preDefinedErrorFunction;
 
-	double m_minEcceptableDistance{1.0};
+	double m_minEcceptableDistance{0.05};
 
 	static constexpr float m_ratioRadiansPer1PixelError{0.001};// Begins angles searching with 0.5 radians = 28 degrees
 														   // if distance = 100 pixels
