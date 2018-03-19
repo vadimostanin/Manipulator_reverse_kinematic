@@ -22,6 +22,17 @@ typedef std::shared_ptr<GiNaC::symbol> ShSymbol;
 
 class Solver
 {
+	enum class ErrorFunctionType
+	{
+		eDistance,
+		eAngle,
+	};
+	struct ErrorFunctionTyped
+	{
+		ErrorFunctionType 			type;
+		std::vector<GiNaC::ex> 		errorDerivativeFunctions;
+		GiNaC::ex 					errorFunction;
+	};
 public:
 	Solver( const ShLegManipulator & legs );
 	virtual ~Solver();
@@ -30,10 +41,13 @@ public:
 
 	void solveFromCurrent( int32_t x, int32_t y, int32_t z, double epsilon = 0.01, uint32_t maxSteps = 1000, SolveEndCb cbPerStep = empty );
 	void solveFromCurrentAngled( int32_t x, int32_t y, int32_t z, double angleDegree, double epsilon = 0.01, uint32_t maxSteps = 1000, SolveEndCb cbPerStep = empty );
+	void solveFromCurrentAngledStochastic( int32_t x, int32_t y, int32_t z, double angleDegree, double epsilon, uint32_t maxSteps, SolveEndCb cbPerStep );
 	void solveContiniouslyShuffling( int32_t x, int32_t y, int32_t z, double epsilon = 0.01, uint32_t maxStepsPerSolving = 1000, uint32_t maxSolvingCount = 10, SolveEndCb cbPerStep = empty );
 
 	void solvePerpendicular( int32_t x, int32_t y, int32_t z, double angleDegree, double epsilon = 0.01, uint32_t maxSteps = 1000, SolveEndCb cbPerStep = empty );
 	void solvePerpendicularNative( int32_t x, int32_t y, int32_t z, double angleDegree, double epsilon = 0.01, uint32_t maxSteps = 1000, SolveEndCb cbPerStep = empty );
+	void solvePerpendicularNativeStochastic( int32_t x, int32_t y, int32_t z, double angleDegree, double epsilon = 0.01, uint32_t maxSteps = 1000, SolveEndCb cbPerStep = empty );
+
 	void solvePerpendicularShuffling( int32_t x, int32_t y, int32_t z, double angleDegree, double epsilon = 0.01, uint32_t maxStepsPerSolving = 1000, uint32_t maxSolvingCount = 10, SolveEndCb cbPerStep = empty );
 	void solvePerpendicularNativeShuffling( int32_t x, int32_t y, int32_t z, double angleDegree, double epsilon = 0.01, uint32_t maxStepsPerSolving = 1000, uint32_t maxSolvingCount = 10, SolveEndCb cbPerStep = empty );
 
@@ -52,6 +66,7 @@ public:
 
 	bool isPathPossble( ShLegManipulator manipulatorFrom, ShLegManipulator manipulatorTo );
 	std::vector<double> oneStep( int32_t x, int32_t y, int32_t z, bool angled = false, double angleDegree = 0.0 );// temporary in public, need to be private
+	std::vector<double> oneStepStochastic( int32_t x, int32_t y, int32_t z, bool angled, double angleDegree );
 	std::vector<double> oneStepV2( int32_t x, int32_t y, int32_t z );
 private:
 	void fillPredefinedDerErrorFunctions();
@@ -61,12 +76,15 @@ private:
 	void fillParams( int32_t targetX, int32_t targetY, int32_t targetZ, std::vector<double> & params );
 	std::vector<double> forwardLegv3( uint32_t legIndex, int32_t targetX, int32_t targetY, int32_t targetZ );
 	std::vector<double> forwardv3( int32_t expectedX, int32_t expectedY, int32_t expectedZ, bool angled = false, double angleDegree = 0.0 );
+	std::vector<double> forwardv2_1( int32_t expectedX, int32_t expectedY, int32_t expectedZ, bool angled, double angleDegree );
 	std::vector<double> forwardv2( int32_t expectedX, int32_t expectedY, int32_t expectedZ, bool angled = false, double angleDegree = 0.0 );
 	std::vector<double> forwardv1( int32_t x, int32_t y );
 	void backward( const std::vector<double> & angleErrors );
 	void backwardLeg( uint32_t legIndex, const std::vector<double> & angleErrors );
 	void initGiNaCVars();
 	void initGiNaCErrorFunction( bool isAngled = false );
+	void initGiNaCDistanceErrorFunction();
+	void initGiNaCAngleErrorFunction();
 
 	bool isCrossingLegsFound( const ShLeg& leg, uint32_t legIndex );
 	bool isAccumulativeAngleTooBig( const double maxAngle );
@@ -78,6 +96,8 @@ private:
 	void shuffleReverseIncrementLegs( uint32_t legsCount );
 
 	void setCurrentManipulator( ShLegManipulator manipulator );
+
+	void fillErrorFunctionsTyped();
 
 
 
@@ -94,6 +114,8 @@ private:
 	GiNaC::ex 					m_errorFunction;
 	std::vector<DerivFuncType> 	m_preDefinedDerivativeFunctions;
 	ErroFuncType				m_preDefinedErrorFunction;
+
+	std::vector<ErrorFunctionTyped> m_errorFunctionsTyped;
 
 	double m_minEcceptableDistance{0.05};
 

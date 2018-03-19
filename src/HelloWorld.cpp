@@ -68,6 +68,24 @@ void onPerpendicularSolve( HelloWorld * lpHelloWorld )
 	}
 }
 
+void onPerpendicularNativeStochasticSolve( HelloWorld * lpHelloWorld )
+{
+	double epsilonChangeError = 0.0001;
+	try
+	{
+		lpHelloWorld->m_solver.solvePerpendicularNativeStochastic( lpHelloWorld->m_desirablePoint.getX(), lpHelloWorld->m_desirablePoint.getY(), lpHelloWorld->m_desirablePoint.getZ(), lpHelloWorld->m_XYoZArea.getAngle(), epsilonChangeError, 100,
+				[&lpHelloWorld]( const std::vector<double> & error )
+				{
+					lpHelloWorld->redraw();
+				}
+		);
+	}
+	catch(std::exception & ex )
+	{
+		std::cout << ex.what() << std::endl;
+	}
+}
+
 void onPerpendicularShuffleSolve( HelloWorld * lpHelloWorld )
 {
 	double epsilonChangeError = 0.0001;
@@ -270,7 +288,8 @@ bool onXYoZButtonPressed(GdkEventButton* event, HelloWorld * lpHelloWorld)
 //		onContIterShuffledLessAngleSolve( lpHelloWorld );
 //		onContIterShuffledSolve( lpHelloWorld );
 //		onPerpendicularSolve( lpHelloWorld );
-		onPerpendicularShuffleSolve( lpHelloWorld );
+//		onPerpendicularShuffleSolve( lpHelloWorld );
+		void onPerpendicularNativeStochasticSolve( HelloWorld * lpHelloWorld );
 		{
 //			std::vector<double> varAngles = ManipulatorUniConverter::getFormatedAngles( lpHelloWorld->m_solver.getCurrentManipulator() );
 //			InterpolatedMove2::get().setVars( varAngles );
