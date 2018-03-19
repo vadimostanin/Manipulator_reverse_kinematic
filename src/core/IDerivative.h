@@ -8,12 +8,14 @@
 #ifndef CORE_IDERIVATIVE_H_
 #define CORE_IDERIVATIVE_H_
 
+#include "IDataReceiver.h"
 #include <vector>
 
 class IDerivative
 {
 public:
-	double evaluate( const std::vector<double> &  );
+	virtual double evaluate() = 0;
+	virtual ~IDerivative(){};
 };
 
 #endif /* CORE_IDERIVATIVE_H_ */
