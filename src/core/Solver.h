@@ -12,7 +12,8 @@
 #include "DerivativeFuncsStorage.h"
 #include "ErrorFuncStorage.h"
 #include "ContrainsTooClose.h"
-#include <ginac.h>
+#include "DerivatesVector.h"
+
 #include <symbol.h>
 
 static void empty( const std::vector<double> & ){}
@@ -76,7 +77,7 @@ private:
 	void fillParams( int32_t targetX, int32_t targetY, int32_t targetZ, std::vector<double> & params );
 	std::vector<double> forwardLegv3( uint32_t legIndex, int32_t targetX, int32_t targetY, int32_t targetZ );
 	std::vector<double> forwardv3( int32_t expectedX, int32_t expectedY, int32_t expectedZ, bool angled = false, double angleDegree = 0.0 );
-	std::vector<double> forwardv2_1( int32_t expectedX, int32_t expectedY, int32_t expectedZ, bool angled, double angleDegree );
+	std::vector<double> forwardv2_1();
 	std::vector<double> forwardv2( int32_t expectedX, int32_t expectedY, int32_t expectedZ, bool angled = false, double angleDegree = 0.0 );
 	std::vector<double> forwardv1( int32_t x, int32_t y );
 	void backward( const std::vector<double> & angleErrors );
@@ -99,6 +100,8 @@ private:
 
 	void fillErrorFunctionsTyped();
 
+	std::vector<double> getLegsAngles();
+
 
 
 	std::vector<double> 		m_errors;
@@ -106,23 +109,24 @@ private:
 	ShLegManipulator 			m_manipulator;
 	std::vector<ShSymbol> 		m_ginacXYoZAngles;
 	std::vector<ShSymbol> 		m_ginacXZoYAngles;
-	GiNaC::symbol               m_ginacTargetX{"targetX"};
-	GiNaC::symbol               m_ginacTargetY{"targetY"};
-	GiNaC::symbol               m_ginacTargetZ{"targetZ"};
-	GiNaC::symbol               m_ginacAngleDegree{"angleDegree"};
+	ShSymbol                    m_ginacTargetX{std::make_shared<GiNaC::symbol>("targetX")};
+	ShSymbol                    m_ginacTargetY{std::make_shared<GiNaC::symbol>("targetY")};
+	ShSymbol                    m_ginacTargetZ{std::make_shared<GiNaC::symbol>("targetZ")};
+	ShSymbol                    m_ginacAngleDegree{std::make_shared<GiNaC::symbol>("angleDegree")};
 	std::vector<GiNaC::ex> 		m_errorDerivativeFunctions;
 	GiNaC::ex 					m_errorFunction;
 	std::vector<DerivFuncType> 	m_preDefinedDerivativeFunctions;
 	ErroFuncType				m_preDefinedErrorFunction;
 
 	std::vector<ErrorFunctionTyped> m_errorFunctionsTyped;
+	DerivatesVector m_derivatesVector;
 
 	double m_minEcceptableDistance{0.05};
 
 	static constexpr float m_ratioRadiansPer1PixelError{0.001};// Begins angles searching with 0.5 radians = 28 degrees
 														   // if distance = 100 pixels
 
-	static constexpr uint32_t m_anglesPerLeg{2};
+	uint32_t m_anglesPerLeg{2};
 
 	ContrainsTooClose m_constrinTooClose;
 };

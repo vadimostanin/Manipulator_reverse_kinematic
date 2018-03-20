@@ -14,7 +14,7 @@
 class IDerivative
 {
 public:
-	virtual double evaluate() = 0;
+	virtual std::vector<double> evaluate() = 0;
 	virtual ~IDerivative(){};
 };
 

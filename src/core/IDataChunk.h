@@ -17,6 +17,7 @@ public:
 		eDistance,
 		eAngle,
 		eLegsAngles,
+		eGiNaCTypes
 	};
 
 	IDataChunk( eDataChunkType type ) : m_Type( type ){}

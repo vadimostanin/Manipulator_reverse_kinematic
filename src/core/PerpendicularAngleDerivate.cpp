@@ -13,9 +13,9 @@ PerpendicularAngleDerivate::PerpendicularAngleDerivate()
 {
 }
 
-double PerpendicularAngleDerivate::evaluate()
+std::vector<double> PerpendicularAngleDerivate::evaluate()
 {
-	return 0.0;
+	return std::vector<double>();
 }
 
 void PerpendicularAngleDerivate::onReceive( const IDataChunk & data )

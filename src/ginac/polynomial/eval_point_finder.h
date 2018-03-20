@@ -48,7 +48,7 @@ bool eval_point_finder::operator()(value_type& b, const ex& lc, const ex& x)
 {
 	random_modint modint_generator(p);
 	// Search for a new element of field
-	while (points.size() < p - 1) {
+	while (((long)points.size()) < p - 1) {
 		value_type b_ = modint_generator();
 		// check if this evaluation point was already used
 		if (points.find(b_) != points.end())

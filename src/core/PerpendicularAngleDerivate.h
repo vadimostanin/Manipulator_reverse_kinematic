@@ -16,7 +16,7 @@ class PerpendicularAngleDerivate: public IDerivative, public IDataReceiver
 public:
 	PerpendicularAngleDerivate();
 private:
-	double evaluate() override;
+	std::vector<double> evaluate() override;
 	void onReceive( const IDataChunk & data ) override;
 
 	double m_Angle{0.0};
