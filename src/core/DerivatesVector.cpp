@@ -9,7 +9,13 @@
 
 std::vector<double> DerivatesVector::evaluate()
 {
-	return std::vector<double>();
+	std::vector<double> result;
+	for( auto & func : *this )
+	{
+		std::vector<double> tmp = func->evaluate();
+		std::copy( tmp.begin(), tmp.end(), std::back_inserter( result ) );
+	}
+	return result;
 }
 
 void DerivatesVector::onReceive( const IDataChunk & data )

@@ -28,8 +28,8 @@ public:
 	void getTargetSymbols( std::shared_ptr<GiNaC::symbol> & targetX, std::shared_ptr<GiNaC::symbol> & targetY, std::shared_ptr<GiNaC::symbol> & targetZ ) const;
 
 private:
-	const std::vector<std::shared_ptr<GiNaC::symbol>> m_xySymbols;
-	const std::vector<std::shared_ptr<GiNaC::symbol>> m_xzSymbols;
+	std::vector<std::shared_ptr<GiNaC::symbol>> m_xySymbols;
+	std::vector<std::shared_ptr<GiNaC::symbol>> m_xzSymbols;
 
 	std::shared_ptr<GiNaC::symbol>               m_ginacTargetX;
 	std::shared_ptr<GiNaC::symbol>               m_ginacTargetY;

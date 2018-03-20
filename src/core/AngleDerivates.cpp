@@ -8,6 +8,7 @@
 #include "AngleDerivates.h"
 #include "AngleDataChunk.h"
 #include "LegAnglesDataChuck.h"
+#include "GiNaCTypesChunk.h"
 
 AngleDerivates::AngleDerivates()
 {
@@ -21,21 +22,22 @@ void AngleDerivates::add( const GiNaC::ex & func )
 std::vector<double> AngleDerivates::evaluate()
 {
 	GiNaC::lst functionVars;
-	auto legsAngleIter = std::begin( m_legsAngles );
+	auto legAngleIter = std::begin( m_legsAngles );
 	auto legsAnglesIterEnd = std::end( m_legsAngles );
-	for(  ; legsAngleIter != legsAnglesIterEnd ; legsAngleIter += m_anglesPerLeg )
+	auto angleXYSymbolIter = std::begin( m_ginacXYoZAngles );
+	auto angleXZSymbolIter = std::begin( m_ginacXZoYAngles );
+	for(  ; legAngleIter != legsAnglesIterEnd ; legAngleIter ++, angleXYSymbolIter++, angleXZSymbolIter++ )
 	{
 		{
-			const double angle = (*legIter)->getAngleXY();
-			const double radian = Utils::deg2Rad( angle );
+			const double radian = *legAngleIter;
 
 //			std::cout << "(**angleXYSymbolIter)=" << (**angleXYSymbolIter) << std::endl;
 
 			functionVars.append( (**angleXYSymbolIter) == radian );
 		}
+		legAngleIter++;
 		{
-			const double angle = (*legIter)->getAngleXZ();
-			const double radian = Utils::deg2Rad( angle );
+			const double radian = *legAngleIter;
 
 			functionVars.append( (**angleXZSymbolIter) == radian );
 		}
@@ -55,5 +57,11 @@ void AngleDerivates::onReceive( const IDataChunk & data )
 	{
 		const auto & obj = static_cast<const LegAnglesDataChuck&>( data );
 		m_legsAngles = std::move( obj.getLegsAngles() );
+	}
+	else if( IDataChunk::eDataChunkType::eGiNaCTypes == data.type() )
+	{
+		const auto & obj = static_cast<const GiNaCTypesChunk&>( data );
+		m_ginacXYoZAngles = std::move( obj.getXYSymbols() );
+		m_ginacXZoYAngles = std::move( obj.getXZSymbols() );
 	}
 }

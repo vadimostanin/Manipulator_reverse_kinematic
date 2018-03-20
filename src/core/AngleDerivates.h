@@ -28,6 +28,9 @@ private:
 	double m_Angle{0.0};
 	std::vector<double> m_legsAngles;
 
+	std::vector<std::shared_ptr<GiNaC::symbol>> 		m_ginacXYoZAngles;
+	std::vector<std::shared_ptr<GiNaC::symbol>> 		m_ginacXZoYAngles;
+
 	std::vector<GiNaC::ex> m_Funcs;
 
 	uint32_t m_anglesPerLeg{2};
