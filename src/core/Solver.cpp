@@ -99,6 +99,68 @@ void Solver::initPreSolv( int32_t x, int32_t y, int32_t z, bool angled, double a
 	m_errors.assign( legsCount, 0.0 );
 }
 
+void Solver::initPreSolvStochastic( int32_t x, int32_t y, int32_t z, bool angled, double angleDegree )
+{
+	m_learningRates.clear();
+	const size_t legsCount = m_manipulator->size();
+
+//	for( const auto & derivative : m_errorDerivativeFunctions )
+//	{
+//		std::cout << "derivative=" << derivative << std::endl;
+//	}
+
+	DistanceDataChunk distChunk( x, y, z );
+	AngleDataChunk angleChunk( angleDegree );
+
+	auto angles = std::move( getLegsAngles() );
+	LegAnglesDataChuck legsAnglesChunk( angles );
+
+	m_derivatesVector.onReceive( distChunk );
+	m_derivatesVector.onReceive( angleChunk );
+	m_derivatesVector.onReceive( legsAnglesChunk );
+
+	for( const auto func : m_derivatesVector )
+	{
+		const double deltaAngleMax = m_ratioRadiansPer1PixelError * this->getErrorFunctionValue( x, y, z, angled, angleDegree );
+	//	const double minError = 0.0000001;
+		std::vector<double> errors = forwardv2_1( func );
+		for( auto error : errors )
+		{
+	//		std::cout << "error=" << error << "; ";
+			if( std::isnan( std::abs( error ) ) )
+			{
+				error = 1;
+			}
+			double learningRate = std::abs( deltaAngleMax / error );
+			if( learningRate > 0.1 )
+			{
+				learningRate = 0.1;
+			}
+			m_learningRates.push_back( learningRate );
+		}
+	}
+//	std::stringstream ioss;
+//	copy(m_learningRates.begin(), m_learningRates.end(),
+//		 std::ostream_iterator<double>(ioss,","));
+//	std::cout << ioss.str() << std::endl;
+//	std::cout << std::endl;
+
+//	printLearningRates();
+
+//	for( size_t leg_i = 0 ; leg_i < legsCount ; leg_i++ )
+//	{
+//		double expLegI = std::exp(leg_i);
+//		double sigmoid = 1 / ( 1 + expLegI );
+//		m_learningRates.push_back( 0.001 * sigmoid + 0.001 );
+//	}
+
+
+//	m_learningRates.assign( legsCount, 0.001 );
+
+	m_errors.clear();
+	m_errors.assign( legsCount, 0.0 );
+}
+
 void Solver::updateLearningRate( const std::vector<double> & currentErrors )
 {
 	static std::vector<double> prevErrors = currentErrors;
@@ -769,8 +831,8 @@ void Solver::solveFromCurrent( int32_t x, int32_t y, int32_t z, double epsilon, 
 
 	initPreSolv( x, y, z );
 
-//	double accumulatedCurrentError = 0.0;
-//	double accumulatedPrevError = 0.0;
+	double accumulatedCurrentError = 0.0;
+	double accumulatedPrevError = 0.0;
 	uint32_t stepsCounter = 0;
 //	printLearningRates();
 	do
@@ -779,13 +841,13 @@ void Solver::solveFromCurrent( int32_t x, int32_t y, int32_t z, double epsilon, 
 		errorCurrent = oneStep( x, y, z );
 //		errorCurrent = oneStepV2( x, y, z );
 
-//		accumulatedPrevError = accumulatedCurrentError;
-//		accumulatedCurrentError = std::accumulate( std::begin( errorCurrent ), std::end( errorCurrent ), 0.0 );
+		accumulatedPrevError = accumulatedCurrentError;
+		accumulatedCurrentError = std::accumulate( std::begin( errorCurrent ), std::end( errorCurrent ), 0.0 );
 
 		stepsCounter++;
 //		std::cout << "accumulatedCurrentError=" << accumulatedCurrentError << std::endl;
 	}
-	while( /*std::abs( accumulatedPrevError - accumulatedCurrentError ) >= epsilon && */ getErrorFunctionValue( x, y, z ) >= epsilon &&
+	while( std::abs( accumulatedPrevError - accumulatedCurrentError ) >= epsilon && getErrorFunctionValue( x, y, z ) >= epsilon &&
 		   stepsCounter < maxSteps );
 
 
@@ -838,7 +900,7 @@ void Solver::solveFromCurrentAngledStochastic( int32_t x, int32_t y, int32_t z, 
 	std::vector<double> errorCurrent;
 	std::vector<double> errorPrev;
 
-	initPreSolv( x, y, z, true, angleDegree );
+	initPreSolvStochastic( x, y, z, true, angleDegree );
 
 //	double accumulatedCurrentError = 0.0;
 //	double accumulatedPrevError = 0.0;
@@ -847,14 +909,9 @@ void Solver::solveFromCurrentAngledStochastic( int32_t x, int32_t y, int32_t z, 
 	do
 	{
 		errorPrev = errorCurrent;
-		errorCurrent = oneStep( x, y, z, true, angleDegree );
-//		errorCurrent = oneStepV2( x, y, z );
-
-//		accumulatedPrevError = accumulatedCurrentError;
-//		accumulatedCurrentError = std::accumulate( std::begin( errorCurrent ), std::end( errorCurrent ), 0.0 );
+		errorCurrent = oneStepStochastic( x, y, z, true, angleDegree );
 
 		stepsCounter++;
-//		std::cout << "accumulatedCurrentError=" << accumulatedCurrentError << std::endl;
 	}
 	while( /*std::abs( accumulatedPrevError - accumulatedCurrentError ) >= epsilon && */ getErrorFunctionValue( x, y, z, true, angleDegree ) >= epsilon &&
 		   stepsCounter < maxSteps );
@@ -1699,7 +1756,7 @@ void Solver::backwardLeg( uint32_t legIndex, const std::vector<double> & angleEr
 	//		bool tooBigAngle = isAccumulativeAngleTooBig( 360 );
 			if( true == crossed || true == tooClose/* || true == tooBigAngle*/ )
 			{
-				std::cout << crossed << " == crossed || " << tooClose << " == tooClose" << std::endl;
+//				std::cout << crossed << " == crossed || " << tooClose << " == tooClose" << std::endl;
 	//			std::cout << "before" << std::endl;
 	//			(*legIter)->print();
 				(*legIter)->setAngleXZ( angleXZoY );//revert old angle
@@ -1802,7 +1859,7 @@ void Solver::backward( const std::vector<double> & angleErrors )
 	//		bool tooBigAngle = isAccumulativeAngleTooBig( 360 );
 			if( true == crossed || true == tooClose/* || true == tooBigAngle*/ )
 			{
-				std::cout << crossed << " == crossed || " << tooClose << " == tooClose" << std::endl;
+//				std::cout << crossed << " == crossed || " << tooClose << " == tooClose" << std::endl;
 	//			std::cout << "before" << std::endl;
 	//			(*legIter)->print();
 				(*legIter)->setAngleXZ( angleXZoY );//revert old angle
@@ -2006,6 +2063,10 @@ double Solver::getErrorFunctionValue( ShLegManipulator manipulator, TypePrecisio
 	return result;
 }
 
+double Solver::getErrorFunctionValue( std::shared_ptr<IDerivative> func )
+{
+	return func->evaluate()[0];
+}
 //double Solver::getErrorFunctionValue( ShLegManipulator manipulator, TypePrecision targetX, TypePrecision targetY, TypePrecision targetZ, bool angled, double angleDegree )
 //{
 //	GiNaC::lst anglesValues;
