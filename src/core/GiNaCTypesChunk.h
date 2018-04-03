@@ -24,8 +24,10 @@ public:
 	std::vector<std::shared_ptr<GiNaC::symbol>> getXZSymbols() const;
 
 	void setTargetSymbols( std::shared_ptr<GiNaC::symbol> targetX, std::shared_ptr<GiNaC::symbol> targetY, std::shared_ptr<GiNaC::symbol> targetZ );
-
 	void getTargetSymbols( std::shared_ptr<GiNaC::symbol> & targetX, std::shared_ptr<GiNaC::symbol> & targetY, std::shared_ptr<GiNaC::symbol> & targetZ ) const;
+
+	void setAngleSymbol( std::shared_ptr<GiNaC::symbol> targetAngle );
+	void getAngleAngle( std::shared_ptr<GiNaC::symbol> & targetAngle ) const;
 
 private:
 	std::vector<std::shared_ptr<GiNaC::symbol>> m_xySymbols;
@@ -34,6 +36,8 @@ private:
 	std::shared_ptr<GiNaC::symbol>               m_ginacTargetX;
 	std::shared_ptr<GiNaC::symbol>               m_ginacTargetY;
 	std::shared_ptr<GiNaC::symbol>               m_ginacTargetZ;
+
+	std::shared_ptr<GiNaC::symbol>               m_ginacTargetAngle;
 };
 
 #endif /* CORE_GINACTYPESCHUNK_H_ */

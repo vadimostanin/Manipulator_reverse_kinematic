@@ -74,7 +74,7 @@ public:
 private:
 	void fillPredefinedDerErrorFunctions();
 
-	void updateLearningRate( const std::vector<double> & angleErrors );
+	void updateLearningRate( const std::vector<double> & angleErrors, uint32_t index = 0 );
 	void initPreSolv( int32_t x, int32_t y, int32_t z, bool angled = false, double angleDegree = 0.0 );
 	void initPreSolvStochastic( int32_t x, int32_t y, int32_t z, bool angled, double angleDegree );
 	void fillParams( int32_t targetX, int32_t targetY, int32_t targetZ, std::vector<double> & params );
@@ -108,7 +108,7 @@ private:
 
 
 	std::vector<double> 		m_errors;
-	std::vector<double> 		m_learningRates;
+	std::vector<std::vector<double>> 		m_learningRates;
 	std::vector<std::vector<double>> 		m_learningRatesPerErrorFunction;
 	ShLegManipulator 			m_manipulator;
 	std::vector<ShSymbol> 		m_ginacXYoZAngles;

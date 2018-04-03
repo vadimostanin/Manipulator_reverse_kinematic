@@ -47,7 +47,7 @@ std::vector<double> DistanceDerivates::evaluate()
 	functionVars.append( *m_ginacTargetZ == m_Z );
 
 
-	std::vector<double> errors;
+	std::vector<double> errors( m_legsAngles.size() );
 	GiNaC::ex perLegAngleLength;
 	auto errorIter = std::begin( errors );
 	auto derivativeIter = std::begin( m_Funcs );
@@ -63,7 +63,7 @@ std::vector<double> DistanceDerivates::evaluate()
 //			std::cout << "errorIter=" << (*errorIter) << std::endl;
 		}
 	}
-	return errors;
+	return std::move(errors);
 }
 
 void DistanceDerivates::onReceive( const IDataChunk & data )

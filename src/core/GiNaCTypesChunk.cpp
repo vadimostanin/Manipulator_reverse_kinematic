@@ -48,3 +48,13 @@ void GiNaCTypesChunk::getTargetSymbols( std::shared_ptr<GiNaC::symbol> & targetX
 	targetY = m_ginacTargetY;
 	targetZ = m_ginacTargetZ;
 }
+
+void GiNaCTypesChunk::setAngleSymbol( std::shared_ptr<GiNaC::symbol> targetAngle )
+{
+	m_ginacTargetAngle = targetAngle;
+}
+
+void GiNaCTypesChunk::getAngleAngle( std::shared_ptr<GiNaC::symbol> & targetAngle ) const
+{
+	targetAngle = m_ginacTargetAngle;
+}

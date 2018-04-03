@@ -30,6 +30,7 @@ private:
 
 	std::vector<std::shared_ptr<GiNaC::symbol>> 		m_ginacXYoZAngles;
 	std::vector<std::shared_ptr<GiNaC::symbol>> 		m_ginacXZoYAngles;
+	std::shared_ptr<GiNaC::symbol>               		m_ginacTargetAngle;
 
 	std::vector<GiNaC::ex> m_Funcs;
 
