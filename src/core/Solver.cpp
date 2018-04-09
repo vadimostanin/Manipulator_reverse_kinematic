@@ -429,8 +429,8 @@ void Solver::initGiNaCDistanceErrorFunction()
 	exComponentY = anglesLengthedOffsettedY - *m_ginacTargetY;
 	exComponentZ = anglesLengthedOffsettedZ - *m_ginacTargetZ;
 
-	ErrorFunctionTyped tFunc;
-	tFunc.type = ErrorFunctionType::eDistance;
+	ErrorFunctionInfo tFunc;
+//	tFunc.type = ErrorFunctionInfo::eDistance;
 
 	tFunc.errorFunction = GiNaC::sqrt( GiNaC::pow( exComponentX, 2 ) + GiNaC::pow( exComponentY, 2 ) + GiNaC::pow( exComponentZ, 2 ) );//GiNaC::sqrt( GiNaC::pow( 100 * GiNaC::cos( angle_0 ) + 200 - 258, 2 ) + GiNaC::pow( 100 * GiNaC::sin( angle_0 ) + 200 - 279, 2 ) );
 

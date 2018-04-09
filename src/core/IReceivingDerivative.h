@@ -11,7 +11,7 @@
 #include "IDataReceiver.h"
 #include "IDerivative.h"
 
-class IReceivingDerivative: public IDerivative, public IDataReceiver
+class IReceivingFunction: public IFunction, public IDataReceiver
 {
 };
 

@@ -11,11 +11,11 @@
 #include "IDataReceiver.h"
 #include <vector>
 
-class IDerivative
+class IFunction
 {
 public:
 	virtual std::vector<double> evaluate() = 0;
-	virtual ~IDerivative(){};
+	virtual ~IFunction(){};
 };
 
 #endif /* CORE_IDERIVATIVE_H_ */

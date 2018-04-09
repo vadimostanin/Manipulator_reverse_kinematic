@@ -13,7 +13,7 @@
 #include <vector>
 #include <ginac.h>
 
-class DistanceDerivates: public IReceivingDerivative
+class DistanceDerivates: public IReceivingFunction
 {
 public:
 	DistanceDerivates();

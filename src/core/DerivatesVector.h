@@ -12,7 +12,7 @@
 #include <vector>
 #include <memory>
 
-class DerivatesVector : public std::vector<std::shared_ptr<IReceivingDerivative>>, public IReceivingDerivative
+class DerivatesVector : public std::vector<std::shared_ptr<IReceivingFunction>>, public IReceivingFunction
 {
 public:
 	std::vector<double> evaluate() override;

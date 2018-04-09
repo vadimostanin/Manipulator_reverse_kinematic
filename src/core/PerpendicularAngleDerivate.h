@@ -11,7 +11,7 @@
 #include "IDataReceiver.h"
 #include "IDerivative.h"
 
-class PerpendicularAngleDerivate: public IDerivative, public IDataReceiver
+class PerpendicularAngleDerivate: public IFunction, public IDataReceiver
 {
 public:
 	PerpendicularAngleDerivate();

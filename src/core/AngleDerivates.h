@@ -13,7 +13,7 @@
 #include <vector>
 #include <ginac.h>
 
-class AngleDerivates: public IReceivingDerivative
+class AngleDerivates: public IReceivingFunction
 {
 public:
 	AngleDerivates();
