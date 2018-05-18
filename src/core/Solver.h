@@ -12,7 +12,7 @@
 #include "DerivativeFuncsStorage.h"
 #include "ErrorFuncStorage.h"
 #include "ContrainsTooClose.h"
-#include "DerivatesVector.h"
+#include "funcwrapper/DerivatesVector.h"
 
 #include <symbol.h>
 
