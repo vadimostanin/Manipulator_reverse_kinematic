@@ -18,7 +18,7 @@ std::vector<double> DerivatesVector::evaluate()
 	return result;
 }
 
-void DerivatesVector::onReceive( const IDataChunk & data )
+void DerivatesVector::onReceive( const IFuncParams & data )
 {
 	for( auto & func : *this )
 	{

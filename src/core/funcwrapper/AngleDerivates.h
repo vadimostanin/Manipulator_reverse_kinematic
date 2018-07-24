@@ -23,7 +23,7 @@ public:
 private:
 
 	std::vector<double> evaluate() override;
-	void onReceive( const IDataChunk & data ) override;
+	void onReceive( const IFuncParams & data ) override;
 
 	double m_Angle{0.0};
 	std::vector<double> m_legsAngles;

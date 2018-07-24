@@ -8,10 +8,10 @@
 #ifndef CORE_DISTANCEDATACHUNK_H_
 #define CORE_DISTANCEDATACHUNK_H_
 
-#include "IDataChunk.h"
 #include <stdint.h>
+#include "IFuncParams.h"
 
-class DistanceDataChunk: public IDataChunk {
+class DistanceDataChunk: public IFuncParams {
 public:
 	DistanceDataChunk( int32_t x, int32_t y, int32_t z );
 	virtual ~DistanceDataChunk();

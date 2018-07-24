@@ -7,12 +7,12 @@
 
 #include "Solver.h"
 #include "Utils.h"
-#include "DistanceDataChunk.h"
-#include "AngleDataChunk.h"
-#include "LegAnglesDataChuck.h"
-#include "GiNaCTypesChunk.h"
-#include "DistanceDerivates.h"
-#include "AngleDerivates.h"
+#include "funcwrapper/DistanceDataChunk.h"
+#include "funcwrapper/AngleDataChunk.h"
+#include "funcwrapper/LegAnglesDataChuck.h"
+#include "funcwrapper/GiNaCTypesChunk.h"
+#include "funcwrapper/DistanceDerivates.h"
+#include "funcwrapper/AngleDerivates.h"
 
 #include <cmath>
 #include <iostream>
@@ -432,7 +432,7 @@ void Solver::initGiNaCDistanceErrorFunction()
 	ErrorFunctionInfo tFunc;
 //	tFunc.type = ErrorFunctionInfo::eDistance;
 
-	tFunc.errorFunction = GiNaC::sqrt( GiNaC::pow( exComponentX, 2 ) + GiNaC::pow( exComponentY, 2 ) + GiNaC::pow( exComponentZ, 2 ) );//GiNaC::sqrt( GiNaC::pow( 100 * GiNaC::cos( angle_0 ) + 200 - 258, 2 ) + GiNaC::pow( 100 * GiNaC::sin( angle_0 ) + 200 - 279, 2 ) );
+	tFunc.errorFunction = std::make_shared<>()GiNaC::sqrt( GiNaC::pow( exComponentX, 2 ) + GiNaC::pow( exComponentY, 2 ) + GiNaC::pow( exComponentZ, 2 ) );//GiNaC::sqrt( GiNaC::pow( 100 * GiNaC::cos( angle_0 ) + 200 - 258, 2 ) + GiNaC::pow( 100 * GiNaC::sin( angle_0 ) + 200 - 279, 2 ) );
 
 //	std::cout << "errorFunction=" << m_errorFunction << std::endl;
 

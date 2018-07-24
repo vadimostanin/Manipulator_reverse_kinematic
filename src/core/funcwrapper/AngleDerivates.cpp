@@ -63,19 +63,19 @@ std::vector<double> AngleDerivates::evaluate()
 	return std::move(errors);
 }
 
-void AngleDerivates::onReceive( const IDataChunk & data )
+void AngleDerivates::onReceive( const IFuncParams & data )
 {
-	if( IDataChunk::eDataChunkType::eAngle == data.type() )
+	if( IFuncParams::eDataChunkType::eAngle == data.type() )
 	{
 		const auto & obj = static_cast<const AngleDataChunk&>( data );
 		m_Angle = Utils::deg2Rad( obj.getAngle() );
 	}
-	else if( IDataChunk::eDataChunkType::eLegsAngles == data.type() )
+	else if( IFuncParams::eDataChunkType::eLegsAngles == data.type() )
 	{
 		const auto & obj = static_cast<const LegAnglesDataChuck&>( data );
 		m_legsAngles = std::move( obj.getLegsAngles() );
 	}
-	else if( IDataChunk::eDataChunkType::eGiNaCTypes == data.type() )
+	else if( IFuncParams::eDataChunkType::eGiNaCTypes == data.type() )
 	{
 		const auto & obj = static_cast<const GiNaCTypesChunk&>( data );
 		obj.getAngleAngle( m_ginacTargetAngle );
