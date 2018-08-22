@@ -7,7 +7,7 @@
 
 #include "GiNaCTypesChunk.h"
 
-GiNaCTypesChunk::GiNaCTypesChunk() : IDataChunk( IDataChunk::eDataChunkType::eGiNaCTypes )
+GiNaCTypesChunk::GiNaCTypesChunk() : IFuncParams( IFuncParams::eDataChunkType::eGiNaCTypes )
 {
 }
 

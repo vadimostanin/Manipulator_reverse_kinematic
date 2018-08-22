@@ -7,7 +7,7 @@
 
 #include "AngleDataChunk.h"
 
-AngleDataChunk::AngleDataChunk( double angle ) : IDataChunk( IDataChunk::eDataChunkType::eAngle ), m_Angle( angle )
+AngleDataChunk::AngleDataChunk( double angle ) : IFuncParams( IFuncParams::eDataChunkType::eAngle ), m_Angle( angle )
 {
 }
 

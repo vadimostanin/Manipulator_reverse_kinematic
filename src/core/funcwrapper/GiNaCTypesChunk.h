@@ -8,10 +8,10 @@
 #ifndef CORE_GINACTYPESCHUNK_H_
 #define CORE_GINACTYPESCHUNK_H_
 
-#include "funcwrapper/IDataChunk.h"
+#include "IFuncParams.h"
 #include <ginac.h>
 
-class GiNaCTypesChunk: public IDataChunk
+class GiNaCTypesChunk: public IFuncParams
 {
 public:
 	GiNaCTypesChunk();

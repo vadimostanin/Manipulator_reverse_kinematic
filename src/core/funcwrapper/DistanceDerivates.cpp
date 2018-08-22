@@ -66,21 +66,21 @@ std::vector<double> DistanceDerivates::evaluate()
 	return std::move(errors);
 }
 
-void DistanceDerivates::onReceive( const IDataChunk & data )
+void DistanceDerivates::onReceive( const IFuncParams & data )
 {
-	if( IDataChunk::eDataChunkType::eDistance == data.type() )
+	if( IFuncParams::eDataChunkType::eDistance == data.type() )
 	{
 		const auto & obj = static_cast<const DistanceDataChunk&>( data );
 		m_X = obj.getX();
 		m_Y = obj.getY();
 		m_Z = obj.getZ();
 	}
-	else if( IDataChunk::eDataChunkType::eLegsAngles == data.type() )
+	else if( IFuncParams::eDataChunkType::eLegsAngles == data.type() )
 	{
 		const auto & obj = static_cast<const LegAnglesDataChuck&>( data );
 		m_legsAngles = std::move( obj.getLegsAngles() );
 	}
-	else if( IDataChunk::eDataChunkType::eGiNaCTypes == data.type() )
+	else if( IFuncParams::eDataChunkType::eGiNaCTypes == data.type() )
 	{
 		const auto & obj = static_cast<const GiNaCTypesChunk&>( data );
 		obj.getTargetSymbols( m_ginacTargetX, m_ginacTargetY, m_ginacTargetZ );

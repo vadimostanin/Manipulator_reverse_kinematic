@@ -9,7 +9,7 @@
 #define CORE_IRECEIVINGDERIVATIVE_H_
 
 #include "IDataReceiver.h"
-#include "IDerivative.h"
+#include "IFunction.h"
 
 class IReceivingFunction: public IFunction, public IDataReceiver
 {

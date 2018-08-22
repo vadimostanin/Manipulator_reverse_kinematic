@@ -8,10 +8,10 @@
 #ifndef CORE_LEGANGLESDATACHUCK_H_
 #define CORE_LEGANGLESDATACHUCK_H_
 
-#include "IDataChunk.h"
+#include "IFuncParams.h"
 #include <vector>
 
-class LegAnglesDataChuck: public IDataChunk
+class LegAnglesDataChuck: public IFuncParams
 {
 public:
 	LegAnglesDataChuck( const std::vector<double> & legsAngles );

@@ -13,17 +13,17 @@
 #include <vector>
 #include <ginac.h>
 
-class DistanceDerivates: public IReceivingFunction
+class WrapperErrorFunction: public IReceivingFunction
 {
 public:
-	DistanceDerivates();
-	~DistanceDerivates() = default;
+	WrapperErrorFunction();
+	~WrapperErrorFunction() = default;
 
 	void add( const GiNaC::ex & func );
 private:
 
 	std::vector<double> evaluate() override;
-	void onReceive( const IDataChunk & data ) override;
+	void onReceive( const IFuncParams & data ) override;
 
 	int32_t m_X{0};
 	int32_t m_Y{0};

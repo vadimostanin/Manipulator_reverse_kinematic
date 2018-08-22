@@ -16,7 +16,7 @@ class DerivatesVector : public std::vector<std::shared_ptr<IReceivingFunction>>,
 {
 public:
 	std::vector<double> evaluate() override;
-	void onReceive( const IDataChunk & data ) override;
+	void onReceive( const IFuncParams & data ) override;
 };
 
 #endif /* CORE_DERIVATESVECTOR_H_ */

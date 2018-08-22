@@ -8,9 +8,9 @@
 #ifndef CORE_ANGLEDATACHUNK_H_
 #define CORE_ANGLEDATACHUNK_H_
 
-#include "IDataChunk.h"
+#include "IFuncParams.h"
 
-class AngleDataChunk: public IDataChunk
+class AngleDataChunk: public IFuncParams
 {
 public:
 	AngleDataChunk( double angle );

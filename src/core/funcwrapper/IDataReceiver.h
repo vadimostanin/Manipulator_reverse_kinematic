@@ -8,12 +8,12 @@
 #ifndef CORE_IDATARECEIVER_H_
 #define CORE_IDATARECEIVER_H_
 
-#include "IDataChunk.h"
+#include "IFuncParams.h"
 
 class IDataReceiver
 {
 public:
-	virtual void onReceive( const IDataChunk & data ) = 0;
+	virtual void onReceive( const IFuncParams & data ) = 0;
 	virtual ~IDataReceiver(){}
 };
 
