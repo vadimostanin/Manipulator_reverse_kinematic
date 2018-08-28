@@ -28,7 +28,7 @@ Solver::Solver( const ShLegManipulator & manipulator ) : m_manipulator( manipula
 {
 	fillPredefinedDerErrorFunctions();
 	initGiNaCVars();
-	initGiNaCDistanceErrorFunction();
+//	initGiNaCDistanceErrorFunction();
 	initGiNaCAngleErrorFunction();
 	{
 		GiNaCTypesDataParams ginacTypes;
@@ -135,12 +135,16 @@ void Solver::initPreSolvStochastic( int32_t x, int32_t y, int32_t z, bool angled
 	for( auto & funcInfo : m_errorFunctionsTyped )
 	{
 		funcInfo.errorFunction->onReceive( distChunk );
-		funcInfo.errorFunction->onReceive( angleChunk );
 		funcInfo.errorFunction->onReceive( legsAnglesChunk );
 
 		funcInfo.errorDerivativeFunctions->onReceive( distChunk );
-		funcInfo.errorDerivativeFunctions->onReceive( angleChunk );
 		funcInfo.errorDerivativeFunctions->onReceive( legsAnglesChunk );
+
+		if( true == angled )
+		{
+			funcInfo.errorFunction->onReceive( angleChunk );
+			funcInfo.errorDerivativeFunctions->onReceive( angleChunk );
+		}
 	}
 
 	for( const auto & func : m_errorFunctionsTyped )
@@ -156,11 +160,11 @@ void Solver::initPreSolvStochastic( int32_t x, int32_t y, int32_t z, bool angled
 			{
 				error = 1;
 			}
-			double learningRate = std::abs( deltaAngleMax / error );
-			if( learningRate > 0.1 )
-			{
-				learningRate = 0.1;
-			}
+			double learningRate = std::abs( deltaAngleMax / error ) * 10;
+//			if( learningRate > 0.1 )
+//			{
+//				learningRate = 0.1;
+//			}
 			learningRates.push_back( learningRate );
 		}
 		m_learningRates.push_back( learningRates );
@@ -516,7 +520,7 @@ void Solver::initGiNaCAngleErrorFunction()
 	tFunc.errorDerivativeFunctions = std::make_shared<FunctionVector>();
 //	tFunc.type = ErrorFunctionType::eAngle;
 
-	auto errorFunction = std::make_shared<GiNaCErrorFunction>( std::make_shared<GiNaC::ex>( GiNaC::pow( GiNaC::asin( GiNaC::sin( *m_ginacAngleDegree + M_PI - sumXYoZAngles ) ) + M_PI / 2.0, 2 ) * 1 ) );
+	auto errorFunction = std::make_shared<GiNaCErrorFunction>( std::make_shared<GiNaC::ex>( GiNaC::pow( GiNaC::asin( GiNaC::sin( *m_ginacAngleDegree + M_PI - sumXYoZAngles ) ) - M_PI / 2.0, 2 ) * 1 ) );
 	tFunc.errorFunction = errorFunction;
 
 //	m_derivatesVector.push_back( errorFunction );
@@ -944,8 +948,8 @@ void Solver::solveFromCurrentAngledStochastic( int32_t x, int32_t y, int32_t z, 
 
 	initPreSolvStochastic( x, y, z, true, angleDegree );
 
-//	double accumulatedCurrentError = 0.0;
-//	double accumulatedPrevError = 0.0;
+	double accumulatedCurrentError = 0.0;
+	double accumulatedPrevError = 0.0;
 	uint32_t stepsCounter = 0;
 //	printLearningRates();
 	do
@@ -953,9 +957,13 @@ void Solver::solveFromCurrentAngledStochastic( int32_t x, int32_t y, int32_t z, 
 		errorPrev = errorCurrent;
 		errorCurrent = oneStepStochastic( x, y, z, true, angleDegree );
 
+		accumulatedCurrentError = std::accumulate( std::begin( errorCurrent ), std::end( errorCurrent ), 0.0 );;
+		accumulatedPrevError = std::accumulate( std::begin( errorPrev ), std::end( errorPrev ), 0.0 );;
+
+
 		stepsCounter++;
 	}
-	while( /*std::abs( accumulatedPrevError - accumulatedCurrentError ) >= epsilon && */ getErrorFunctionValue( x, y, z, true, angleDegree ) >= epsilon &&
+	while( std::abs( accumulatedPrevError - accumulatedCurrentError ) >= epsilon && getErrorFunctionValue( x, y, z, true, angleDegree ) >= epsilon &&
 		   stepsCounter < maxSteps );
 
 
@@ -1446,12 +1454,16 @@ std::vector<double> Solver::oneStepStochastic( int32_t x, int32_t y, int32_t z, 
 	for( auto & funcInfo : m_errorFunctionsTyped )
 	{
 		funcInfo.errorFunction->onReceive( distChunk );
-		funcInfo.errorFunction->onReceive( angleChunk );
 		funcInfo.errorFunction->onReceive( legsAnglesChunk );
 
 		funcInfo.errorDerivativeFunctions->onReceive( distChunk );
-		funcInfo.errorDerivativeFunctions->onReceive( angleChunk );
 		funcInfo.errorDerivativeFunctions->onReceive( legsAnglesChunk );
+
+		if( true == angled )
+		{
+			funcInfo.errorFunction->onReceive( angleChunk );
+			funcInfo.errorDerivativeFunctions->onReceive( angleChunk );
+		}
 	}
 
 	for( const auto & func : m_errorFunctionsTyped )
@@ -1832,7 +1844,7 @@ void Solver::backward( const std::vector<double> & angleErrors )
 
 	auto legIter = std::begin( *m_manipulator );
 	auto errorIter = std::begin( angleErrors );
-	auto learningRateIter = std::begin( m_learningRates[0] );
+	auto learningRateIter = std::begin( m_learningRates.front() );
 
 //	auto legIter = m_manipulator->rbegin();
 //	auto errorIter = angleErrors.rbegin();
@@ -1848,7 +1860,7 @@ void Solver::backward( const std::vector<double> & angleErrors )
 
 			double gradient = *errorIter;
 //			double gradient = *(errorIter + 1);
-	//		std::cout << "gradient=" << gradient << std::endl;
+			std::cout << "gradient=" << gradient << std::endl;
 
 			double radianDelta = gradient * (*learningRateIter);
 //			double radianDelta = gradient * (*learningRateIter + 1);
@@ -2106,13 +2118,19 @@ double Solver::getErrorFunctionValue( ShLegManipulator manipulator, TypePrecisio
 	}
 
 //	std::cout << "m_errorFunction=" << m_errorFunction << std::endl;
-	GiNaC::ex f = GiNaC::evalf( m_errorFunction.subs( functionVars ) );
 	double result = 0.0f;
-	if (GiNaC::is_a<GiNaC::numeric>(f))
+	for( const auto & funcInfo : m_errorFunctionsTyped )
 	{
-		result = GiNaC::ex_to<GiNaC::numeric>(f).to_double();
-		std::cout << "error=" << result << std::endl;
+		result += funcInfo.errorFunction->evaluate().front();
 	}
+	std::cout << "error=" << result << std::endl;
+//	GiNaC::ex f = GiNaC::evalf( m_errorFunction.subs( functionVars ) );
+//
+//	if (GiNaC::is_a<GiNaC::numeric>(f))
+//	{
+//		result = GiNaC::ex_to<GiNaC::numeric>(f).to_double();
+//		std::cout << "error=" << result << std::endl;
+//	}
 	return result;
 }
 
