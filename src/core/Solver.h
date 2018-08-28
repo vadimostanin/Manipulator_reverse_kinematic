@@ -12,9 +12,8 @@
 #include "DerivativeFuncsStorage.h"
 #include "ErrorFuncStorage.h"
 #include "ContrainsTooClose.h"
-#include "funcwrapper/DerivatesVector.h"
-
 #include <symbol.h>
+#include "funcwrapper/FunctionVector.h"
 
 static void empty( const std::vector<double> & ){}
 typedef std::function<void( const std::vector<double> & )> SolveEndCb;
@@ -31,8 +30,8 @@ class Solver
 	struct ErrorFunctionInfo
 	{
 //		ErrorFunctionType 			                 type;
-		DerivatesVector                              errorDerivativeFunctions;
-		std::shared_ptr<IReceivingFunction>        errorFunction;
+		FunctionVector                              errorDerivativeFunctions;
+		std::shared_ptr<IReceivingFunction>         errorFunction;
 	};
 public:
 	Solver( const ShLegManipulator & legs );
@@ -123,7 +122,7 @@ private:
 	ErroFuncType				m_preDefinedErrorFunction;
 
 	std::vector<ErrorFunctionInfo> m_errorFunctionsTyped;
-	DerivatesVector m_derivatesVector;
+	FunctionVector m_derivatesVector;
 
 	double m_minEcceptableDistance{0.05};
 

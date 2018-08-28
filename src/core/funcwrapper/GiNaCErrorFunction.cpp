@@ -12,13 +12,9 @@
 #include "GiNaCFuncDiffParams.h"
 #include "LegAnglesDataParams.h"
 
-GiNaCErrorFunction::GiNaCErrorFunction()
+GiNaCErrorFunction::GiNaCErrorFunction( std::shared_ptr<GiNaC::ex> ex ):
+	m_Ex( ex )
 {
-}
-
-void GiNaCErrorFunction::add( const std::shared_ptr<GiNaC::ex> func )
-{
-	m_Funcs.emplace_back( func );
 }
 
 std::vector<double> GiNaCErrorFunction::evaluate() const
@@ -49,32 +45,28 @@ std::vector<double> GiNaCErrorFunction::evaluate() const
 	functionVars.append( *m_ginacTargetZ == m_Z );
 
 
-	std::vector<double> errors( m_legsAngles.size() );
+	std::vector<double> errors;
 	GiNaC::ex perLegAngleLength;
-	auto errorIter = std::begin( errors );
-	for( const auto & func : m_Funcs )
-	{
-		GiNaC::ex f = GiNaC::evalf( func->subs( functionVars ) );
-//		std::cout << "(*derivativeIter)=" << (*derivativeIter) << std::endl;
-//		std::cout << "f=" << f << std::endl;
 
-		if (GiNaC::is_a<GiNaC::numeric>(f))
-		{
-			(*errorIter) = GiNaC::ex_to<GiNaC::numeric>(f).to_double();
-//			std::cout << "errorIter=" << (*errorIter) << std::endl;
-		}
+	GiNaC::ex f = GiNaC::evalf( m_Ex->subs( functionVars ) );
+//	std::cout << "(*derivativeIter)=" << (*derivativeIter) << std::endl;
+//	std::cout << "f=" << f << std::endl;
+
+	if (GiNaC::is_a<GiNaC::numeric>(f))
+	{
+		errors.push_back( GiNaC::ex_to<GiNaC::numeric>(f).to_double() );
+		std::cout << "error=" << errors.front() << std::endl;
 	}
+
 	return std::move(errors);
 }
 
 IFuncSh GiNaCErrorFunction::diff( const IFuncDiffParams & iParams )
 {
-    auto cloned = std::make_shared<GiNaCErrorFunction>();
-    const auto & params = static_cast<const GiNaCFuncDiffParams&>( iParams );
-    for( const auto func : m_Funcs )
-    {
-    	cloned->add( std::make_shared<GiNaC::ex>( GiNaC::diff( *func, *params.getSymbols(), params.getDepth() ) ) );
-    }
+	const auto & params = static_cast<const GiNaCFuncDiffParams&>( iParams );
+    auto cloned = std::make_shared<GiNaCErrorFunction>(
+    		std::make_shared<GiNaC::ex>( GiNaC::diff( *m_Ex, *params.getSymbols(), params.getDepth() ) )
+    				);
 
     return cloned;
 }

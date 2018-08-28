@@ -16,10 +16,9 @@
 class GiNaCErrorFunction: public IReceivingFunction
 {
 public:
-	GiNaCErrorFunction();
+	GiNaCErrorFunction( std::shared_ptr<GiNaC::ex> ex );
 	~GiNaCErrorFunction() = default;
 
-	void add( const std::shared_ptr<GiNaC::ex> func );
 	IFuncSh diff( const IFuncDiffParams & params ) override;
 private:
 
@@ -39,8 +38,7 @@ private:
 	std::vector<std::shared_ptr<GiNaC::symbol>> 		m_ginacXZoYAngles;
 
 	std::vector<double> m_legsAngles;
-
-	std::vector<std::shared_ptr<GiNaC::ex>> m_Funcs;
+	std::shared_ptr<GiNaC::ex> m_Ex;
 };
 
 #endif /* WRAPPERERRORFUNCTION_H_ */

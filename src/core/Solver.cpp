@@ -8,7 +8,6 @@
 #include "Solver.h"
 #include "Utils.h"
 #include "funcwrapper/AngleDataChunk.h"
-#include "funcwrapper/DistanceDerivates.h"
 #include "funcwrapper/GiNaCTypesDataParams.h"
 #include "funcwrapper/LegAnglesDataParams.h"
 #include "funcwrapper/GiNaCFuncDiffParams.h"
@@ -21,6 +20,7 @@
 #include <ginac.h>
 #include "funcwrapper/DistanceDataParams.h"
 #include "funcwrapper/GiNaCAngleDerivates.h"
+#include "funcwrapper/GiNaCDistanceDerivates.h"
 #include "funcwrapper/GiNaCErrorFunction.h"
 
 Solver::Solver( const ShLegManipulator & manipulator ) : m_manipulator( manipulator )
@@ -126,13 +126,11 @@ void Solver::initPreSolvStochastic( int32_t x, int32_t y, int32_t z, bool angled
 	m_derivatesVector.onReceive( angleChunk );
 	m_derivatesVector.onReceive( legsAnglesChunk );
 
-	auto funcIter = std::begin( m_derivatesVector );
-	auto funcIterEnd = std::end( m_derivatesVector );
-	for( uint32_t func_i = 0 ; funcIter != funcIterEnd ; funcIter++, func_i++ )
+	for( const auto & func : m_derivatesVector )
 	{
-		const double deltaAngleMax = m_ratioRadiansPer1PixelError * getErrorFunctionValue( *funcIter );//this->getErrorFunctionValue( x, y, z, angled, angleDegree );
+		const double deltaAngleMax = m_ratioRadiansPer1PixelError * getErrorFunctionValue( func );//this->getErrorFunctionValue( x, y, z, angled, angleDegree );
 	//	const double minError = 0.0000001;
-		std::vector<double> errors = forwardv2_1( *funcIter );
+		std::vector<double> errors = forwardv2_1( func );
 		std::vector<double> learningRates;
 		for( auto error : errors )
 		{
@@ -434,8 +432,7 @@ void Solver::initGiNaCDistanceErrorFunction()
 	ErrorFunctionInfo tFunc;
 //	tFunc.type = ErrorFunctionInfo::eDistance;
 
-	auto errorFunction = std::make_shared<GiNaCErrorFunction>();
-	errorFunction->add( std::make_shared<GiNaC::ex>(
+	auto errorFunction = std::make_shared<GiNaCErrorFunction>( std::make_shared<GiNaC::ex>(
 			GiNaC::sqrt( GiNaC::pow( exComponentX, 2 ) + GiNaC::pow( exComponentY, 2 ) + GiNaC::pow( exComponentZ, 2 ) )
 	)//GiNaC::sqrt( GiNaC::pow( 100 * GiNaC::cos( angle_0 ) + 200 - 258, 2 ) + GiNaC::pow( 100 * GiNaC::sin( angle_0 ) + 200 - 279, 2 ) );
 					 );
@@ -446,7 +443,7 @@ void Solver::initGiNaCDistanceErrorFunction()
 
 //	std::cout << "errorFunction=" << m_errorFunction << std::endl;
 
-	auto distDerivatives = std::make_shared<DistanceDerivates>();
+	auto distDerivatives = std::make_shared<GiNaCDistanceDerivates>();
 
 	auto angleXYSymbolIter = std::begin( m_ginacXYoZAngles );
 	auto angleXZSymbolIter = std::begin( m_ginacXZoYAngles );
@@ -500,8 +497,7 @@ void Solver::initGiNaCAngleErrorFunction()
 	ErrorFunctionInfo tFunc;
 //	tFunc.type = ErrorFunctionType::eAngle;
 
-	auto errorFunction = std::make_shared<GiNaCErrorFunction>();
-	errorFunction->add( std::make_shared<GiNaC::ex>( GiNaC::pow( GiNaC::asin( GiNaC::sin( *m_ginacAngleDegree + M_PI - sumXYoZAngles ) ) + M_PI / 2.0, 2 ) * 1 ) );
+	auto errorFunction = std::make_shared<GiNaCErrorFunction>( std::make_shared<GiNaC::ex>( GiNaC::pow( GiNaC::asin( GiNaC::sin( *m_ginacAngleDegree + M_PI - sumXYoZAngles ) ) + M_PI / 2.0, 2 ) * 1 ) );
 	tFunc.errorFunction = errorFunction;
 
 	m_derivatesVector.push_back( errorFunction );

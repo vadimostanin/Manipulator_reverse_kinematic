@@ -5,19 +5,19 @@
  *      Author: vadim
  */
 
-#ifndef DISTANCEDERIVATES_H_
-#define DISTANCEDERIVATES_H_
+#ifndef GINACDISTANCEDERIVATES_H_
+#define GINACDISTANCEDERIVATES_H_
 
 #include "IReceivingDerivative.h"
 #include <stdint.h>
 #include <vector>
 #include <ginac.h>
 
-class DistanceDerivates: public IReceivingFunction, public std::vector<IFuncSh>
+class GiNaCDistanceDerivates: public IReceivingFunction, public std::vector<IFuncSh>
 {
 public:
-	DistanceDerivates();
-	~DistanceDerivates() = default;
+	GiNaCDistanceDerivates();
+	~GiNaCDistanceDerivates() = default;
 private:
 
 	std::vector<double> evaluate() const override;
@@ -38,4 +38,4 @@ private:
 	std::vector<double> m_legsAngles;
 };
 
-#endif /* DISTANCEDERIVATES_H_ */
+#endif /* GINACDISTANCEDERIVATES_H_ */

@@ -12,7 +12,7 @@
 #include <vector>
 #include <memory>
 
-class DerivatesVector : public std::vector<IFuncSh>, public IFunction
+class FunctionVector : public std::vector<IFuncSh>, public IFunction
 {
 public:
 	std::vector<double> evaluate() const override;

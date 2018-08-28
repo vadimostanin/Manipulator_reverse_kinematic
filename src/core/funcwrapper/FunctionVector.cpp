@@ -5,10 +5,10 @@
  *      Author: vadym_ostanin
  */
 
-#include "DerivatesVector.h"
+#include "FunctionVector.h"
 #include "GiNaCFuncDiffParams.h"
 
-std::vector<double> DerivatesVector::evaluate() const
+std::vector<double> FunctionVector::evaluate() const
 {
 	std::vector<double> result;
 	for( const auto & func : *this )
@@ -19,9 +19,9 @@ std::vector<double> DerivatesVector::evaluate() const
 	return result;
 }
 
-IFuncSh DerivatesVector::diff( const IFuncDiffParams & iParams )
+IFuncSh FunctionVector::diff( const IFuncDiffParams & iParams )
 {
-    auto cloned = std::make_shared<DerivatesVector>();
+    auto cloned = std::make_shared<FunctionVector>();
     for( const auto func : *this )
     {
     	cloned->push_back( func->diff( iParams ) );
@@ -29,7 +29,7 @@ IFuncSh DerivatesVector::diff( const IFuncDiffParams & iParams )
     return cloned;
 }
 
-void DerivatesVector::onReceive( const IFuncParams & data )
+void FunctionVector::onReceive( const IFuncParams & data )
 {
 	for( auto & func : *this )
 	{
