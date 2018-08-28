@@ -54,7 +54,7 @@ void GiNaCTypesDataParams::setAngleSymbol( std::shared_ptr<GiNaC::symbol> target
 	m_ginacTargetAngle = targetAngle;
 }
 
-void GiNaCTypesDataParams::getAngleAngle( std::shared_ptr<GiNaC::symbol> & targetAngle ) const
+void GiNaCTypesDataParams::getAngleSymbol( std::shared_ptr<GiNaC::symbol> & targetAngle ) const
 {
 	targetAngle = m_ginacTargetAngle;
 }

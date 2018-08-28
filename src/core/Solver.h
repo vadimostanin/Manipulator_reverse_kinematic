@@ -30,8 +30,8 @@ class Solver
 	struct ErrorFunctionInfo
 	{
 //		ErrorFunctionType 			                 type;
-		FunctionVector                              errorDerivativeFunctions;
-		std::shared_ptr<IReceivingFunction>         errorFunction;
+		std::shared_ptr<FunctionVector>             errorDerivativeFunctions;
+		std::shared_ptr<IFunction>         			errorFunction;
 	};
 public:
 	Solver( const ShLegManipulator & legs );
@@ -122,7 +122,7 @@ private:
 	ErroFuncType				m_preDefinedErrorFunction;
 
 	std::vector<ErrorFunctionInfo> m_errorFunctionsTyped;
-	FunctionVector m_derivatesVector;
+//	FunctionVector m_derivatesVector;
 
 	double m_minEcceptableDistance{0.05};
 

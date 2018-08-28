@@ -11,6 +11,8 @@
 #include "GiNaCTypesDataParams.h"
 #include "GiNaCFuncDiffParams.h"
 #include "LegAnglesDataParams.h"
+#include "AngleFuncParams.h"
+#include "../Utils.h"
 
 GiNaCErrorFunction::GiNaCErrorFunction( std::shared_ptr<GiNaC::ex> ex ):
 	m_Ex( ex )
@@ -44,13 +46,17 @@ std::vector<double> GiNaCErrorFunction::evaluate() const
 	functionVars.append( *m_ginacTargetY == m_Y );
 	functionVars.append( *m_ginacTargetZ == m_Z );
 
+	if( m_IsAngled )
+	{
+		functionVars.append( *m_ginacAngleDegree == Utils::deg2Rad( m_AngleDegree ) );
+	}
+
 
 	std::vector<double> errors;
 	GiNaC::ex perLegAngleLength;
 
 	GiNaC::ex f = GiNaC::evalf( m_Ex->subs( functionVars ) );
-//	std::cout << "(*derivativeIter)=" << (*derivativeIter) << std::endl;
-//	std::cout << "f=" << f << std::endl;
+	std::cout << "f=" << f << std::endl;
 
 	if (GiNaC::is_a<GiNaC::numeric>(f))
 	{
@@ -85,11 +91,18 @@ void GiNaCErrorFunction::onReceive( const IFuncParams & data )
 		const auto & obj = static_cast<const LegAnglesDataParams&>( data );
 		m_legsAngles = std::move( obj.getLegsAngles() );
 	}
+	else if( IFuncParams::eParamType::eAngle == data.type() )
+	{
+		const auto & obj = static_cast<const AngleFuncParams&>( data );
+		m_AngleDegree = obj.getAngle();
+		m_IsAngled = true;
+	}
 	else if( IFuncParams::eParamType::eGiNaCTypes == data.type() )
 	{
 		const auto & obj = static_cast<const GiNaCTypesDataParams&>( data );
 		obj.getTargetSymbols( m_ginacTargetX, m_ginacTargetY, m_ginacTargetZ );
 		m_ginacXYoZAngles = std::move( obj.getXYSymbols() );
 		m_ginacXZoYAngles = std::move( obj.getXZSymbols() );
+		obj.getAngleSymbol( m_ginacAngleDegree );
 	}
 }

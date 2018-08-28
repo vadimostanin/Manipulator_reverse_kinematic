@@ -6,7 +6,8 @@
  */
 
 #include "PerpendicularAngleDerivate.h"
-#include "AngleDataChunk.h"
+
+#include "AngleFuncParams.h"
 #include "LegAnglesDataParams.h"
 
 PerpendicularAngleDerivate::PerpendicularAngleDerivate()
@@ -22,7 +23,7 @@ void PerpendicularAngleDerivate::onReceive( const IFuncParams & data )
 {
 	if( IFuncParams::eParamType::eAngle == data.type() )
 	{
-		const auto & obj = static_cast<const AngleDataChunk&>( data );
+		const auto & obj = static_cast<const AngleFuncParams&>( data );
 		m_Angle = obj.getAngle();
 	}
 	else if( IFuncParams::eParamType::eLegsAngles == data.type() )

@@ -36,9 +36,13 @@ private:
 
 	std::vector<std::shared_ptr<GiNaC::symbol>> 		m_ginacXYoZAngles;
 	std::vector<std::shared_ptr<GiNaC::symbol>> 		m_ginacXZoYAngles;
+	std::shared_ptr<GiNaC::symbol> 						m_ginacAngleDegree;
 
 	std::vector<double> m_legsAngles;
 	std::shared_ptr<GiNaC::ex> m_Ex;
+
+	double m_AngleDegree{0};
+	bool m_IsAngled{false};
 };
 
 #endif /* WRAPPERERRORFUNCTION_H_ */

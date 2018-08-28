@@ -10,11 +10,11 @@
 
 #include "IFuncParams.h"
 
-class AngleDataChunk: public IFuncParams
+class AngleFuncParams: public IFuncParams
 {
 public:
-	AngleDataChunk( double angle );
-	virtual ~AngleDataChunk();
+	AngleFuncParams( double angle );
+	virtual ~AngleFuncParams();
 
 	double getAngle() const { return m_Angle; }
 private:

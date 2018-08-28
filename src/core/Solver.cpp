@@ -7,7 +7,6 @@
 
 #include "Solver.h"
 #include "Utils.h"
-#include "funcwrapper/AngleDataChunk.h"
 #include "funcwrapper/GiNaCTypesDataParams.h"
 #include "funcwrapper/LegAnglesDataParams.h"
 #include "funcwrapper/GiNaCFuncDiffParams.h"
@@ -18,6 +17,8 @@
 #include <numeric>
 #include <sstream>
 #include <ginac.h>
+
+#include "funcwrapper/AngleFuncParams.h"
 #include "funcwrapper/DistanceDataParams.h"
 #include "funcwrapper/GiNaCAngleDerivates.h"
 #include "funcwrapper/GiNaCDistanceDerivates.h"
@@ -36,7 +37,12 @@ Solver::Solver( const ShLegManipulator & manipulator ) : m_manipulator( manipula
 		ginacTypes.setTargetSymbols( m_ginacTargetX, m_ginacTargetY, m_ginacTargetZ );
 		ginacTypes.setAngleSymbol( m_ginacAngleDegree );
 
-		m_derivatesVector.onReceive( ginacTypes );
+		for( auto & funcInfo : m_errorFunctionsTyped )
+		{
+			funcInfo.errorFunction->onReceive( ginacTypes );
+			funcInfo.errorDerivativeFunctions->onReceive( ginacTypes );
+		}
+//		m_derivatesVector.onReceive( ginacTypes );
 	}
 }
 
@@ -117,20 +123,31 @@ void Solver::initPreSolvStochastic( int32_t x, int32_t y, int32_t z, bool angled
 //	}
 
 	DistanceDataParams distChunk( x, y, z );
-	AngleDataChunk angleChunk( angleDegree );
+	AngleFuncParams angleChunk( angleDegree );
 
 	auto angles = std::move( getLegsAngles() );
 	LegAnglesDataParams legsAnglesChunk( angles );
 
-	m_derivatesVector.onReceive( distChunk );
-	m_derivatesVector.onReceive( angleChunk );
-	m_derivatesVector.onReceive( legsAnglesChunk );
+//	m_derivatesVector.onReceive( distChunk );
+//	m_derivatesVector.onReceive( angleChunk );
+//	m_derivatesVector.onReceive( legsAnglesChunk );
 
-	for( const auto & func : m_derivatesVector )
+	for( auto & funcInfo : m_errorFunctionsTyped )
 	{
-		const double deltaAngleMax = m_ratioRadiansPer1PixelError * getErrorFunctionValue( func );//this->getErrorFunctionValue( x, y, z, angled, angleDegree );
+		funcInfo.errorFunction->onReceive( distChunk );
+		funcInfo.errorFunction->onReceive( angleChunk );
+		funcInfo.errorFunction->onReceive( legsAnglesChunk );
+
+		funcInfo.errorDerivativeFunctions->onReceive( distChunk );
+		funcInfo.errorDerivativeFunctions->onReceive( angleChunk );
+		funcInfo.errorDerivativeFunctions->onReceive( legsAnglesChunk );
+	}
+
+	for( const auto & func : m_errorFunctionsTyped )
+	{
+		const double deltaAngleMax = m_ratioRadiansPer1PixelError * getErrorFunctionValue( func.errorFunction );//this->getErrorFunctionValue( x, y, z, angled, angleDegree );
 	//	const double minError = 0.0000001;
-		std::vector<double> errors = forwardv2_1( func );
+		std::vector<double> errors = forwardv2_1( func.errorDerivativeFunctions );
 		std::vector<double> learningRates;
 		for( auto error : errors )
 		{
@@ -174,11 +191,11 @@ void Solver::updateLearningRate( const std::vector<double> & currentErrors, uint
 {
 	static std::vector<double> prevErrors = currentErrors;
 
-	assert( m_learningRates.size() == currentErrors.size() );
+	assert( m_learningRates.front().size() == currentErrors.size() );
 
 	auto prevErrorIter = std::begin( prevErrors );
 	auto currErrorIter = std::begin( currentErrors );
-	auto learningRateIter = std::begin( m_learningRates );
+	auto learningRateIter = std::begin( m_learningRates[index] );
 	for( ; currErrorIter != std::end( currentErrors ) ; currErrorIter++, prevErrorIter++, learningRateIter++ )
 	{
 		char prevErrorSign = (*prevErrorIter) / std::abs( (*prevErrorIter) );
@@ -186,7 +203,7 @@ void Solver::updateLearningRate( const std::vector<double> & currentErrors, uint
 
 		if( prevErrorSign != currErrorSign )
 		{
-			(*learningRateIter)[index] /= 2.0;
+			(*learningRateIter) /= 2.0;
 		}
 	}
 
@@ -430,6 +447,7 @@ void Solver::initGiNaCDistanceErrorFunction()
 	exComponentZ = anglesLengthedOffsettedZ - *m_ginacTargetZ;
 
 	ErrorFunctionInfo tFunc;
+	tFunc.errorDerivativeFunctions = std::make_shared<FunctionVector>();
 //	tFunc.type = ErrorFunctionInfo::eDistance;
 
 	auto errorFunction = std::make_shared<GiNaCErrorFunction>( std::make_shared<GiNaC::ex>(
@@ -439,7 +457,7 @@ void Solver::initGiNaCDistanceErrorFunction()
 
 	tFunc.errorFunction = errorFunction;
 
-	m_derivatesVector.push_back( errorFunction );
+//	m_derivatesVector.push_back( errorFunction );
 
 //	std::cout << "errorFunction=" << m_errorFunction << std::endl;
 
@@ -453,7 +471,7 @@ void Solver::initGiNaCDistanceErrorFunction()
 			GiNaCFuncDiffParams diffParams( *angleXYSymbolIter, 1 );
 			const auto derivative = errorFunction->diff( diffParams );
 			std::cout << "derivative=" << derivative << std::endl;
-			tFunc.errorDerivativeFunctions.emplace_back( derivative );
+			tFunc.errorDerivativeFunctions->emplace_back( derivative );
 
 			distDerivatives->push_back( derivative );
 		}
@@ -461,14 +479,14 @@ void Solver::initGiNaCDistanceErrorFunction()
 			GiNaCFuncDiffParams diffParams( *angleXZSymbolIter, 1 );
 			const auto derivative = errorFunction->diff( diffParams );
 			std::cout << "derivative=" << derivative << std::endl;
-			tFunc.errorDerivativeFunctions.emplace_back( derivative );
+			tFunc.errorDerivativeFunctions->emplace_back( derivative );
 
 			distDerivatives->push_back( derivative );
 		}
 	}
 	m_errorFunctionsTyped.emplace_back( tFunc );
 
-	m_derivatesVector.push_back( distDerivatives );
+//	m_derivatesVector.push_back( distDerivatives );
 }
 
 void Solver::initGiNaCAngleErrorFunction()
@@ -495,12 +513,13 @@ void Solver::initGiNaCAngleErrorFunction()
 	}
 
 	ErrorFunctionInfo tFunc;
+	tFunc.errorDerivativeFunctions = std::make_shared<FunctionVector>();
 //	tFunc.type = ErrorFunctionType::eAngle;
 
 	auto errorFunction = std::make_shared<GiNaCErrorFunction>( std::make_shared<GiNaC::ex>( GiNaC::pow( GiNaC::asin( GiNaC::sin( *m_ginacAngleDegree + M_PI - sumXYoZAngles ) ) + M_PI / 2.0, 2 ) * 1 ) );
 	tFunc.errorFunction = errorFunction;
 
-	m_derivatesVector.push_back( errorFunction );
+//	m_derivatesVector.push_back( errorFunction );
 
 //	std::cout << "errorFunction=" << m_errorFunction << std::endl;
 
@@ -514,7 +533,7 @@ void Solver::initGiNaCAngleErrorFunction()
 			GiNaCFuncDiffParams diffParams( *angleXYSymbolIter, 1 );
 			const auto derivative = tFunc.errorFunction->diff( diffParams );
 			std::cout << "derivative=" << derivative << std::endl;
-			tFunc.errorDerivativeFunctions.emplace_back( derivative );
+			tFunc.errorDerivativeFunctions->emplace_back( derivative );
 
 			angleDerivatives->push_back( derivative );
 		}
@@ -522,14 +541,14 @@ void Solver::initGiNaCAngleErrorFunction()
 			GiNaCFuncDiffParams diffParams( *angleXZSymbolIter, 1 );
 			const auto derivative = tFunc.errorFunction->diff( diffParams );
 			std::cout << "derivative=" << derivative << std::endl;
-			tFunc.errorDerivativeFunctions.emplace_back( derivative );
+			tFunc.errorDerivativeFunctions->emplace_back( derivative );
 
 			angleDerivatives->push_back( derivative );
 		}
 	}
 	m_errorFunctionsTyped.emplace_back( tFunc );
 
-	m_derivatesVector.push_back( angleDerivatives );
+//	m_derivatesVector.push_back( angleDerivatives );
 }
 
 std::string Solver::generateErroFunctionDerivatives()
@@ -1415,19 +1434,30 @@ std::vector<double> Solver::oneStep( int32_t x, int32_t y, int32_t z, bool angle
 std::vector<double> Solver::oneStepStochastic( int32_t x, int32_t y, int32_t z, bool angled, double angleDegree )
 {
 	DistanceDataParams distChunk( x, y, z );
-	AngleDataChunk angleChunk( angleDegree );
+	AngleFuncParams angleChunk( angleDegree );
 
 	auto angles = std::move( getLegsAngles() );
 	LegAnglesDataParams legsAnglesChunk( angles );
 
-	m_derivatesVector.onReceive( distChunk );
-	m_derivatesVector.onReceive( angleChunk );
-	m_derivatesVector.onReceive( legsAnglesChunk );
+//	m_derivatesVector.onReceive( distChunk );
+//	m_derivatesVector.onReceive( angleChunk );
+//	m_derivatesVector.onReceive( legsAnglesChunk );
 
-	for( const auto & func : m_derivatesVector )
+	for( auto & funcInfo : m_errorFunctionsTyped )
+	{
+		funcInfo.errorFunction->onReceive( distChunk );
+		funcInfo.errorFunction->onReceive( angleChunk );
+		funcInfo.errorFunction->onReceive( legsAnglesChunk );
+
+		funcInfo.errorDerivativeFunctions->onReceive( distChunk );
+		funcInfo.errorDerivativeFunctions->onReceive( angleChunk );
+		funcInfo.errorDerivativeFunctions->onReceive( legsAnglesChunk );
+	}
+
+	for( const auto & func : m_errorFunctionsTyped )
 	{
 //		std::cout << __FUNCTION__ << " 1" << std::endl;
-		m_errors = forwardv2_1( func );
+		m_errors = forwardv2_1( func.errorDerivativeFunctions );
 //		std::cout << __FUNCTION__ << " 2" << std::endl;
 		updateLearningRate( m_errors );
 //		std::cout << __FUNCTION__ << " 3" << std::endl;
@@ -1793,7 +1823,7 @@ void Solver::backwardLeg( uint32_t legIndex, const std::vector<double> & angleEr
 void Solver::backward( const std::vector<double> & angleErrors )
 {
 	assert( m_manipulator->size() * m_anglesPerLeg == angleErrors.size() );
-	assert( m_manipulator->size() * m_anglesPerLeg == m_learningRates.size() );
+	assert( m_manipulator->size() * m_anglesPerLeg == m_learningRates.front().size() );
 
 //	std::stringstream ioss;
 //	copy(angleErrors.begin(), angleErrors.end(),
@@ -2088,7 +2118,8 @@ double Solver::getErrorFunctionValue( ShLegManipulator manipulator, TypePrecisio
 
 double Solver::getErrorFunctionValue( const IFuncSh func )
 {
-	return func->evaluate().front();
+	std::vector<double> errors = func->evaluate();
+	return errors.front();
 }
 //double Solver::getErrorFunctionValue( ShLegManipulator manipulator, TypePrecision targetX, TypePrecision targetY, TypePrecision targetZ, bool angled, double angleDegree )
 //{

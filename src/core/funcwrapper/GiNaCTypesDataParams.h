@@ -27,7 +27,7 @@ public:
 	void getTargetSymbols( std::shared_ptr<GiNaC::symbol> & targetX, std::shared_ptr<GiNaC::symbol> & targetY, std::shared_ptr<GiNaC::symbol> & targetZ ) const;
 
 	void setAngleSymbol( std::shared_ptr<GiNaC::symbol> targetAngle );
-	void getAngleAngle( std::shared_ptr<GiNaC::symbol> & targetAngle ) const;
+	void getAngleSymbol( std::shared_ptr<GiNaC::symbol> & targetAngle ) const;
 
 private:
 	std::vector<std::shared_ptr<GiNaC::symbol>> m_xySymbols;
