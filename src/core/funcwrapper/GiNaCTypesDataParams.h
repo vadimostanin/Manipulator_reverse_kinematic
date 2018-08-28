@@ -5,17 +5,17 @@
  *      Author: vadym_ostanin
  */
 
-#ifndef CORE_GINACTYPESCHUNK_H_
-#define CORE_GINACTYPESCHUNK_H_
+#ifndef CORE_GINACTYPESDATAPARAMS_H_
+#define CORE_GINACTYPESDATAPARAMS_H_
 
 #include "IFuncParams.h"
 #include <ginac.h>
 
-class GiNaCTypesChunk: public IFuncParams
+class GiNaCTypesDataParams: public IFuncParams
 {
 public:
-	GiNaCTypesChunk();
-	virtual ~GiNaCTypesChunk();
+	GiNaCTypesDataParams();
+	virtual ~GiNaCTypesDataParams();
 
 	void setXYSymbols( const std::vector<std::shared_ptr<GiNaC::symbol>> & xySymbols );
 	std::vector<std::shared_ptr<GiNaC::symbol>> getXYSymbols() const;
@@ -40,4 +40,4 @@ private:
 	std::shared_ptr<GiNaC::symbol>               m_ginacTargetAngle;
 };
 
-#endif /* CORE_GINACTYPESCHUNK_H_ */
+#endif /* CORE_GINACTYPESDATAPARAMS_H_ */

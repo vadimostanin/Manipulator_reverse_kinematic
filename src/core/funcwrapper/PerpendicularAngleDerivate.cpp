@@ -6,28 +6,28 @@
  */
 
 #include "PerpendicularAngleDerivate.h"
-#include "LegAnglesDataChuck.h"
 #include "AngleDataChunk.h"
+#include "LegAnglesDataParams.h"
 
 PerpendicularAngleDerivate::PerpendicularAngleDerivate()
 {
 }
 
-std::vector<double> PerpendicularAngleDerivate::evaluate()
+std::vector<double> PerpendicularAngleDerivate::evaluate() const
 {
 	return std::vector<double>();
 }
 
-void PerpendicularAngleDerivate::onReceive( const IDataChunk & data )
+void PerpendicularAngleDerivate::onReceive( const IFuncParams & data )
 {
-	if( IDataChunk::eDataChunkType::eAngle == data.type() )
+	if( IFuncParams::eParamType::eAngle == data.type() )
 	{
 		const auto & obj = static_cast<const AngleDataChunk&>( data );
 		m_Angle = obj.getAngle();
 	}
-	else if( IDataChunk::eDataChunkType::eLegsAngles == data.type() )
+	else if( IFuncParams::eParamType::eLegsAngles == data.type() )
 	{
-		const auto & obj = static_cast<const LegAnglesDataChuck&>( data );
+		const auto & obj = static_cast<const LegAnglesDataParams&>( data );
 		m_legsAngles = std::move( obj.getLegsAngles() );
 	}
 }

@@ -12,10 +12,11 @@
 #include <vector>
 #include <memory>
 
-class DerivatesVector : public std::vector<std::shared_ptr<IReceivingFunction>>, public IReceivingFunction
+class DerivatesVector : public std::vector<IFuncSh>, public IFunction
 {
 public:
-	std::vector<double> evaluate() override;
+	std::vector<double> evaluate() const override;
+	IFuncSh diff( const IFuncDiffParams & params ) override;
 	void onReceive( const IFuncParams & data ) override;
 };
 

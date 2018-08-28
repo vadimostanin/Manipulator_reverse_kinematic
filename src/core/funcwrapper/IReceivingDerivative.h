@@ -15,4 +15,6 @@ class IReceivingFunction: public IFunction, public IDataReceiver
 {
 };
 
+typedef std::shared_ptr<IReceivingFunction> IRecFuncSh;
+
 #endif /* CORE_IRECEIVINGDERIVATIVE_H_ */

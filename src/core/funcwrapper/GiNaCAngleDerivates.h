@@ -5,24 +5,23 @@
  *      Author: vadim
  */
 
-#ifndef ANGLEDERIVATES_H_
-#define ANGLEDERIVATES_H_
+#ifndef GINACANGLEDERIVATES_H_
+#define GINACANGLEDERIVATES_H_
 
 #include "IReceivingDerivative.h"
 #include <stdint.h>
 #include <vector>
 #include <ginac.h>
 
-class AngleDerivates: public IReceivingFunction
+class GiNaCAngleDerivates: public IReceivingFunction, public std::vector<IFuncSh>
 {
 public:
-	AngleDerivates();
-	~AngleDerivates() = default;
-
-	void add( const GiNaC::ex & func );
+	GiNaCAngleDerivates();
+	~GiNaCAngleDerivates() = default;
 private:
 
-	std::vector<double> evaluate() override;
+	std::vector<double> evaluate() const override;
+	IFuncSh diff( const IFuncDiffParams & params ) override;
 	void onReceive( const IFuncParams & data ) override;
 
 	double m_Angle{0.0};
@@ -32,9 +31,7 @@ private:
 	std::vector<std::shared_ptr<GiNaC::symbol>> 		m_ginacXZoYAngles;
 	std::shared_ptr<GiNaC::symbol>               		m_ginacTargetAngle;
 
-	std::vector<GiNaC::ex> m_Funcs;
-
 	uint32_t m_anglesPerLeg{2};
 };
 
-#endif /* ANGLEDERIVATES_H_ */
+#endif /* GINACANGLEDERIVATES_H_ */

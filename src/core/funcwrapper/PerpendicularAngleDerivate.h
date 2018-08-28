@@ -9,15 +9,15 @@
 #define CORE_PERPENDICULARANGLEDERIVATE_H_
 
 #include "IDataReceiver.h"
-#include "IDerivative.h"
+#include "IFunction.h"
 
 class PerpendicularAngleDerivate: public IFunction, public IDataReceiver
 {
 public:
 	PerpendicularAngleDerivate();
 private:
-	std::vector<double> evaluate() override;
-	void onReceive( const IDataChunk & data ) override;
+	std::vector<double> evaluate() const override;
+	void onReceive( const IFuncParams & data ) override;
 
 	double m_Angle{0.0};
 	std::vector<double> m_legsAngles;

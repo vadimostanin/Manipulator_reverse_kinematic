@@ -5,22 +5,18 @@
  *      Author: vadim
  */
 
-#include "AngleDerivates.h"
+#include "GiNaCAngleDerivates.h"
+
 #include "AngleDataChunk.h"
-#include "LegAnglesDataChuck.h"
-#include "GiNaCTypesChunk.h"
-#include "Utils.h"
+#include "../Utils.h"
+#include "GiNaCTypesDataParams.h"
+#include "LegAnglesDataParams.h"
 
-AngleDerivates::AngleDerivates()
+GiNaCAngleDerivates::GiNaCAngleDerivates()
 {
 }
 
-void AngleDerivates::add( const GiNaC::ex & func )
-{
-	m_Funcs.emplace_back( func );
-}
-
-std::vector<double> AngleDerivates::evaluate()
+std::vector<double> GiNaCAngleDerivates::evaluate() const
 {
 	GiNaC::lst functionVars;
 	auto legAngleIter = std::begin( m_legsAngles );
@@ -47,37 +43,37 @@ std::vector<double> AngleDerivates::evaluate()
 	std::vector<double> errors( m_legsAngles.size() );
 	GiNaC::ex perLegAngleLength;
 	auto errorIter = std::begin( errors );
-	auto derivativeIter = std::begin( m_Funcs );
-	for( ; derivativeIter != std::end( m_Funcs ) ; derivativeIter++, errorIter++ )
+	for( const auto diff : *this )
 	{
-		GiNaC::ex f = GiNaC::evalf( (*derivativeIter).subs( functionVars ) );
-		std::cout << "(*derivativeIter)=" << (*derivativeIter) << std::endl;
-//		std::cout << "f=" << f << std::endl;
+		(*errorIter) = diff->evaluate().front();
+//		std::cout << "errorIter=" << (*errorIter) << std::endl;
 
-		if (GiNaC::is_a<GiNaC::numeric>(f))
-		{
-			(*errorIter) = GiNaC::ex_to<GiNaC::numeric>(f).to_double();
-//			std::cout << "errorIter=" << (*errorIter) << std::endl;
-		}
+		errorIter++;
 	}
 	return std::move(errors);
 }
 
-void AngleDerivates::onReceive( const IDataChunk & data )
+IFuncSh GiNaCAngleDerivates::diff( const IFuncDiffParams & params )
 {
-	if( IDataChunk::eDataChunkType::eAngle == data.type() )
+    auto cloned = std::make_shared<GiNaCAngleDerivates>();
+    return cloned;
+}
+
+void GiNaCAngleDerivates::onReceive( const IFuncParams & data )
+{
+	if( IFuncParams::eParamType::eAngle == data.type() )
 	{
 		const auto & obj = static_cast<const AngleDataChunk&>( data );
 		m_Angle = Utils::deg2Rad( obj.getAngle() );
 	}
-	else if( IDataChunk::eDataChunkType::eLegsAngles == data.type() )
+	else if( IFuncParams::eParamType::eLegsAngles == data.type() )
 	{
-		const auto & obj = static_cast<const LegAnglesDataChuck&>( data );
+		const auto & obj = static_cast<const LegAnglesDataParams&>( data );
 		m_legsAngles = std::move( obj.getLegsAngles() );
 	}
-	else if( IDataChunk::eDataChunkType::eGiNaCTypes == data.type() )
+	else if( IFuncParams::eParamType::eGiNaCTypes == data.type() )
 	{
-		const auto & obj = static_cast<const GiNaCTypesChunk&>( data );
+		const auto & obj = static_cast<const GiNaCTypesDataParams&>( data );
 		obj.getAngleAngle( m_ginacTargetAngle );
 		m_ginacXYoZAngles = std::move( obj.getXYSymbols() );
 		m_ginacXZoYAngles = std::move( obj.getXZSymbols() );

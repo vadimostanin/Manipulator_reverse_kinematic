@@ -11,10 +11,11 @@
 #include <stdint.h>
 #include "IFuncParams.h"
 
-class DistanceDataChunk: public IFuncParams {
+class DistanceDataParams: public IFuncParams
+{
 public:
-	DistanceDataChunk( int32_t x, int32_t y, int32_t z );
-	virtual ~DistanceDataChunk();
+	DistanceDataParams( int32_t x, int32_t y, int32_t z );
+	virtual ~DistanceDataParams();
 
 	int32_t getX() const { return m_X; }
 	int32_t getY() const { return m_Y; }

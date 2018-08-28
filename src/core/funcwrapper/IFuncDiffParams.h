@@ -5,22 +5,20 @@
  *      Author: vadim
  */
 
-#ifndef CORE_IFUNCPARAMS_H_
-#define CORE_IFUNCPARAMS_H_
+#ifndef CORE_IFUNCDIFFPARAMS_H_
+#define CORE_IFUNCDIFFPARAMS_H_
 
-class IFuncParams
+class IFuncDiffParams
 {
 public:
 
 	enum class eParamType
 	{
-		eDistance,
-		eAngle,
-		eLegsAngles,
+		Normal = 0,
 		eGiNaCTypes
 	};
 
-	IFuncParams( eParamType type ) : m_Type( type ){}
+	IFuncDiffParams( eParamType type ) : m_Type( type ){}
 
 	eParamType type() const { return m_Type; }
 
@@ -28,4 +26,4 @@ private:
 	eParamType m_Type;
 };
 
-#endif /* CORE_IFUNCPARAMS_H_ */
+#endif /* CORE_IFUNCDIFFPARAMS_H_ */

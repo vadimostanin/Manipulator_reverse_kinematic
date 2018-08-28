@@ -5,25 +5,27 @@
  *      Author: vadim
  */
 
-#ifndef DISTANCEDERIVATES_H_
-#define DISTANCEDERIVATES_H_
+#ifndef WRAPPERERRORFUNCTION_H_
+#define WRAPPERERRORFUNCTION_H_
 
 #include "IReceivingDerivative.h"
 #include <stdint.h>
 #include <vector>
 #include <ginac.h>
 
-class DistanceDerivates: public IReceivingFunction
+class GiNaCErrorFunction: public IReceivingFunction
 {
 public:
-	DistanceDerivates();
-	~DistanceDerivates() = default;
+	GiNaCErrorFunction();
+	~GiNaCErrorFunction() = default;
 
-	void add( const GiNaC::ex & func );
+	void add( const std::shared_ptr<GiNaC::ex> func );
+	IFuncSh diff( const IFuncDiffParams & params ) override;
 private:
 
-	std::vector<double> evaluate() override;
-	void onReceive( const IDataChunk & data ) override;
+	std::vector<double> evaluate() const override;
+
+	void onReceive( const IFuncParams & data ) override;
 
 	int32_t m_X{0};
 	int32_t m_Y{0};
@@ -38,7 +40,7 @@ private:
 
 	std::vector<double> m_legsAngles;
 
-	std::vector<GiNaC::ex> m_Funcs;
+	std::vector<std::shared_ptr<GiNaC::ex>> m_Funcs;
 };
 
-#endif /* DISTANCEDERIVATES_H_ */
+#endif /* WRAPPERERRORFUNCTION_H_ */

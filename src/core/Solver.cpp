@@ -7,12 +7,11 @@
 
 #include "Solver.h"
 #include "Utils.h"
-#include "funcwrapper/DistanceDataChunk.h"
 #include "funcwrapper/AngleDataChunk.h"
-#include "funcwrapper/LegAnglesDataChuck.h"
-#include "funcwrapper/GiNaCTypesChunk.h"
 #include "funcwrapper/DistanceDerivates.h"
-#include "funcwrapper/AngleDerivates.h"
+#include "funcwrapper/GiNaCTypesDataParams.h"
+#include "funcwrapper/LegAnglesDataParams.h"
+#include "funcwrapper/GiNaCFuncDiffParams.h"
 
 #include <cmath>
 #include <iostream>
@@ -20,6 +19,9 @@
 #include <numeric>
 #include <sstream>
 #include <ginac.h>
+#include "funcwrapper/DistanceDataParams.h"
+#include "funcwrapper/GiNaCAngleDerivates.h"
+#include "funcwrapper/GiNaCErrorFunction.h"
 
 Solver::Solver( const ShLegManipulator & manipulator ) : m_manipulator( manipulator )
 {
@@ -28,7 +30,7 @@ Solver::Solver( const ShLegManipulator & manipulator ) : m_manipulator( manipula
 	initGiNaCDistanceErrorFunction();
 	initGiNaCAngleErrorFunction();
 	{
-		GiNaCTypesChunk ginacTypes;
+		GiNaCTypesDataParams ginacTypes;
 		ginacTypes.setXYSymbols( m_ginacXYoZAngles );
 		ginacTypes.setXZSymbols( m_ginacXZoYAngles );
 		ginacTypes.setTargetSymbols( m_ginacTargetX, m_ginacTargetY, m_ginacTargetZ );
@@ -114,11 +116,11 @@ void Solver::initPreSolvStochastic( int32_t x, int32_t y, int32_t z, bool angled
 //		std::cout << "derivative=" << derivative << std::endl;
 //	}
 
-	DistanceDataChunk distChunk( x, y, z );
+	DistanceDataParams distChunk( x, y, z );
 	AngleDataChunk angleChunk( angleDegree );
 
 	auto angles = std::move( getLegsAngles() );
-	LegAnglesDataChuck legsAnglesChunk( angles );
+	LegAnglesDataParams legsAnglesChunk( angles );
 
 	m_derivatesVector.onReceive( distChunk );
 	m_derivatesVector.onReceive( angleChunk );
@@ -432,7 +434,15 @@ void Solver::initGiNaCDistanceErrorFunction()
 	ErrorFunctionInfo tFunc;
 //	tFunc.type = ErrorFunctionInfo::eDistance;
 
-	tFunc.errorFunction = std::make_shared<>()GiNaC::sqrt( GiNaC::pow( exComponentX, 2 ) + GiNaC::pow( exComponentY, 2 ) + GiNaC::pow( exComponentZ, 2 ) );//GiNaC::sqrt( GiNaC::pow( 100 * GiNaC::cos( angle_0 ) + 200 - 258, 2 ) + GiNaC::pow( 100 * GiNaC::sin( angle_0 ) + 200 - 279, 2 ) );
+	auto errorFunction = std::make_shared<GiNaCErrorFunction>();
+	errorFunction->add( std::make_shared<GiNaC::ex>(
+			GiNaC::sqrt( GiNaC::pow( exComponentX, 2 ) + GiNaC::pow( exComponentY, 2 ) + GiNaC::pow( exComponentZ, 2 ) )
+	)//GiNaC::sqrt( GiNaC::pow( 100 * GiNaC::cos( angle_0 ) + 200 - 258, 2 ) + GiNaC::pow( 100 * GiNaC::sin( angle_0 ) + 200 - 279, 2 ) );
+					 );
+
+	tFunc.errorFunction = errorFunction;
+
+	m_derivatesVector.push_back( errorFunction );
 
 //	std::cout << "errorFunction=" << m_errorFunction << std::endl;
 
@@ -443,18 +453,20 @@ void Solver::initGiNaCDistanceErrorFunction()
 	for( size_t leg_i = 0 ; leg_i < m_manipulator->size() ; leg_i++, angleXYSymbolIter++, angleXZSymbolIter++ )
 	{
 		{
-			GiNaC::ex derivative = tFunc.errorFunction.diff( **angleXYSymbolIter, 1 );
+			GiNaCFuncDiffParams diffParams( *angleXYSymbolIter, 1 );
+			const auto derivative = errorFunction->diff( diffParams );
 			std::cout << "derivative=" << derivative << std::endl;
 			tFunc.errorDerivativeFunctions.emplace_back( derivative );
 
-			distDerivatives->add( derivative );
+			distDerivatives->push_back( derivative );
 		}
 		{
-			GiNaC::ex derivative = tFunc.errorFunction.diff( **angleXZSymbolIter, 1 );
+			GiNaCFuncDiffParams diffParams( *angleXZSymbolIter, 1 );
+			const auto derivative = errorFunction->diff( diffParams );
 			std::cout << "derivative=" << derivative << std::endl;
 			tFunc.errorDerivativeFunctions.emplace_back( derivative );
 
-			distDerivatives->add( derivative );
+			distDerivatives->push_back( derivative );
 		}
 	}
 	m_errorFunctionsTyped.emplace_back( tFunc );
@@ -485,32 +497,38 @@ void Solver::initGiNaCAngleErrorFunction()
 		leg_i++;
 	}
 
-	ErrorFunctionTyped tFunc;
-	tFunc.type = ErrorFunctionType::eAngle;
+	ErrorFunctionInfo tFunc;
+//	tFunc.type = ErrorFunctionType::eAngle;
 
-	tFunc.errorFunction = GiNaC::pow( GiNaC::asin( GiNaC::sin( *m_ginacAngleDegree + M_PI - sumXYoZAngles ) ) + M_PI / 2.0, 2 ) * 1;
+	auto errorFunction = std::make_shared<GiNaCErrorFunction>();
+	errorFunction->add( std::make_shared<GiNaC::ex>( GiNaC::pow( GiNaC::asin( GiNaC::sin( *m_ginacAngleDegree + M_PI - sumXYoZAngles ) ) + M_PI / 2.0, 2 ) * 1 ) );
+	tFunc.errorFunction = errorFunction;
+
+	m_derivatesVector.push_back( errorFunction );
 
 //	std::cout << "errorFunction=" << m_errorFunction << std::endl;
 
-	auto angleDerivatives = std::make_shared<AngleDerivates>();
+	auto angleDerivatives = std::make_shared<GiNaCAngleDerivates>();
 
 	auto angleXYSymbolIter = std::begin( m_ginacXYoZAngles );
 	auto angleXZSymbolIter = std::begin( m_ginacXZoYAngles );
 	for( size_t leg_i = 0 ; leg_i < m_manipulator->size() ; leg_i++, angleXYSymbolIter++, angleXZSymbolIter++ )
 	{
 		{
-			GiNaC::ex derivative = tFunc.errorFunction.diff( **angleXYSymbolIter, 1 );
+			GiNaCFuncDiffParams diffParams( *angleXYSymbolIter, 1 );
+			const auto derivative = tFunc.errorFunction->diff( diffParams );
 			std::cout << "derivative=" << derivative << std::endl;
 			tFunc.errorDerivativeFunctions.emplace_back( derivative );
 
-			angleDerivatives->add( derivative );
+			angleDerivatives->push_back( derivative );
 		}
 		{
-			GiNaC::ex derivative = tFunc.errorFunction.diff( **angleXZSymbolIter, 1 );
+			GiNaCFuncDiffParams diffParams( *angleXZSymbolIter, 1 );
+			const auto derivative = tFunc.errorFunction->diff( diffParams );
 			std::cout << "derivative=" << derivative << std::endl;
 			tFunc.errorDerivativeFunctions.emplace_back( derivative );
 
-			angleDerivatives->add( derivative );
+			angleDerivatives->push_back( derivative );
 		}
 	}
 	m_errorFunctionsTyped.emplace_back( tFunc );
@@ -1400,11 +1418,11 @@ std::vector<double> Solver::oneStep( int32_t x, int32_t y, int32_t z, bool angle
 
 std::vector<double> Solver::oneStepStochastic( int32_t x, int32_t y, int32_t z, bool angled, double angleDegree )
 {
-	DistanceDataChunk distChunk( x, y, z );
+	DistanceDataParams distChunk( x, y, z );
 	AngleDataChunk angleChunk( angleDegree );
 
 	auto angles = std::move( getLegsAngles() );
-	LegAnglesDataChuck legsAnglesChunk( angles );
+	LegAnglesDataParams legsAnglesChunk( angles );
 
 	m_derivatesVector.onReceive( distChunk );
 	m_derivatesVector.onReceive( angleChunk );
@@ -1529,7 +1547,7 @@ std::vector<double> Solver::getLegsAngles()
 	return std::move( angles );
 }
 
-std::vector<double> Solver::forwardv2_1( std::shared_ptr<IDerivative> funcDerivatives )
+std::vector<double> Solver::forwardv2_1( IFuncSh funcDerivatives )
 {
 	assert( m_ginacXYoZAngles.size() == m_manipulator->size() );
 
@@ -2072,9 +2090,9 @@ double Solver::getErrorFunctionValue( ShLegManipulator manipulator, TypePrecisio
 	return result;
 }
 
-double Solver::getErrorFunctionValue( std::shared_ptr<IDerivative> func )
+double Solver::getErrorFunctionValue( const IFuncSh func )
 {
-	return func->evaluate()[0];
+	return func->evaluate().front();
 }
 //double Solver::getErrorFunctionValue( ShLegManipulator manipulator, TypePrecision targetX, TypePrecision targetY, TypePrecision targetZ, bool angled, double angleDegree )
 //{

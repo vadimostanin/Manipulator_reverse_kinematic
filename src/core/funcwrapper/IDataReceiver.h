@@ -13,7 +13,6 @@
 class IDataReceiver
 {
 public:
-	virtual void onReceive( const IFuncParams & data ) = 0;
 	virtual ~IDataReceiver(){}
 };
 

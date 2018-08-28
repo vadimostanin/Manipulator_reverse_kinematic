@@ -13,16 +13,15 @@
 #include <vector>
 #include <ginac.h>
 
-class DistanceDerivates: public IReceivingFunction
+class DistanceDerivates: public IReceivingFunction, public std::vector<IFuncSh>
 {
 public:
 	DistanceDerivates();
 	~DistanceDerivates() = default;
-
-	void add( const GiNaC::ex & func );
 private:
 
-	std::vector<double> evaluate() override;
+	std::vector<double> evaluate() const override;
+	IFuncSh diff( const IFuncDiffParams & params ) override;
 	void onReceive( const IFuncParams & data ) override;
 
 	int32_t m_X{0};
@@ -37,8 +36,6 @@ private:
 	std::vector<std::shared_ptr<GiNaC::symbol>> 		m_ginacXZoYAngles;
 
 	std::vector<double> m_legsAngles;
-
-	std::vector<GiNaC::ex> m_Funcs;
 };
 
 #endif /* DISTANCEDERIVATES_H_ */

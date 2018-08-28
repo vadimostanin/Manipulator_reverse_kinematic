@@ -6,20 +6,16 @@
  */
 
 #include "DistanceDerivates.h"
-#include "DistanceDataChunk.h"
-#include "LegAnglesDataChuck.h"
-#include "GiNaCTypesChunk.h"
+
+#include "DistanceDataParams.h"
+#include "GiNaCTypesDataParams.h"
+#include "LegAnglesDataParams.h"
 
 DistanceDerivates::DistanceDerivates()
 {
 }
 
-void DistanceDerivates::add( const GiNaC::ex & func )
-{
-	m_Funcs.emplace_back( func );
-}
-
-std::vector<double> DistanceDerivates::evaluate()
+std::vector<double> DistanceDerivates::evaluate() const
 {
 	GiNaC::lst functionVars;
 	auto legAngleIter = std::begin( m_legsAngles );
@@ -50,39 +46,39 @@ std::vector<double> DistanceDerivates::evaluate()
 	std::vector<double> errors( m_legsAngles.size() );
 	GiNaC::ex perLegAngleLength;
 	auto errorIter = std::begin( errors );
-	auto derivativeIter = std::begin( m_Funcs );
-	for( ; derivativeIter != std::end( m_Funcs ) ; derivativeIter++, errorIter++ )
+	for( const auto diff : *this )
 	{
-		GiNaC::ex f = GiNaC::evalf( (*derivativeIter).subs( functionVars ) );
-//		std::cout << "(*derivativeIter)=" << (*derivativeIter) << std::endl;
-//		std::cout << "f=" << f << std::endl;
+		(*errorIter) = diff->evaluate().front();
+//		std::cout << "errorIter=" << (*errorIter) << std::endl;
 
-		if (GiNaC::is_a<GiNaC::numeric>(f))
-		{
-			(*errorIter) = GiNaC::ex_to<GiNaC::numeric>(f).to_double();
-//			std::cout << "errorIter=" << (*errorIter) << std::endl;
-		}
+		errorIter++;
 	}
 	return std::move(errors);
 }
 
+IFuncSh DistanceDerivates::diff( const IFuncDiffParams & params )
+{
+    auto cloned = std::make_shared<DistanceDerivates>();
+    return cloned;
+}
+
 void DistanceDerivates::onReceive( const IFuncParams & data )
 {
-	if( IFuncParams::eDataChunkType::eDistance == data.type() )
+	if( IFuncParams::eParamType::eDistance == data.type() )
 	{
-		const auto & obj = static_cast<const DistanceDataChunk&>( data );
+		const auto & obj = static_cast<const DistanceDataParams&>( data );
 		m_X = obj.getX();
 		m_Y = obj.getY();
 		m_Z = obj.getZ();
 	}
-	else if( IFuncParams::eDataChunkType::eLegsAngles == data.type() )
+	else if( IFuncParams::eParamType::eLegsAngles == data.type() )
 	{
-		const auto & obj = static_cast<const LegAnglesDataChuck&>( data );
+		const auto & obj = static_cast<const LegAnglesDataParams&>( data );
 		m_legsAngles = std::move( obj.getLegsAngles() );
 	}
-	else if( IFuncParams::eDataChunkType::eGiNaCTypes == data.type() )
+	else if( IFuncParams::eParamType::eGiNaCTypes == data.type() )
 	{
-		const auto & obj = static_cast<const GiNaCTypesChunk&>( data );
+		const auto & obj = static_cast<const GiNaCTypesDataParams&>( data );
 		obj.getTargetSymbols( m_ginacTargetX, m_ginacTargetY, m_ginacTargetZ );
 		m_ginacXYoZAngles = std::move( obj.getXYSymbols() );
 		m_ginacXZoYAngles = std::move( obj.getXZSymbols() );

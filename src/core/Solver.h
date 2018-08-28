@@ -63,7 +63,7 @@ public:
 	double getErrorFunctionValue( TypePrecision targetX, TypePrecision targetY, TypePrecision targetZ, bool angled = false, double angleDegree = 0.0 );
 	double getErrorFunctionValue( ShLegManipulator manipulator, TypePrecision targetX, TypePrecision targetY, TypePrecision targetZ, bool angled = false, double angleDegree = 0.0 );
 
-	double getErrorFunctionValue( std::shared_ptr<IFunction> func );
+	double getErrorFunctionValue( const IFuncSh func );
 
 	ShLegManipulator getCurrentManipulator() const;
 
@@ -80,7 +80,7 @@ private:
 	void fillParams( int32_t targetX, int32_t targetY, int32_t targetZ, std::vector<double> & params );
 	std::vector<double> forwardLegv3( uint32_t legIndex, int32_t targetX, int32_t targetY, int32_t targetZ );
 	std::vector<double> forwardv3( int32_t expectedX, int32_t expectedY, int32_t expectedZ, bool angled = false, double angleDegree = 0.0 );
-	std::vector<double> forwardv2_1( std::shared_ptr<IFunction> funcDerivatives );
+	std::vector<double> forwardv2_1( IFuncSh funcDerivatives );
 	std::vector<double> forwardv2( int32_t expectedX, int32_t expectedY, int32_t expectedZ, bool angled = false, double angleDegree = 0.0 );
 	std::vector<double> forwardv1( int32_t x, int32_t y );
 	void backward( const std::vector<double> & angleErrors );
