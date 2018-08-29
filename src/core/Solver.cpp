@@ -28,8 +28,8 @@ Solver::Solver( const ShLegManipulator & manipulator ) : m_manipulator( manipula
 {
 	fillPredefinedDerErrorFunctions();
 	initGiNaCVars();
-//	initGiNaCDistanceErrorFunction();
-	initGiNaCAngleErrorFunction();
+	initGiNaCDistanceErrorFunction();
+//	initGiNaCAngleErrorFunction();
 	{
 		GiNaCTypesDataParams ginacTypes;
 		ginacTypes.setXYSymbols( m_ginacXYoZAngles );
@@ -37,10 +37,16 @@ Solver::Solver( const ShLegManipulator & manipulator ) : m_manipulator( manipula
 		ginacTypes.setTargetSymbols( m_ginacTargetX, m_ginacTargetY, m_ginacTargetZ );
 		ginacTypes.setAngleSymbol( m_ginacAngleDegree );
 
+		auto angles = std::move( getLegsAngles() );
+		LegAnglesDataParams legsAnglesChunk( angles );
+
 		for( auto & funcInfo : m_errorFunctionsTyped )
 		{
 			funcInfo.errorFunction->onReceive( ginacTypes );
 			funcInfo.errorDerivativeFunctions->onReceive( ginacTypes );
+
+			funcInfo.errorFunction->onReceive( legsAnglesChunk );
+			funcInfo.errorDerivativeFunctions->onReceive( legsAnglesChunk );
 		}
 //		m_derivatesVector.onReceive( ginacTypes );
 	}
@@ -2121,7 +2127,8 @@ double Solver::getErrorFunctionValue( ShLegManipulator manipulator, TypePrecisio
 	double result = 0.0f;
 	for( const auto & funcInfo : m_errorFunctionsTyped )
 	{
-		result += funcInfo.errorFunction->evaluate().front();
+		const auto errors = funcInfo.errorFunction->evaluate();
+		result += errors.front();
 	}
 	std::cout << "error=" << result << std::endl;
 //	GiNaC::ex f = GiNaC::evalf( m_errorFunction.subs( functionVars ) );
