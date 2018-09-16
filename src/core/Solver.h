@@ -70,12 +70,14 @@ public:
 	std::vector<double> oneStep( int32_t x, int32_t y, int32_t z, bool angled = false, double angleDegree = 0.0 );// temporary in public, need to be private
 	std::vector<double> oneStepStochastic( int32_t x, int32_t y, int32_t z, bool angled, double angleDegree );
 	std::vector<double> oneStepV2( int32_t x, int32_t y, int32_t z );
+
+	void initPreSolv( int32_t x, int32_t y, int32_t z, bool angled = false, double angleDegree = 0.0 );
+	void initPreSolvStochastic( int32_t x, int32_t y, int32_t z, bool angled, double angleDegree );
 private:
 	void fillPredefinedDerErrorFunctions();
 
 	void updateLearningRate( const std::vector<double> & angleErrors, uint32_t index = 0 );
-	void initPreSolv( int32_t x, int32_t y, int32_t z, bool angled = false, double angleDegree = 0.0 );
-	void initPreSolvStochastic( int32_t x, int32_t y, int32_t z, bool angled, double angleDegree );
+
 	void fillParams( int32_t targetX, int32_t targetY, int32_t targetZ, std::vector<double> & params );
 	std::vector<double> forwardLegv3( uint32_t legIndex, int32_t targetX, int32_t targetY, int32_t targetZ );
 	std::vector<double> forwardv3( int32_t expectedX, int32_t expectedY, int32_t expectedZ, bool angled = false, double angleDegree = 0.0 );
