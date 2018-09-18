@@ -115,10 +115,10 @@ void onOneStep( HelloWorld * lpHelloWorld )
 	}
 
 	{
-		lpHelloWorld->m_solver.oneStepV2( lpHelloWorld->m_desirablePoint.getX(), lpHelloWorld->m_desirablePoint.getY(), lpHelloWorld->m_desirablePoint.getZ() );
+		lpHelloWorld->m_solver.oneStepStochastic( lpHelloWorld->m_desirablePoint.getX(), lpHelloWorld->m_desirablePoint.getY(), lpHelloWorld->m_desirablePoint.getZ(), false, 0.0 );
 	}
 	lpHelloWorld->redraw();
-	std::cout << "after solve" << std::endl;
+	std::cout << "after solve error=" << lpHelloWorld->m_solver.getErrorFunctionValueAllTypes() << std::endl;
 //	LegsMgr::get().print();
 //	TypePrecision finalX, finalY, finalZ;
 //	LegsMgr::get().getLastLeg()->getCalulatedFinalPosition( finalX, finalY, finalZ );
@@ -240,6 +240,22 @@ void onContIterShuffledSolve( HelloWorld * lpHelloWorld)
 	std::cout << "error=" << lpHelloWorld->m_solver.getErrorFunctionValue( lpHelloWorld->m_desirablePoint.getX(), lpHelloWorld->m_desirablePoint.getY(), lpHelloWorld->m_desirablePoint.getZ() ) << std::endl;
 }
 
+void onsolveFromCurrentAngledStochastic( HelloWorld * lpHelloWorld)
+{
+//	LegsMgr::get().print();
+	double epsilonChangeError = 0.01;
+	std::cout << "before solve" << std::endl;
+//	LegsMgr::get().print();
+	lpHelloWorld->m_solver.solveFromCurrentAngledStochastic( lpHelloWorld->m_desirablePoint.getX(), lpHelloWorld->m_desirablePoint.getY(), lpHelloWorld->m_desirablePoint.getZ(), 0.0, epsilonChangeError, 1000,
+			[&lpHelloWorld]( const std::vector<double> & error )
+			{
+				lpHelloWorld->redraw();
+			}
+	);
+	std::cout << "after solve" << std::endl;
+	std::cout << "error=" << lpHelloWorld->m_solver.getErrorFunctionValue( lpHelloWorld->m_desirablePoint.getX(), lpHelloWorld->m_desirablePoint.getY(), lpHelloWorld->m_desirablePoint.getZ() ) << std::endl;
+}
+
 
 bool startInterpolate = false;
 std::chrono::time_point<std::chrono::system_clock> interpolationStartTime;
@@ -254,8 +270,8 @@ bool onXYoZButtonPressed(GdkEventButton* event, HelloWorld * lpHelloWorld)
 	try
 	{
 //		std::cout << "on_my_button_press_event" << std::endl;
-//		event->x = 106;
-//		event->y = 332;
+		event->x = 200;
+		event->y = 200;
 		lpHelloWorld->m_XYoZArea.setX( event->x );//106, 332
 		lpHelloWorld->m_XYoZArea.setY( event->y );
 
@@ -284,7 +300,9 @@ bool onXYoZButtonPressed(GdkEventButton* event, HelloWorld * lpHelloWorld)
 //		onPerpendicularSolve( lpHelloWorld );
 //		onPerpendicularShuffleSolve( lpHelloWorld );
 //		onPerpendicularNativeStochasticSolve( lpHelloWorld );
-		onOneStep( lpHelloWorld );
+		onsolveFromCurrentAngledStochastic( lpHelloWorld );
+//		onOneStep( lpHelloWorld );
+
 		{
 //			std::vector<double> varAngles = ManipulatorUniConverter::getFormatedAngles( lpHelloWorld->m_solver.getCurrentManipulator() );
 //			InterpolatedMove2::get().setVars( varAngles );

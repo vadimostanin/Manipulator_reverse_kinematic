@@ -63,6 +63,7 @@ public:
 	double getErrorFunctionValue( ShLegManipulator manipulator, TypePrecision targetX, TypePrecision targetY, TypePrecision targetZ, bool angled = false, double angleDegree = 0.0 );
 
 	double getErrorFunctionValue( const IFuncSh func );
+	double getErrorFunctionValueAllTypes();
 
 	ShLegManipulator getCurrentManipulator() const;
 
@@ -131,7 +132,7 @@ private:
 	static constexpr float m_ratioRadiansPer1PixelError{0.001};// Begins angles searching with 0.5 radians = 28 degrees
 														   // if distance = 100 pixels
 
-	uint32_t m_anglesPerLeg{2};
+	const uint32_t m_anglesPerLeg{2};
 
 	ContrainsTooClose m_constrinTooClose;
 };

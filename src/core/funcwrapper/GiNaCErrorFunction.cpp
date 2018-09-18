@@ -56,12 +56,13 @@ std::vector<double> GiNaCErrorFunction::evaluate() const
 	GiNaC::ex perLegAngleLength;
 
 	GiNaC::ex f = GiNaC::evalf( m_Ex->subs( functionVars ) );
-	std::cout << "f=" << f << std::endl;
+//	std::cout << "m_Ex=" << *m_Ex << std::endl;
+//	std::cout << "error=" << f << std::endl;
 
 	if (GiNaC::is_a<GiNaC::numeric>(f))
 	{
 		errors.push_back( GiNaC::ex_to<GiNaC::numeric>(f).to_double() );
-		std::cout << "error=" << errors.front() << std::endl;
+//		std::cout << "error=" << errors.front() << std::endl;
 	}
 
 	return std::move(errors);
