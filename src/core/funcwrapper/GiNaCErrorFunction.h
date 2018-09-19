@@ -19,8 +19,10 @@ public:
 	GiNaCErrorFunction( std::shared_ptr<GiNaC::ex> ex );
 	~GiNaCErrorFunction() = default;
 
-	IFuncSh diff( const IFuncDiffParams & params ) override;
+	std::shared_ptr<GiNaC::ex> getEx() const { return m_Ex; }
+
 private:
+	IFuncSh diff( const IFuncParams & params ) override;
 
 	std::vector<double> evaluate() const override;
 

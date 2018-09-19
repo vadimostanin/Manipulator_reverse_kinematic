@@ -11,7 +11,7 @@
 #include <vector>
 #include <functional>
 
-typedef std::function<double( std::vector<double> & )> DerivFuncType;
+#include "funcwrapper/Types.h"
 
 class DerivativeFuncsStorage
 {
@@ -19,7 +19,7 @@ public:
 	DerivativeFuncsStorage();
 	~DerivativeFuncsStorage();
 
-	void getFunc( int legsCount, std::vector<DerivFuncType> & funcs );
+	void getFuncs( int legsCount, std::vector<ErrorFuncType> & funcs );
 };
 
 #endif /* DERIVATIVEFUNCSSTORAGE_H_ */

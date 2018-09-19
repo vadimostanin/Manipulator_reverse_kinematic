@@ -16,7 +16,7 @@ class FunctionVector : public std::vector<IFuncSh>, public IFunction
 {
 public:
 	std::vector<double> evaluate() const override;
-	IFuncSh diff( const IFuncDiffParams & params ) override;
+	IFuncSh diff( const IFuncParams & params ) override;
 	void onReceive( const IFuncParams & data ) override;
 };
 

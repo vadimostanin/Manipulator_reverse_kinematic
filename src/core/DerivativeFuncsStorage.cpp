@@ -17,7 +17,7 @@ DerivativeFuncsStorage::~DerivativeFuncsStorage()
 {
 }
 
-void DerivativeFuncsStorage::getFunc( int legsCount, std::vector<DerivFuncType> & funcs )
+void DerivativeFuncsStorage::getFuncs( int legsCount, std::vector<ErrorFuncType> & funcs )
 {
 	funcs.clear();
 	switch( legsCount )

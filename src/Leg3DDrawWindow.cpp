@@ -231,9 +231,9 @@ void Leg3DDrawWindow::renderScene(void)
 		drawLeg->render();
 	}
 		glPushMatrix();
-
+		glColor3f(0.2f, 0.2f, 0.9f);
 			glTranslatef( solveForX, solveForY, solveForZ );
-			glutSolidSphere( 5, 32, 32 );
+			glutSolidSphere( 20, 32, 32 );
 		glPopMatrix();
 	glPopMatrix();
 

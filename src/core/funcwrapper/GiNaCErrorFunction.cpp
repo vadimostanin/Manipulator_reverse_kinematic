@@ -68,7 +68,7 @@ std::vector<double> GiNaCErrorFunction::evaluate() const
 	return std::move(errors);
 }
 
-IFuncSh GiNaCErrorFunction::diff( const IFuncDiffParams & iParams )
+IFuncSh GiNaCErrorFunction::diff( const IFuncParams & iParams )
 {
 	const auto & params = static_cast<const GiNaCFuncDiffParams&>( iParams );
     auto cloned = std::make_shared<GiNaCErrorFunction>(

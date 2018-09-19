@@ -19,7 +19,7 @@ std::vector<double> FunctionVector::evaluate() const
 	return result;
 }
 
-IFuncSh FunctionVector::diff( const IFuncDiffParams & iParams )
+IFuncSh FunctionVector::diff( const IFuncParams & iParams )
 {
     auto cloned = std::make_shared<FunctionVector>();
     for( const auto func : *this )

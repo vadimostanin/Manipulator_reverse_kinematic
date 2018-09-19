@@ -17,7 +17,7 @@ ErrorFuncStorage::~ErrorFuncStorage()
 {
 }
 
-void ErrorFuncStorage::getFunc( int32_t legsCount, ErroFuncType & func )
+void ErrorFuncStorage::getFunc( int32_t legsCount, ErrorFuncType & func )
 {
 	switch( legsCount )
 	{

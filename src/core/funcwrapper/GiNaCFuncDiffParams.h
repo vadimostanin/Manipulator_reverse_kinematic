@@ -8,10 +8,10 @@
 #ifndef CORE_FUNCWRAPPER_GINACFUNCDIFFPARAMS_H_
 #define CORE_FUNCWRAPPER_GINACFUNCDIFFPARAMS_H_
 
-#include "IFuncDiffParams.h"
+#include "IFuncParams.h"
 #include <symbol.h>
 
-class GiNaCFuncDiffParams: public IFuncDiffParams
+class GiNaCFuncDiffParams: public IFuncParams
 {
 public:
 	GiNaCFuncDiffParams( std::shared_ptr<GiNaC::symbol> symbol, uint32_t derrivativeDepth );

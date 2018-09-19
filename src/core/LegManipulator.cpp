@@ -22,13 +22,14 @@ LegManipulator::~LegManipulator()
 {
 }
 
-void LegManipulator::add( int length )
+ShLeg LegManipulator::add( int length )
 {
 	const int count = size();
 	const int level = count;
 	auto leg = std::make_shared<Leg>( level );
 	leg->setLength( length );
 	emplace_back( leg );
+	return leg;
 }
 
 void LegManipulator::pair( ShLeg parent, ShLeg child )

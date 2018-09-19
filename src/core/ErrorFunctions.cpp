@@ -9,7 +9,7 @@
 #include <cassert>
 #include <cmath>
 
-double ErrorFunctions::error_Legs_1( std::vector<double> & params )
+double ErrorFunctions::error_Legs_1( const std::vector<double> & params )
 {
 	assert( params.size() == 13 );
 
@@ -32,7 +32,7 @@ double ErrorFunctions::error_Legs_1( std::vector<double> & params )
 	return result;
 }
 
-double ErrorFunctions::error_Legs_2( std::vector<double> & params )
+double ErrorFunctions::error_Legs_2( const std::vector<double> & params )
 {
 	assert( params.size() == 17 );
 
@@ -59,7 +59,7 @@ double ErrorFunctions::error_Legs_2( std::vector<double> & params )
 	return result;
 }
 
-double ErrorFunctions::error_Legs_3( std::vector<double> & params )
+double ErrorFunctions::error_Legs_3( const std::vector<double> & params )
 {
 	assert( params.size() == 21 );
 
@@ -90,7 +90,7 @@ double ErrorFunctions::error_Legs_3( std::vector<double> & params )
 	return result;
 }
 
-double ErrorFunctions::error_Legs_4( std::vector<double> & params )
+double ErrorFunctions::error_Legs_4( const std::vector<double> & params )
 {
 	assert( params.size() == 25 );
 
@@ -125,7 +125,7 @@ double ErrorFunctions::error_Legs_4( std::vector<double> & params )
 	return result;
 }
 
-double ErrorFunctions::error_Legs_5( std::vector<double> & params )
+double ErrorFunctions::error_Legs_5( const std::vector<double> & params )
 {
 	assert( params.size() == 29 );
 
@@ -164,7 +164,7 @@ double ErrorFunctions::error_Legs_5( std::vector<double> & params )
 	return result;
 }
 
-double ErrorFunctions::error_Legs_10( std::vector<double> & params )
+double ErrorFunctions::error_Legs_10( const std::vector<double> & params )
 {
 	assert( params.size() == 49 );
 

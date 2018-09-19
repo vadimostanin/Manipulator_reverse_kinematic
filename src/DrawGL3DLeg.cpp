@@ -54,11 +54,11 @@ void DrawGL3DLeg::render() const
 //		glPopMatrix();
 		glPushMatrix();
 			glTranslatef( initialX, initialY, initialZ );
-			glutSolidSphere( 5, 32, 32 );
+			glutSolidSphere( 3 + m_Leg->getLevel(), 32, 32 );
 		glPopMatrix();
 		glPushMatrix();
 			glTranslatef( finalX, finalY, finalZ );
-			glutSolidSphere( 5, 32, 32 );
+			glutSolidSphere( 3 + m_Leg->getLevel(), 32, 32 );
 		glPopMatrix();
 
 //		std::cout << "distance=" << Utils::distance( initialX, initialY, initialZ, finalX, finalY, finalZ ) << std::endl;

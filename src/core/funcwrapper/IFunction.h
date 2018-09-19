@@ -9,7 +9,6 @@
 #define CORE_IDERIVATIVE_H_
 
 #include "IDataReceiver.h"
-#include "IFuncDiffParams.h"
 #include <vector>
 #include <memory>
 
@@ -20,7 +19,7 @@ class IFunction
 {
 public:
 	virtual std::vector<double> evaluate() const = 0;
-	virtual IFuncSh diff( const IFuncDiffParams & params ) = 0;
+	virtual IFuncSh diff( const IFuncParams & params ) = 0;
 	virtual void onReceive( const IFuncParams & data ) = 0;
 	virtual ~IFunction(){};
 };

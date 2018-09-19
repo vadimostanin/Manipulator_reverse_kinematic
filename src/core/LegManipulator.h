@@ -20,7 +20,7 @@ public:
 	LegManipulator( Legs::iterator begin, Legs::iterator end );
 	virtual ~LegManipulator();
 
-	void add( int length );
+	ShLeg add( int length );
 	ShLeg getLeg( int level );
 	Legs & getLegs();
 

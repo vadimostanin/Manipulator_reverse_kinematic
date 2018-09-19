@@ -246,14 +246,13 @@ void onsolveFromCurrentAngledStochastic( HelloWorld * lpHelloWorld)
 	double epsilonChangeError = 0.01;
 	std::cout << "before solve" << std::endl;
 //	LegsMgr::get().print();
-	lpHelloWorld->m_solver.solveFromCurrentAngledStochastic( lpHelloWorld->m_desirablePoint.getX(), lpHelloWorld->m_desirablePoint.getY(), lpHelloWorld->m_desirablePoint.getZ(), 0.0, epsilonChangeError, 1000,
+	lpHelloWorld->m_solver.solveFromCurrentAngledStochastic( lpHelloWorld->m_desirablePoint.getX(), lpHelloWorld->m_desirablePoint.getY(), lpHelloWorld->m_desirablePoint.getZ(), 0.0, epsilonChangeError, 200,
 			[&lpHelloWorld]( const std::vector<double> & error )
 			{
 				lpHelloWorld->redraw();
 			}
 	);
 	std::cout << "after solve" << std::endl;
-	std::cout << "error=" << lpHelloWorld->m_solver.getErrorFunctionValue( lpHelloWorld->m_desirablePoint.getX(), lpHelloWorld->m_desirablePoint.getY(), lpHelloWorld->m_desirablePoint.getZ() ) << std::endl;
 }
 
 
@@ -270,8 +269,23 @@ bool onXYoZButtonPressed(GdkEventButton* event, HelloWorld * lpHelloWorld)
 	try
 	{
 //		std::cout << "on_my_button_press_event" << std::endl;
-		event->x = 200;
-		event->y = 200;
+		static int counter = 0;
+		if( counter == 0 )
+		{
+			event->x = 200;
+			event->y = 200;
+		}
+		else if( counter == 1 )
+		{
+			event->x = 220;
+			event->y = 220;
+		}
+		else if( counter == 2 )
+		{
+			event->x = 240;
+			event->y = 240;
+		}
+		counter++;
 		lpHelloWorld->m_XYoZArea.setX( event->x );//106, 332
 		lpHelloWorld->m_XYoZArea.setY( event->y );
 
@@ -348,6 +362,7 @@ bool onXYoZButtonMove(GdkEventMotion* event, HelloWorld * lpHelloWorld)
 //		onShuffledLessAngleSolve( lpHelloWorld );
 //		onPerpendicularSolve( lpHelloWorld );
 //		onContIterShuffledLessAngleSolve( lpHelloWorld );
+		onsolveFromCurrentAngledStochastic( lpHelloWorld );
 		lpHelloWorld->redraw();
 	}
 	catch( std::exception & ex )
@@ -380,8 +395,9 @@ bool onXZoYButtonPressed(GdkEventButton* event, HelloWorld * lpHelloWorld)
 //	onShuffledLessErrorSolve( lpHelloWorld );
 //	onShuffledLessAngleSolve( lpHelloWorld );
 //	onContIterShuffledLessAngleSolve( lpHelloWorld );
-	onContIterShuffledSolve( lpHelloWorld );
+//	onContIterShuffledSolve( lpHelloWorld );
 //	onPerpendicularSolve( lpHelloWorld );
+	onsolveFromCurrentAngledStochastic( lpHelloWorld );
 
 	std::vector<double>varAngles = ManipulatorUniConverter::getFormatedAngles( lpHelloWorld->m_solver.getCurrentManipulator() );
 	InterpolatedMove2::get().setVars( varAngles );
@@ -498,7 +514,7 @@ HelloWorld::HelloWorld()
   m_interpolateButton.signal_clicked().connect( sigc::bind<HelloWorld*>( sigc::ptr_fun( &onInterpolateExp5 ), this ) );
 
   m_XYoZArea.signal_button_press_event().connect( sigc::bind<HelloWorld*>( sigc::ptr_fun( &onXYoZButtonPressed ), this ) );
-//  m_XYoZArea.signal_motion_notify_event().connect( sigc::bind<HelloWorld*>( sigc::ptr_fun( &onXYoZButtonMove ), this ) );
+  m_XYoZArea.signal_motion_notify_event().connect( sigc::bind<HelloWorld*>( sigc::ptr_fun( &onXYoZButtonMove ), this ) );
 
   m_XZoYArea.signal_button_press_event().connect( sigc::bind<HelloWorld*>( sigc::ptr_fun( &onXZoYButtonPressed ), this ) );
   m_XZoYArea.signal_motion_notify_event().connect( sigc::bind<HelloWorld*>( sigc::ptr_fun( &onXZoYButtonMove ), this ) );

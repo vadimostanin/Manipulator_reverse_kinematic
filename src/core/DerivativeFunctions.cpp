@@ -14,7 +14,7 @@
 //	return pow( value, power );
 //}
 
-double DerivativeFunctions::derivative_XY_1_Legs_0( std::vector<double> & params )
+double DerivativeFunctions::derivative_XY_1_Legs_0( const std::vector<double> & params )
 {
 	assert( params.size() == 13 );
 
@@ -37,7 +37,7 @@ double DerivativeFunctions::derivative_XY_1_Legs_0( std::vector<double> & params
 	return result;
 }
 
-double DerivativeFunctions::derivative_XZ_1_Legs_0( std::vector<double> & params )
+double DerivativeFunctions::derivative_XZ_1_Legs_0( const std::vector<double> & params )
 {
 	assert( params.size() == 13 );
 
@@ -60,7 +60,7 @@ double DerivativeFunctions::derivative_XZ_1_Legs_0( std::vector<double> & params
 	return result;
 }
 
-double DerivativeFunctions::derivative_XY_2_Legs_0( std::vector<double> & params )
+double DerivativeFunctions::derivative_XY_2_Legs_0( const std::vector<double> & params )
 {
 	assert( params.size() == 17 );
 
@@ -87,7 +87,7 @@ double DerivativeFunctions::derivative_XY_2_Legs_0( std::vector<double> & params
 	return result;
 }
 
-double DerivativeFunctions::derivative_XY_2_Legs_1( std::vector<double> & params )
+double DerivativeFunctions::derivative_XY_2_Legs_1( const std::vector<double> & params )
 {
 	assert( params.size() == 17 );
 
@@ -114,7 +114,7 @@ double DerivativeFunctions::derivative_XY_2_Legs_1( std::vector<double> & params
 	return result;
 }
 
-double DerivativeFunctions::derivative_XZ_2_Legs_0( std::vector<double> & params )
+double DerivativeFunctions::derivative_XZ_2_Legs_0( const std::vector<double> & params )
 {
 	assert( params.size() == 17 );
 
@@ -141,7 +141,7 @@ double DerivativeFunctions::derivative_XZ_2_Legs_0( std::vector<double> & params
 	return result;
 }
 
-double DerivativeFunctions::derivative_XZ_2_Legs_1( std::vector<double> & params )
+double DerivativeFunctions::derivative_XZ_2_Legs_1( const std::vector<double> & params )
 {
 	assert( params.size() == 17 );
 
@@ -168,7 +168,7 @@ double DerivativeFunctions::derivative_XZ_2_Legs_1( std::vector<double> & params
 	return result;
 }
 
-double DerivativeFunctions::derivative_XY_3_Legs_0( std::vector<double> & params )
+double DerivativeFunctions::derivative_XY_3_Legs_0( const std::vector<double> & params )
 {
 	assert( params.size() == 21 );
 
@@ -199,7 +199,7 @@ double DerivativeFunctions::derivative_XY_3_Legs_0( std::vector<double> & params
 	return result;
 }
 
-double DerivativeFunctions::derivative_XY_3_Legs_1( std::vector<double> & params )
+double DerivativeFunctions::derivative_XY_3_Legs_1( const std::vector<double> & params )
 {
 	assert( params.size() == 21 );
 
@@ -230,7 +230,7 @@ double DerivativeFunctions::derivative_XY_3_Legs_1( std::vector<double> & params
 	return result;
 }
 
-double DerivativeFunctions::derivative_XY_3_Legs_2( std::vector<double> & params )
+double DerivativeFunctions::derivative_XY_3_Legs_2( const std::vector<double> & params )
 {
 	assert( params.size() == 21 );
 
@@ -261,7 +261,7 @@ double DerivativeFunctions::derivative_XY_3_Legs_2( std::vector<double> & params
 	return result;
 }
 
-double DerivativeFunctions::derivative_XZ_3_Legs_0( std::vector<double> & params )
+double DerivativeFunctions::derivative_XZ_3_Legs_0( const std::vector<double> & params )
 {
 	assert( params.size() == 21 );
 
@@ -292,7 +292,7 @@ double DerivativeFunctions::derivative_XZ_3_Legs_0( std::vector<double> & params
 	return result;
 }
 
-double DerivativeFunctions::derivative_XZ_3_Legs_1( std::vector<double> & params )
+double DerivativeFunctions::derivative_XZ_3_Legs_1( const std::vector<double> & params )
 {
 	assert( params.size() == 21 );
 
@@ -323,7 +323,7 @@ double DerivativeFunctions::derivative_XZ_3_Legs_1( std::vector<double> & params
 	return result;
 }
 
-double DerivativeFunctions::derivative_XZ_3_Legs_2( std::vector<double> & params )
+double DerivativeFunctions::derivative_XZ_3_Legs_2( const std::vector<double> & params )
 {
 	assert( params.size() == 21 );
 
@@ -354,7 +354,7 @@ double DerivativeFunctions::derivative_XZ_3_Legs_2( std::vector<double> & params
 	return result;
 }
 
-double DerivativeFunctions::derivative_XY_4_Legs_0( std::vector<double> & params )
+double DerivativeFunctions::derivative_XY_4_Legs_0( const std::vector<double> & params )
 {
 	assert( params.size() == 25 );
 
@@ -389,7 +389,7 @@ double DerivativeFunctions::derivative_XY_4_Legs_0( std::vector<double> & params
 	return result;
 }
 
-double DerivativeFunctions::derivative_XY_4_Legs_1( std::vector<double> & params )
+double DerivativeFunctions::derivative_XY_4_Legs_1( const std::vector<double> & params )
 {
 	assert( params.size() == 25 );
 
@@ -424,7 +424,7 @@ double DerivativeFunctions::derivative_XY_4_Legs_1( std::vector<double> & params
 	return result;
 }
 
-double DerivativeFunctions::derivative_XY_4_Legs_2( std::vector<double> & params )
+double DerivativeFunctions::derivative_XY_4_Legs_2( const std::vector<double> & params )
 {
 	assert( params.size() == 25 );
 
@@ -459,7 +459,7 @@ double DerivativeFunctions::derivative_XY_4_Legs_2( std::vector<double> & params
 	return result;
 }
 
-double DerivativeFunctions::derivative_XY_4_Legs_3( std::vector<double> & params )
+double DerivativeFunctions::derivative_XY_4_Legs_3( const std::vector<double> & params )
 {
 	assert( params.size() == 25 );
 
@@ -494,7 +494,7 @@ double DerivativeFunctions::derivative_XY_4_Legs_3( std::vector<double> & params
 	return result;
 }
 
-double DerivativeFunctions::derivative_XZ_4_Legs_0( std::vector<double> & params )
+double DerivativeFunctions::derivative_XZ_4_Legs_0( const std::vector<double> & params )
 {
 	assert( params.size() == 25 );
 
@@ -529,7 +529,7 @@ double DerivativeFunctions::derivative_XZ_4_Legs_0( std::vector<double> & params
 	return result;
 }
 
-double DerivativeFunctions::derivative_XZ_4_Legs_1( std::vector<double> & params )
+double DerivativeFunctions::derivative_XZ_4_Legs_1( const std::vector<double> & params )
 {
 	assert( params.size() == 25 );
 
@@ -564,7 +564,7 @@ double DerivativeFunctions::derivative_XZ_4_Legs_1( std::vector<double> & params
 	return result;
 }
 
-double DerivativeFunctions::derivative_XZ_4_Legs_2( std::vector<double> & params )
+double DerivativeFunctions::derivative_XZ_4_Legs_2( const std::vector<double> & params )
 {
 	assert( params.size() == 25 );
 
@@ -599,7 +599,7 @@ double DerivativeFunctions::derivative_XZ_4_Legs_2( std::vector<double> & params
 	return result;
 }
 
-double DerivativeFunctions::derivative_XZ_4_Legs_3( std::vector<double> & params )
+double DerivativeFunctions::derivative_XZ_4_Legs_3( const std::vector<double> & params )
 {
 	assert( params.size() == 25 );
 
@@ -634,7 +634,7 @@ double DerivativeFunctions::derivative_XZ_4_Legs_3( std::vector<double> & params
 	return result;
 }
 
-double DerivativeFunctions::derivative_XY_5_Legs_0( std::vector<double> & params )
+double DerivativeFunctions::derivative_XY_5_Legs_0( const std::vector<double> & params )
 {
 	assert( params.size() == 29 );
 
@@ -650,30 +650,25 @@ double DerivativeFunctions::derivative_XY_5_Legs_0( std::vector<double> & params
 	double length_0 = params[ 9 + 0 ];
 	double angleXY_0 = params[ 9 + 1 ];
 	double angleXZ_0 = params[ 9 + 2 ];
-	//double angleZY_0 = params[ 9 + 3 ];
 	double length_1 = params[ 9 + 4 ];
 	double angleXY_1 = params[ 9 + 5 ];
 	double angleXZ_1 = params[ 9 + 6 ];
-	//double angleZY_1 = params[ 9 + 7 ];
 	double length_2 = params[ 9 + 8 ];
 	double angleXY_2 = params[ 9 + 9 ];
 	double angleXZ_2 = params[ 9 + 10 ];
-	//double angleZY_2 = params[ 9 + 11 ];
 	double length_3 = params[ 9 + 12 ];
 	double angleXY_3 = params[ 9 + 13 ];
 	double angleXZ_3 = params[ 9 + 14 ];
-	//double angleZY_3 = params[ 9 + 15 ];
 	double length_4 = params[ 9 + 16 ];
 	double angleXY_4 = params[ 9 + 17 ];
 	double angleXZ_4 = params[ 9 + 18 ];
-	//double angleZY_4 = params[ 9 + 19 ];
 
-	double result = -( ( cos(angleXZ_0)*length_0*sin(angleXY_0)+sin( angleXY_1+angleXY_0)*cos( angleXZ_1+angleXZ_0)*length_1+sin( angleXY_4+angleXY_1+angleXY_3+angleXY_0+angleXY_2)*cos( angleXZ_2+angleXZ_4+angleXZ_1+angleXZ_3+angleXZ_0)*length_4+length_3*cos( angleXZ_2+angleXZ_1+angleXZ_3+angleXZ_0)*sin( angleXY_1+angleXY_3+angleXY_0+angleXY_2)+length_2*sin( angleXY_1+angleXY_0+angleXY_2)*cos( angleXZ_2+angleXZ_1+angleXZ_0))*( length_2*cos( angleXZ_2+angleXZ_1+angleXZ_0)*cos( angleXY_1+angleXY_0+angleXY_2)+5.0*initialOffsetX+cos(angleXZ_0)*cos(angleXY_0)*length_0+initialX-targetX+cos( angleXY_4+angleXY_1+angleXY_3+angleXY_0+angleXY_2)*cos( angleXZ_2+angleXZ_4+angleXZ_1+angleXZ_3+angleXZ_0)*length_4+cos( angleXY_1+angleXY_3+angleXY_0+angleXY_2)*length_3*cos( angleXZ_2+angleXZ_1+angleXZ_3+angleXZ_0)+cos( angleXY_1+angleXY_0)*cos( angleXZ_1+angleXZ_0)*length_1)+( sin(angleXZ_0)*length_0*sin(angleXY_0)+sin( angleXZ_2+angleXZ_4+angleXZ_1+angleXZ_3+angleXZ_0)*sin( angleXY_4+angleXY_1+angleXY_3+angleXY_0+angleXY_2)*length_4+sin( angleXZ_2+angleXZ_1+angleXZ_3+angleXZ_0)*length_3*sin( angleXY_1+angleXY_3+angleXY_0+angleXY_2)+length_2*sin( angleXY_1+angleXY_0+angleXY_2)*sin( angleXZ_2+angleXZ_1+angleXZ_0)+sin( angleXZ_1+angleXZ_0)*sin( angleXY_1+angleXY_0)*length_1)*( 5.0*initialOffsetZ+cos( angleXY_1+angleXY_0)*sin( angleXZ_1+angleXZ_0)*length_1+initialZ-targetZ+cos( angleXY_4+angleXY_1+angleXY_3+angleXY_0+angleXY_2)*sin( angleXZ_2+angleXZ_4+angleXZ_1+angleXZ_3+angleXZ_0)*length_4+cos(angleXY_0)*sin(angleXZ_0)*length_0+sin( angleXZ_2+angleXZ_1+angleXZ_3+angleXZ_0)*cos( angleXY_1+angleXY_3+angleXY_0+angleXY_2)*length_3+length_2*sin( angleXZ_2+angleXZ_1+angleXZ_0)*cos( angleXY_1+angleXY_0+angleXY_2))-( cos( angleXY_1+angleXY_0)*length_1+cos( angleXY_4+angleXY_1+angleXY_3+angleXY_0+angleXY_2)*length_4+cos(angleXY_0)*length_0+length_2*cos( angleXY_1+angleXY_0+angleXY_2)+cos( angleXY_1+angleXY_3+angleXY_0+angleXY_2)*length_3)*( initialY-targetY+sin( angleXY_4+angleXY_1+angleXY_3+angleXY_0+angleXY_2)*length_4+length_0*sin(angleXY_0)+length_3*sin( angleXY_1+angleXY_3+angleXY_0+angleXY_2)+length_2*sin( angleXY_1+angleXY_0+angleXY_2)+sin( angleXY_1+angleXY_0)*length_1+5.0*initialOffsetY))*pow( pow( length_2*cos( angleXZ_2+angleXZ_1+angleXZ_0)*cos( angleXY_1+angleXY_0+angleXY_2)+5.0*initialOffsetX+cos(angleXZ_0)*cos(angleXY_0)*length_0+initialX-targetX+cos( angleXY_4+angleXY_1+angleXY_3+angleXY_0+angleXY_2)*cos( angleXZ_2+angleXZ_4+angleXZ_1+angleXZ_3+angleXZ_0)*length_4+cos( angleXY_1+angleXY_3+angleXY_0+angleXY_2)*length_3*cos( angleXZ_2+angleXZ_1+angleXZ_3+angleXZ_0)+cos( angleXY_1+angleXY_0)*cos( angleXZ_1+angleXZ_0)*length_1,2.0)+pow( initialY-targetY+sin( angleXY_4+angleXY_1+angleXY_3+angleXY_0+angleXY_2)*length_4+length_0*sin(angleXY_0)+length_3*sin( angleXY_1+angleXY_3+angleXY_0+angleXY_2)+length_2*sin( angleXY_1+angleXY_0+angleXY_2)+sin( angleXY_1+angleXY_0)*length_1+5.0*initialOffsetY,2.0)+pow( 5.0*initialOffsetZ+cos( angleXY_1+angleXY_0)*sin( angleXZ_1+angleXZ_0)*length_1+initialZ-targetZ+cos( angleXY_4+angleXY_1+angleXY_3+angleXY_0+angleXY_2)*sin( angleXZ_2+angleXZ_4+angleXZ_1+angleXZ_3+angleXZ_0)*length_4+cos(angleXY_0)*sin(angleXZ_0)*length_0+sin( angleXZ_2+angleXZ_1+angleXZ_3+angleXZ_0)*cos( angleXY_1+angleXY_3+angleXY_0+angleXY_2)*length_3+length_2*sin( angleXZ_2+angleXZ_1+angleXZ_0)*cos( angleXY_1+angleXY_0+angleXY_2),2.0),-(1.0/2.0));
+	double result = 2.0*angleXY_0-( ( cos( angleXZ_1+angleXZ_0+angleXZ_2)*length_2*sin( angleXY_0+angleXY_2+angleXY_1)+cos( angleXZ_1+angleXZ_3+angleXZ_0+angleXZ_2+angleXZ_4)*length_4*sin( angleXY_3+angleXY_0+angleXY_2+angleXY_4+angleXY_1)+cos( angleXZ_1+angleXZ_0)*sin( angleXY_0+angleXY_1)*length_1+length_3*sin( angleXY_3+angleXY_0+angleXY_2+angleXY_1)*cos( angleXZ_1+angleXZ_3+angleXZ_0+angleXZ_2)+length_0*sin(angleXY_0)*cos(angleXZ_0))*( cos( angleXY_3+angleXY_0+angleXY_2+angleXY_4+angleXY_1)*cos( angleXZ_1+angleXZ_3+angleXZ_0+angleXZ_2+angleXZ_4)*length_4+5.0*initialOffsetX+cos( angleXY_0+angleXY_2+angleXY_1)*cos( angleXZ_1+angleXZ_0+angleXZ_2)*length_2+length_0*cos(angleXY_0)*cos(angleXZ_0)+initialX-targetX+length_3*cos( angleXZ_1+angleXZ_3+angleXZ_0+angleXZ_2)*cos( angleXY_3+angleXY_0+angleXY_2+angleXY_1)+cos( angleXZ_1+angleXZ_0)*length_1*cos( angleXY_0+angleXY_1))-( length_4*sin( angleXY_3+angleXY_0+angleXY_2+angleXY_4+angleXY_1)+5.0*initialOffsetY+sin( angleXY_0+angleXY_1)*length_1+length_3*sin( angleXY_3+angleXY_0+angleXY_2+angleXY_1)+length_2*sin( angleXY_0+angleXY_2+angleXY_1)+initialY+length_0*sin(angleXY_0)-targetY)*( cos( angleXY_0+angleXY_2+angleXY_1)*length_2+length_3*cos( angleXY_3+angleXY_0+angleXY_2+angleXY_1)+length_0*cos(angleXY_0)+length_1*cos( angleXY_0+angleXY_1)+cos( angleXY_3+angleXY_0+angleXY_2+angleXY_4+angleXY_1)*length_4)+( length_0*sin(angleXZ_0)*cos(angleXY_0)+length_3*sin( angleXZ_1+angleXZ_3+angleXZ_0+angleXZ_2)*cos( angleXY_3+angleXY_0+angleXY_2+angleXY_1)+cos( angleXY_3+angleXY_0+angleXY_2+angleXY_4+angleXY_1)*length_4*sin( angleXZ_1+angleXZ_3+angleXZ_0+angleXZ_2+angleXZ_4)+cos( angleXY_0+angleXY_2+angleXY_1)*sin( angleXZ_1+angleXZ_0+angleXZ_2)*length_2+5.0*initialOffsetZ+initialZ+length_1*sin( angleXZ_1+angleXZ_0)*cos( angleXY_0+angleXY_1)-targetZ)*( sin( angleXY_0+angleXY_1)*length_1*sin( angleXZ_1+angleXZ_0)+length_4*sin( angleXZ_1+angleXZ_3+angleXZ_0+angleXZ_2+angleXZ_4)*sin( angleXY_3+angleXY_0+angleXY_2+angleXY_4+angleXY_1)+sin( angleXZ_1+angleXZ_0+angleXZ_2)*length_2*sin( angleXY_0+angleXY_2+angleXY_1)+length_3*sin( angleXY_3+angleXY_0+angleXY_2+angleXY_1)*sin( angleXZ_1+angleXZ_3+angleXZ_0+angleXZ_2)+length_0*sin(angleXZ_0)*sin(angleXY_0)))*pow( pow( length_4*sin( angleXY_3+angleXY_0+angleXY_2+angleXY_4+angleXY_1)+5.0*initialOffsetY+sin( angleXY_0+angleXY_1)*length_1+length_3*sin( angleXY_3+angleXY_0+angleXY_2+angleXY_1)+length_2*sin( angleXY_0+angleXY_2+angleXY_1)+initialY+length_0*sin(angleXY_0)-targetY,2.0)+pow( cos( angleXY_3+angleXY_0+angleXY_2+angleXY_4+angleXY_1)*cos( angleXZ_1+angleXZ_3+angleXZ_0+angleXZ_2+angleXZ_4)*length_4+5.0*initialOffsetX+cos( angleXY_0+angleXY_2+angleXY_1)*cos( angleXZ_1+angleXZ_0+angleXZ_2)*length_2+length_0*cos(angleXY_0)*cos(angleXZ_0)+initialX-targetX+length_3*cos( angleXZ_1+angleXZ_3+angleXZ_0+angleXZ_2)*cos( angleXY_3+angleXY_0+angleXY_2+angleXY_1)+cos( angleXZ_1+angleXZ_0)*length_1*cos( angleXY_0+angleXY_1),2.0)+pow( length_0*sin(angleXZ_0)*cos(angleXY_0)+length_3*sin( angleXZ_1+angleXZ_3+angleXZ_0+angleXZ_2)*cos( angleXY_3+angleXY_0+angleXY_2+angleXY_1)+cos( angleXY_3+angleXY_0+angleXY_2+angleXY_4+angleXY_1)*length_4*sin( angleXZ_1+angleXZ_3+angleXZ_0+angleXZ_2+angleXZ_4)+cos( angleXY_0+angleXY_2+angleXY_1)*sin( angleXZ_1+angleXZ_0+angleXZ_2)*length_2+5.0*initialOffsetZ+initialZ+length_1*sin( angleXZ_1+angleXZ_0)*cos( angleXY_0+angleXY_1)-targetZ,2.0),-(1.0/2.0));
 
 	return result;
 }
 
-double DerivativeFunctions::derivative_XY_5_Legs_1( std::vector<double> & params )
+double DerivativeFunctions::derivative_XY_5_Legs_1( const std::vector<double> & params )
 {
 	assert( params.size() == 29 );
 
@@ -689,30 +684,25 @@ double DerivativeFunctions::derivative_XY_5_Legs_1( std::vector<double> & params
 	double length_0 = params[ 9 + 0 ];
 	double angleXY_0 = params[ 9 + 1 ];
 	double angleXZ_0 = params[ 9 + 2 ];
-	//double angleZY_0 = params[ 9 + 3 ];
 	double length_1 = params[ 9 + 4 ];
 	double angleXY_1 = params[ 9 + 5 ];
 	double angleXZ_1 = params[ 9 + 6 ];
-	//double angleZY_1 = params[ 9 + 7 ];
 	double length_2 = params[ 9 + 8 ];
 	double angleXY_2 = params[ 9 + 9 ];
 	double angleXZ_2 = params[ 9 + 10 ];
-	//double angleZY_2 = params[ 9 + 11 ];
 	double length_3 = params[ 9 + 12 ];
 	double angleXY_3 = params[ 9 + 13 ];
 	double angleXZ_3 = params[ 9 + 14 ];
-	//double angleZY_3 = params[ 9 + 15 ];
 	double length_4 = params[ 9 + 16 ];
 	double angleXY_4 = params[ 9 + 17 ];
 	double angleXZ_4 = params[ 9 + 18 ];
-	//double angleZY_4 = params[ 9 + 19 ];
 
-	double result = ( ( cos( angleXY_1+angleXY_0)*length_1+cos( angleXY_4+angleXY_1+angleXY_3+angleXY_0+angleXY_2)*length_4+length_2*cos( angleXY_1+angleXY_0+angleXY_2)+cos( angleXY_1+angleXY_3+angleXY_0+angleXY_2)*length_3)*( initialY-targetY+sin( angleXY_4+angleXY_1+angleXY_3+angleXY_0+angleXY_2)*length_4+length_0*sin(angleXY_0)+length_3*sin( angleXY_1+angleXY_3+angleXY_0+angleXY_2)+length_2*sin( angleXY_1+angleXY_0+angleXY_2)+sin( angleXY_1+angleXY_0)*length_1+5.0*initialOffsetY)-( sin( angleXZ_2+angleXZ_4+angleXZ_1+angleXZ_3+angleXZ_0)*sin( angleXY_4+angleXY_1+angleXY_3+angleXY_0+angleXY_2)*length_4+sin( angleXZ_2+angleXZ_1+angleXZ_3+angleXZ_0)*length_3*sin( angleXY_1+angleXY_3+angleXY_0+angleXY_2)+length_2*sin( angleXY_1+angleXY_0+angleXY_2)*sin( angleXZ_2+angleXZ_1+angleXZ_0)+sin( angleXZ_1+angleXZ_0)*sin( angleXY_1+angleXY_0)*length_1)*( 5.0*initialOffsetZ+cos( angleXY_1+angleXY_0)*sin( angleXZ_1+angleXZ_0)*length_1+initialZ-targetZ+cos( angleXY_4+angleXY_1+angleXY_3+angleXY_0+angleXY_2)*sin( angleXZ_2+angleXZ_4+angleXZ_1+angleXZ_3+angleXZ_0)*length_4+cos(angleXY_0)*sin(angleXZ_0)*length_0+sin( angleXZ_2+angleXZ_1+angleXZ_3+angleXZ_0)*cos( angleXY_1+angleXY_3+angleXY_0+angleXY_2)*length_3+length_2*sin( angleXZ_2+angleXZ_1+angleXZ_0)*cos( angleXY_1+angleXY_0+angleXY_2))-( sin( angleXY_1+angleXY_0)*cos( angleXZ_1+angleXZ_0)*length_1+sin( angleXY_4+angleXY_1+angleXY_3+angleXY_0+angleXY_2)*cos( angleXZ_2+angleXZ_4+angleXZ_1+angleXZ_3+angleXZ_0)*length_4+length_3*cos( angleXZ_2+angleXZ_1+angleXZ_3+angleXZ_0)*sin( angleXY_1+angleXY_3+angleXY_0+angleXY_2)+length_2*sin( angleXY_1+angleXY_0+angleXY_2)*cos( angleXZ_2+angleXZ_1+angleXZ_0))*( length_2*cos( angleXZ_2+angleXZ_1+angleXZ_0)*cos( angleXY_1+angleXY_0+angleXY_2)+5.0*initialOffsetX+cos(angleXZ_0)*cos(angleXY_0)*length_0+initialX-targetX+cos( angleXY_4+angleXY_1+angleXY_3+angleXY_0+angleXY_2)*cos( angleXZ_2+angleXZ_4+angleXZ_1+angleXZ_3+angleXZ_0)*length_4+cos( angleXY_1+angleXY_3+angleXY_0+angleXY_2)*length_3*cos( angleXZ_2+angleXZ_1+angleXZ_3+angleXZ_0)+cos( angleXY_1+angleXY_0)*cos( angleXZ_1+angleXZ_0)*length_1))*pow( pow( length_2*cos( angleXZ_2+angleXZ_1+angleXZ_0)*cos( angleXY_1+angleXY_0+angleXY_2)+5.0*initialOffsetX+cos(angleXZ_0)*cos(angleXY_0)*length_0+initialX-targetX+cos( angleXY_4+angleXY_1+angleXY_3+angleXY_0+angleXY_2)*cos( angleXZ_2+angleXZ_4+angleXZ_1+angleXZ_3+angleXZ_0)*length_4+cos( angleXY_1+angleXY_3+angleXY_0+angleXY_2)*length_3*cos( angleXZ_2+angleXZ_1+angleXZ_3+angleXZ_0)+cos( angleXY_1+angleXY_0)*cos( angleXZ_1+angleXZ_0)*length_1,2.0)+pow( initialY-targetY+sin( angleXY_4+angleXY_1+angleXY_3+angleXY_0+angleXY_2)*length_4+length_0*sin(angleXY_0)+length_3*sin( angleXY_1+angleXY_3+angleXY_0+angleXY_2)+length_2*sin( angleXY_1+angleXY_0+angleXY_2)+sin( angleXY_1+angleXY_0)*length_1+5.0*initialOffsetY,2.0)+pow( 5.0*initialOffsetZ+cos( angleXY_1+angleXY_0)*sin( angleXZ_1+angleXZ_0)*length_1+initialZ-targetZ+cos( angleXY_4+angleXY_1+angleXY_3+angleXY_0+angleXY_2)*sin( angleXZ_2+angleXZ_4+angleXZ_1+angleXZ_3+angleXZ_0)*length_4+cos(angleXY_0)*sin(angleXZ_0)*length_0+sin( angleXZ_2+angleXZ_1+angleXZ_3+angleXZ_0)*cos( angleXY_1+angleXY_3+angleXY_0+angleXY_2)*length_3+length_2*sin( angleXZ_2+angleXZ_1+angleXZ_0)*cos( angleXY_1+angleXY_0+angleXY_2),2.0),-(1.0/2.0));
+	double result = -pow( pow( length_4*sin( angleXY_3+angleXY_0+angleXY_2+angleXY_4+angleXY_1)+5.0*initialOffsetY+sin( angleXY_0+angleXY_1)*length_1+length_3*sin( angleXY_3+angleXY_0+angleXY_2+angleXY_1)+length_2*sin( angleXY_0+angleXY_2+angleXY_1)+initialY+length_0*sin(angleXY_0)-targetY,2.0)+pow( cos( angleXY_3+angleXY_0+angleXY_2+angleXY_4+angleXY_1)*cos( angleXZ_1+angleXZ_3+angleXZ_0+angleXZ_2+angleXZ_4)*length_4+5.0*initialOffsetX+cos( angleXY_0+angleXY_2+angleXY_1)*cos( angleXZ_1+angleXZ_0+angleXZ_2)*length_2+length_0*cos(angleXY_0)*cos(angleXZ_0)+initialX-targetX+length_3*cos( angleXZ_1+angleXZ_3+angleXZ_0+angleXZ_2)*cos( angleXY_3+angleXY_0+angleXY_2+angleXY_1)+cos( angleXZ_1+angleXZ_0)*length_1*cos( angleXY_0+angleXY_1),2.0)+pow( length_0*sin(angleXZ_0)*cos(angleXY_0)+length_3*sin( angleXZ_1+angleXZ_3+angleXZ_0+angleXZ_2)*cos( angleXY_3+angleXY_0+angleXY_2+angleXY_1)+cos( angleXY_3+angleXY_0+angleXY_2+angleXY_4+angleXY_1)*length_4*sin( angleXZ_1+angleXZ_3+angleXZ_0+angleXZ_2+angleXZ_4)+cos( angleXY_0+angleXY_2+angleXY_1)*sin( angleXZ_1+angleXZ_0+angleXZ_2)*length_2+5.0*initialOffsetZ+initialZ+length_1*sin( angleXZ_1+angleXZ_0)*cos( angleXY_0+angleXY_1)-targetZ,2.0),-(1.0/2.0))*( ( sin( angleXY_0+angleXY_1)*length_1*sin( angleXZ_1+angleXZ_0)+length_4*sin( angleXZ_1+angleXZ_3+angleXZ_0+angleXZ_2+angleXZ_4)*sin( angleXY_3+angleXY_0+angleXY_2+angleXY_4+angleXY_1)+sin( angleXZ_1+angleXZ_0+angleXZ_2)*length_2*sin( angleXY_0+angleXY_2+angleXY_1)+length_3*sin( angleXY_3+angleXY_0+angleXY_2+angleXY_1)*sin( angleXZ_1+angleXZ_3+angleXZ_0+angleXZ_2))*( length_0*sin(angleXZ_0)*cos(angleXY_0)+length_3*sin( angleXZ_1+angleXZ_3+angleXZ_0+angleXZ_2)*cos( angleXY_3+angleXY_0+angleXY_2+angleXY_1)+cos( angleXY_3+angleXY_0+angleXY_2+angleXY_4+angleXY_1)*length_4*sin( angleXZ_1+angleXZ_3+angleXZ_0+angleXZ_2+angleXZ_4)+cos( angleXY_0+angleXY_2+angleXY_1)*sin( angleXZ_1+angleXZ_0+angleXZ_2)*length_2+5.0*initialOffsetZ+initialZ+length_1*sin( angleXZ_1+angleXZ_0)*cos( angleXY_0+angleXY_1)-targetZ)+( cos( angleXY_3+angleXY_0+angleXY_2+angleXY_4+angleXY_1)*cos( angleXZ_1+angleXZ_3+angleXZ_0+angleXZ_2+angleXZ_4)*length_4+5.0*initialOffsetX+cos( angleXY_0+angleXY_2+angleXY_1)*cos( angleXZ_1+angleXZ_0+angleXZ_2)*length_2+length_0*cos(angleXY_0)*cos(angleXZ_0)+initialX-targetX+length_3*cos( angleXZ_1+angleXZ_3+angleXZ_0+angleXZ_2)*cos( angleXY_3+angleXY_0+angleXY_2+angleXY_1)+cos( angleXZ_1+angleXZ_0)*length_1*cos( angleXY_0+angleXY_1))*( cos( angleXZ_1+angleXZ_0+angleXZ_2)*length_2*sin( angleXY_0+angleXY_2+angleXY_1)+cos( angleXZ_1+angleXZ_3+angleXZ_0+angleXZ_2+angleXZ_4)*length_4*sin( angleXY_3+angleXY_0+angleXY_2+angleXY_4+angleXY_1)+cos( angleXZ_1+angleXZ_0)*sin( angleXY_0+angleXY_1)*length_1+length_3*sin( angleXY_3+angleXY_0+angleXY_2+angleXY_1)*cos( angleXZ_1+angleXZ_3+angleXZ_0+angleXZ_2))-( length_4*sin( angleXY_3+angleXY_0+angleXY_2+angleXY_4+angleXY_1)+5.0*initialOffsetY+sin( angleXY_0+angleXY_1)*length_1+length_3*sin( angleXY_3+angleXY_0+angleXY_2+angleXY_1)+length_2*sin( angleXY_0+angleXY_2+angleXY_1)+initialY+length_0*sin(angleXY_0)-targetY)*( cos( angleXY_0+angleXY_2+angleXY_1)*length_2+length_3*cos( angleXY_3+angleXY_0+angleXY_2+angleXY_1)+length_1*cos( angleXY_0+angleXY_1)+cos( angleXY_3+angleXY_0+angleXY_2+angleXY_4+angleXY_1)*length_4))+2.0*angleXY_1;
 
 	return result;
 }
 
-double DerivativeFunctions::derivative_XY_5_Legs_2( std::vector<double> & params )
+double DerivativeFunctions::derivative_XY_5_Legs_2( const std::vector<double> & params )
 {
 	assert( params.size() == 29 );
 
@@ -728,30 +718,25 @@ double DerivativeFunctions::derivative_XY_5_Legs_2( std::vector<double> & params
 	double length_0 = params[ 9 + 0 ];
 	double angleXY_0 = params[ 9 + 1 ];
 	double angleXZ_0 = params[ 9 + 2 ];
-	//double angleZY_0 = params[ 9 + 3 ];
 	double length_1 = params[ 9 + 4 ];
 	double angleXY_1 = params[ 9 + 5 ];
 	double angleXZ_1 = params[ 9 + 6 ];
-	//double angleZY_1 = params[ 9 + 7 ];
 	double length_2 = params[ 9 + 8 ];
 	double angleXY_2 = params[ 9 + 9 ];
 	double angleXZ_2 = params[ 9 + 10 ];
-	//double angleZY_2 = params[ 9 + 11 ];
 	double length_3 = params[ 9 + 12 ];
 	double angleXY_3 = params[ 9 + 13 ];
 	double angleXZ_3 = params[ 9 + 14 ];
-	//double angleZY_3 = params[ 9 + 15 ];
 	double length_4 = params[ 9 + 16 ];
 	double angleXY_4 = params[ 9 + 17 ];
 	double angleXZ_4 = params[ 9 + 18 ];
-	//double angleZY_4 = params[ 9 + 19 ];
 
-	double result = -( ( 5.0*initialOffsetZ+cos( angleXY_1+angleXY_0)*sin( angleXZ_1+angleXZ_0)*length_1+initialZ-targetZ+cos( angleXY_4+angleXY_1+angleXY_3+angleXY_0+angleXY_2)*sin( angleXZ_2+angleXZ_4+angleXZ_1+angleXZ_3+angleXZ_0)*length_4+cos(angleXY_0)*sin(angleXZ_0)*length_0+sin( angleXZ_2+angleXZ_1+angleXZ_3+angleXZ_0)*cos( angleXY_1+angleXY_3+angleXY_0+angleXY_2)*length_3+length_2*sin( angleXZ_2+angleXZ_1+angleXZ_0)*cos( angleXY_1+angleXY_0+angleXY_2))*( sin( angleXZ_2+angleXZ_4+angleXZ_1+angleXZ_3+angleXZ_0)*sin( angleXY_4+angleXY_1+angleXY_3+angleXY_0+angleXY_2)*length_4+sin( angleXZ_2+angleXZ_1+angleXZ_3+angleXZ_0)*length_3*sin( angleXY_1+angleXY_3+angleXY_0+angleXY_2)+length_2*sin( angleXY_1+angleXY_0+angleXY_2)*sin( angleXZ_2+angleXZ_1+angleXZ_0))-( initialY-targetY+sin( angleXY_4+angleXY_1+angleXY_3+angleXY_0+angleXY_2)*length_4+length_0*sin(angleXY_0)+length_3*sin( angleXY_1+angleXY_3+angleXY_0+angleXY_2)+length_2*sin( angleXY_1+angleXY_0+angleXY_2)+sin( angleXY_1+angleXY_0)*length_1+5.0*initialOffsetY)*( cos( angleXY_4+angleXY_1+angleXY_3+angleXY_0+angleXY_2)*length_4+length_2*cos( angleXY_1+angleXY_0+angleXY_2)+cos( angleXY_1+angleXY_3+angleXY_0+angleXY_2)*length_3)+( sin( angleXY_4+angleXY_1+angleXY_3+angleXY_0+angleXY_2)*cos( angleXZ_2+angleXZ_4+angleXZ_1+angleXZ_3+angleXZ_0)*length_4+length_3*cos( angleXZ_2+angleXZ_1+angleXZ_3+angleXZ_0)*sin( angleXY_1+angleXY_3+angleXY_0+angleXY_2)+length_2*sin( angleXY_1+angleXY_0+angleXY_2)*cos( angleXZ_2+angleXZ_1+angleXZ_0))*( length_2*cos( angleXZ_2+angleXZ_1+angleXZ_0)*cos( angleXY_1+angleXY_0+angleXY_2)+5.0*initialOffsetX+cos(angleXZ_0)*cos(angleXY_0)*length_0+initialX-targetX+cos( angleXY_4+angleXY_1+angleXY_3+angleXY_0+angleXY_2)*cos( angleXZ_2+angleXZ_4+angleXZ_1+angleXZ_3+angleXZ_0)*length_4+cos( angleXY_1+angleXY_3+angleXY_0+angleXY_2)*length_3*cos( angleXZ_2+angleXZ_1+angleXZ_3+angleXZ_0)+cos( angleXY_1+angleXY_0)*cos( angleXZ_1+angleXZ_0)*length_1))*pow( pow( length_2*cos( angleXZ_2+angleXZ_1+angleXZ_0)*cos( angleXY_1+angleXY_0+angleXY_2)+5.0*initialOffsetX+cos(angleXZ_0)*cos(angleXY_0)*length_0+initialX-targetX+cos( angleXY_4+angleXY_1+angleXY_3+angleXY_0+angleXY_2)*cos( angleXZ_2+angleXZ_4+angleXZ_1+angleXZ_3+angleXZ_0)*length_4+cos( angleXY_1+angleXY_3+angleXY_0+angleXY_2)*length_3*cos( angleXZ_2+angleXZ_1+angleXZ_3+angleXZ_0)+cos( angleXY_1+angleXY_0)*cos( angleXZ_1+angleXZ_0)*length_1,2.0)+pow( initialY-targetY+sin( angleXY_4+angleXY_1+angleXY_3+angleXY_0+angleXY_2)*length_4+length_0*sin(angleXY_0)+length_3*sin( angleXY_1+angleXY_3+angleXY_0+angleXY_2)+length_2*sin( angleXY_1+angleXY_0+angleXY_2)+sin( angleXY_1+angleXY_0)*length_1+5.0*initialOffsetY,2.0)+pow( 5.0*initialOffsetZ+cos( angleXY_1+angleXY_0)*sin( angleXZ_1+angleXZ_0)*length_1+initialZ-targetZ+cos( angleXY_4+angleXY_1+angleXY_3+angleXY_0+angleXY_2)*sin( angleXZ_2+angleXZ_4+angleXZ_1+angleXZ_3+angleXZ_0)*length_4+cos(angleXY_0)*sin(angleXZ_0)*length_0+sin( angleXZ_2+angleXZ_1+angleXZ_3+angleXZ_0)*cos( angleXY_1+angleXY_3+angleXY_0+angleXY_2)*length_3+length_2*sin( angleXZ_2+angleXZ_1+angleXZ_0)*cos( angleXY_1+angleXY_0+angleXY_2),2.0),-(1.0/2.0));
+	double result = ( ( cos( angleXY_0+angleXY_2+angleXY_1)*length_2+length_3*cos( angleXY_3+angleXY_0+angleXY_2+angleXY_1)+cos( angleXY_3+angleXY_0+angleXY_2+angleXY_4+angleXY_1)*length_4)*( length_4*sin( angleXY_3+angleXY_0+angleXY_2+angleXY_4+angleXY_1)+5.0*initialOffsetY+sin( angleXY_0+angleXY_1)*length_1+length_3*sin( angleXY_3+angleXY_0+angleXY_2+angleXY_1)+length_2*sin( angleXY_0+angleXY_2+angleXY_1)+initialY+length_0*sin(angleXY_0)-targetY)-( length_0*sin(angleXZ_0)*cos(angleXY_0)+length_3*sin( angleXZ_1+angleXZ_3+angleXZ_0+angleXZ_2)*cos( angleXY_3+angleXY_0+angleXY_2+angleXY_1)+cos( angleXY_3+angleXY_0+angleXY_2+angleXY_4+angleXY_1)*length_4*sin( angleXZ_1+angleXZ_3+angleXZ_0+angleXZ_2+angleXZ_4)+cos( angleXY_0+angleXY_2+angleXY_1)*sin( angleXZ_1+angleXZ_0+angleXZ_2)*length_2+5.0*initialOffsetZ+initialZ+length_1*sin( angleXZ_1+angleXZ_0)*cos( angleXY_0+angleXY_1)-targetZ)*( length_4*sin( angleXZ_1+angleXZ_3+angleXZ_0+angleXZ_2+angleXZ_4)*sin( angleXY_3+angleXY_0+angleXY_2+angleXY_4+angleXY_1)+sin( angleXZ_1+angleXZ_0+angleXZ_2)*length_2*sin( angleXY_0+angleXY_2+angleXY_1)+length_3*sin( angleXY_3+angleXY_0+angleXY_2+angleXY_1)*sin( angleXZ_1+angleXZ_3+angleXZ_0+angleXZ_2))-( cos( angleXY_3+angleXY_0+angleXY_2+angleXY_4+angleXY_1)*cos( angleXZ_1+angleXZ_3+angleXZ_0+angleXZ_2+angleXZ_4)*length_4+5.0*initialOffsetX+cos( angleXY_0+angleXY_2+angleXY_1)*cos( angleXZ_1+angleXZ_0+angleXZ_2)*length_2+length_0*cos(angleXY_0)*cos(angleXZ_0)+initialX-targetX+length_3*cos( angleXZ_1+angleXZ_3+angleXZ_0+angleXZ_2)*cos( angleXY_3+angleXY_0+angleXY_2+angleXY_1)+cos( angleXZ_1+angleXZ_0)*length_1*cos( angleXY_0+angleXY_1))*( cos( angleXZ_1+angleXZ_0+angleXZ_2)*length_2*sin( angleXY_0+angleXY_2+angleXY_1)+cos( angleXZ_1+angleXZ_3+angleXZ_0+angleXZ_2+angleXZ_4)*length_4*sin( angleXY_3+angleXY_0+angleXY_2+angleXY_4+angleXY_1)+length_3*sin( angleXY_3+angleXY_0+angleXY_2+angleXY_1)*cos( angleXZ_1+angleXZ_3+angleXZ_0+angleXZ_2)))*pow( pow( length_4*sin( angleXY_3+angleXY_0+angleXY_2+angleXY_4+angleXY_1)+5.0*initialOffsetY+sin( angleXY_0+angleXY_1)*length_1+length_3*sin( angleXY_3+angleXY_0+angleXY_2+angleXY_1)+length_2*sin( angleXY_0+angleXY_2+angleXY_1)+initialY+length_0*sin(angleXY_0)-targetY,2.0)+pow( cos( angleXY_3+angleXY_0+angleXY_2+angleXY_4+angleXY_1)*cos( angleXZ_1+angleXZ_3+angleXZ_0+angleXZ_2+angleXZ_4)*length_4+5.0*initialOffsetX+cos( angleXY_0+angleXY_2+angleXY_1)*cos( angleXZ_1+angleXZ_0+angleXZ_2)*length_2+length_0*cos(angleXY_0)*cos(angleXZ_0)+initialX-targetX+length_3*cos( angleXZ_1+angleXZ_3+angleXZ_0+angleXZ_2)*cos( angleXY_3+angleXY_0+angleXY_2+angleXY_1)+cos( angleXZ_1+angleXZ_0)*length_1*cos( angleXY_0+angleXY_1),2.0)+pow( length_0*sin(angleXZ_0)*cos(angleXY_0)+length_3*sin( angleXZ_1+angleXZ_3+angleXZ_0+angleXZ_2)*cos( angleXY_3+angleXY_0+angleXY_2+angleXY_1)+cos( angleXY_3+angleXY_0+angleXY_2+angleXY_4+angleXY_1)*length_4*sin( angleXZ_1+angleXZ_3+angleXZ_0+angleXZ_2+angleXZ_4)+cos( angleXY_0+angleXY_2+angleXY_1)*sin( angleXZ_1+angleXZ_0+angleXZ_2)*length_2+5.0*initialOffsetZ+initialZ+length_1*sin( angleXZ_1+angleXZ_0)*cos( angleXY_0+angleXY_1)-targetZ,2.0),-(1.0/2.0))+2.0*angleXY_2;
 
 	return result;
 }
 
-double DerivativeFunctions::derivative_XY_5_Legs_3( std::vector<double> & params )
+double DerivativeFunctions::derivative_XY_5_Legs_3( const std::vector<double> & params )
 {
 	assert( params.size() == 29 );
 
@@ -767,30 +752,25 @@ double DerivativeFunctions::derivative_XY_5_Legs_3( std::vector<double> & params
 	double length_0 = params[ 9 + 0 ];
 	double angleXY_0 = params[ 9 + 1 ];
 	double angleXZ_0 = params[ 9 + 2 ];
-	//double angleZY_0 = params[ 9 + 3 ];
 	double length_1 = params[ 9 + 4 ];
 	double angleXY_1 = params[ 9 + 5 ];
 	double angleXZ_1 = params[ 9 + 6 ];
-	//double angleZY_1 = params[ 9 + 7 ];
 	double length_2 = params[ 9 + 8 ];
 	double angleXY_2 = params[ 9 + 9 ];
 	double angleXZ_2 = params[ 9 + 10 ];
-	//double angleZY_2 = params[ 9 + 11 ];
 	double length_3 = params[ 9 + 12 ];
 	double angleXY_3 = params[ 9 + 13 ];
 	double angleXZ_3 = params[ 9 + 14 ];
-	//double angleZY_3 = params[ 9 + 15 ];
 	double length_4 = params[ 9 + 16 ];
 	double angleXY_4 = params[ 9 + 17 ];
 	double angleXZ_4 = params[ 9 + 18 ];
-	//double angleZY_4 = params[ 9 + 19 ];
 
-	double result = ( ( cos( angleXY_4+angleXY_1+angleXY_3+angleXY_0+angleXY_2)*length_4+cos( angleXY_1+angleXY_3+angleXY_0+angleXY_2)*length_3)*( initialY-targetY+sin( angleXY_4+angleXY_1+angleXY_3+angleXY_0+angleXY_2)*length_4+length_0*sin(angleXY_0)+length_3*sin( angleXY_1+angleXY_3+angleXY_0+angleXY_2)+length_2*sin( angleXY_1+angleXY_0+angleXY_2)+sin( angleXY_1+angleXY_0)*length_1+5.0*initialOffsetY)-( sin( angleXY_4+angleXY_1+angleXY_3+angleXY_0+angleXY_2)*cos( angleXZ_2+angleXZ_4+angleXZ_1+angleXZ_3+angleXZ_0)*length_4+length_3*cos( angleXZ_2+angleXZ_1+angleXZ_3+angleXZ_0)*sin( angleXY_1+angleXY_3+angleXY_0+angleXY_2))*( length_2*cos( angleXZ_2+angleXZ_1+angleXZ_0)*cos( angleXY_1+angleXY_0+angleXY_2)+5.0*initialOffsetX+cos(angleXZ_0)*cos(angleXY_0)*length_0+initialX-targetX+cos( angleXY_4+angleXY_1+angleXY_3+angleXY_0+angleXY_2)*cos( angleXZ_2+angleXZ_4+angleXZ_1+angleXZ_3+angleXZ_0)*length_4+cos( angleXY_1+angleXY_3+angleXY_0+angleXY_2)*length_3*cos( angleXZ_2+angleXZ_1+angleXZ_3+angleXZ_0)+cos( angleXY_1+angleXY_0)*cos( angleXZ_1+angleXZ_0)*length_1)-( 5.0*initialOffsetZ+cos( angleXY_1+angleXY_0)*sin( angleXZ_1+angleXZ_0)*length_1+initialZ-targetZ+cos( angleXY_4+angleXY_1+angleXY_3+angleXY_0+angleXY_2)*sin( angleXZ_2+angleXZ_4+angleXZ_1+angleXZ_3+angleXZ_0)*length_4+cos(angleXY_0)*sin(angleXZ_0)*length_0+sin( angleXZ_2+angleXZ_1+angleXZ_3+angleXZ_0)*cos( angleXY_1+angleXY_3+angleXY_0+angleXY_2)*length_3+length_2*sin( angleXZ_2+angleXZ_1+angleXZ_0)*cos( angleXY_1+angleXY_0+angleXY_2))*( sin( angleXZ_2+angleXZ_4+angleXZ_1+angleXZ_3+angleXZ_0)*sin( angleXY_4+angleXY_1+angleXY_3+angleXY_0+angleXY_2)*length_4+sin( angleXZ_2+angleXZ_1+angleXZ_3+angleXZ_0)*length_3*sin( angleXY_1+angleXY_3+angleXY_0+angleXY_2)))*pow( pow( length_2*cos( angleXZ_2+angleXZ_1+angleXZ_0)*cos( angleXY_1+angleXY_0+angleXY_2)+5.0*initialOffsetX+cos(angleXZ_0)*cos(angleXY_0)*length_0+initialX-targetX+cos( angleXY_4+angleXY_1+angleXY_3+angleXY_0+angleXY_2)*cos( angleXZ_2+angleXZ_4+angleXZ_1+angleXZ_3+angleXZ_0)*length_4+cos( angleXY_1+angleXY_3+angleXY_0+angleXY_2)*length_3*cos( angleXZ_2+angleXZ_1+angleXZ_3+angleXZ_0)+cos( angleXY_1+angleXY_0)*cos( angleXZ_1+angleXZ_0)*length_1,2.0)+pow( initialY-targetY+sin( angleXY_4+angleXY_1+angleXY_3+angleXY_0+angleXY_2)*length_4+length_0*sin(angleXY_0)+length_3*sin( angleXY_1+angleXY_3+angleXY_0+angleXY_2)+length_2*sin( angleXY_1+angleXY_0+angleXY_2)+sin( angleXY_1+angleXY_0)*length_1+5.0*initialOffsetY,2.0)+pow( 5.0*initialOffsetZ+cos( angleXY_1+angleXY_0)*sin( angleXZ_1+angleXZ_0)*length_1+initialZ-targetZ+cos( angleXY_4+angleXY_1+angleXY_3+angleXY_0+angleXY_2)*sin( angleXZ_2+angleXZ_4+angleXZ_1+angleXZ_3+angleXZ_0)*length_4+cos(angleXY_0)*sin(angleXZ_0)*length_0+sin( angleXZ_2+angleXZ_1+angleXZ_3+angleXZ_0)*cos( angleXY_1+angleXY_3+angleXY_0+angleXY_2)*length_3+length_2*sin( angleXZ_2+angleXZ_1+angleXZ_0)*cos( angleXY_1+angleXY_0+angleXY_2),2.0),-(1.0/2.0));
+	double result = 2.0*angleXY_3-pow( pow( length_4*sin( angleXY_3+angleXY_0+angleXY_2+angleXY_4+angleXY_1)+5.0*initialOffsetY+sin( angleXY_0+angleXY_1)*length_1+length_3*sin( angleXY_3+angleXY_0+angleXY_2+angleXY_1)+length_2*sin( angleXY_0+angleXY_2+angleXY_1)+initialY+length_0*sin(angleXY_0)-targetY,2.0)+pow( cos( angleXY_3+angleXY_0+angleXY_2+angleXY_4+angleXY_1)*cos( angleXZ_1+angleXZ_3+angleXZ_0+angleXZ_2+angleXZ_4)*length_4+5.0*initialOffsetX+cos( angleXY_0+angleXY_2+angleXY_1)*cos( angleXZ_1+angleXZ_0+angleXZ_2)*length_2+length_0*cos(angleXY_0)*cos(angleXZ_0)+initialX-targetX+length_3*cos( angleXZ_1+angleXZ_3+angleXZ_0+angleXZ_2)*cos( angleXY_3+angleXY_0+angleXY_2+angleXY_1)+cos( angleXZ_1+angleXZ_0)*length_1*cos( angleXY_0+angleXY_1),2.0)+pow( length_0*sin(angleXZ_0)*cos(angleXY_0)+length_3*sin( angleXZ_1+angleXZ_3+angleXZ_0+angleXZ_2)*cos( angleXY_3+angleXY_0+angleXY_2+angleXY_1)+cos( angleXY_3+angleXY_0+angleXY_2+angleXY_4+angleXY_1)*length_4*sin( angleXZ_1+angleXZ_3+angleXZ_0+angleXZ_2+angleXZ_4)+cos( angleXY_0+angleXY_2+angleXY_1)*sin( angleXZ_1+angleXZ_0+angleXZ_2)*length_2+5.0*initialOffsetZ+initialZ+length_1*sin( angleXZ_1+angleXZ_0)*cos( angleXY_0+angleXY_1)-targetZ,2.0),-(1.0/2.0))*( ( cos( angleXZ_1+angleXZ_3+angleXZ_0+angleXZ_2+angleXZ_4)*length_4*sin( angleXY_3+angleXY_0+angleXY_2+angleXY_4+angleXY_1)+length_3*sin( angleXY_3+angleXY_0+angleXY_2+angleXY_1)*cos( angleXZ_1+angleXZ_3+angleXZ_0+angleXZ_2))*( cos( angleXY_3+angleXY_0+angleXY_2+angleXY_4+angleXY_1)*cos( angleXZ_1+angleXZ_3+angleXZ_0+angleXZ_2+angleXZ_4)*length_4+5.0*initialOffsetX+cos( angleXY_0+angleXY_2+angleXY_1)*cos( angleXZ_1+angleXZ_0+angleXZ_2)*length_2+length_0*cos(angleXY_0)*cos(angleXZ_0)+initialX-targetX+length_3*cos( angleXZ_1+angleXZ_3+angleXZ_0+angleXZ_2)*cos( angleXY_3+angleXY_0+angleXY_2+angleXY_1)+cos( angleXZ_1+angleXZ_0)*length_1*cos( angleXY_0+angleXY_1))+( length_0*sin(angleXZ_0)*cos(angleXY_0)+length_3*sin( angleXZ_1+angleXZ_3+angleXZ_0+angleXZ_2)*cos( angleXY_3+angleXY_0+angleXY_2+angleXY_1)+cos( angleXY_3+angleXY_0+angleXY_2+angleXY_4+angleXY_1)*length_4*sin( angleXZ_1+angleXZ_3+angleXZ_0+angleXZ_2+angleXZ_4)+cos( angleXY_0+angleXY_2+angleXY_1)*sin( angleXZ_1+angleXZ_0+angleXZ_2)*length_2+5.0*initialOffsetZ+initialZ+length_1*sin( angleXZ_1+angleXZ_0)*cos( angleXY_0+angleXY_1)-targetZ)*( length_4*sin( angleXZ_1+angleXZ_3+angleXZ_0+angleXZ_2+angleXZ_4)*sin( angleXY_3+angleXY_0+angleXY_2+angleXY_4+angleXY_1)+length_3*sin( angleXY_3+angleXY_0+angleXY_2+angleXY_1)*sin( angleXZ_1+angleXZ_3+angleXZ_0+angleXZ_2))-( length_3*cos( angleXY_3+angleXY_0+angleXY_2+angleXY_1)+cos( angleXY_3+angleXY_0+angleXY_2+angleXY_4+angleXY_1)*length_4)*( length_4*sin( angleXY_3+angleXY_0+angleXY_2+angleXY_4+angleXY_1)+5.0*initialOffsetY+sin( angleXY_0+angleXY_1)*length_1+length_3*sin( angleXY_3+angleXY_0+angleXY_2+angleXY_1)+length_2*sin( angleXY_0+angleXY_2+angleXY_1)+initialY+length_0*sin(angleXY_0)-targetY));
 
 	return result;
 }
 
-double DerivativeFunctions::derivative_XY_5_Legs_4( std::vector<double> & params )
+double DerivativeFunctions::derivative_XY_5_Legs_4( const std::vector<double> & params )
 {
 	assert( params.size() == 29 );
 
@@ -806,30 +786,25 @@ double DerivativeFunctions::derivative_XY_5_Legs_4( std::vector<double> & params
 	double length_0 = params[ 9 + 0 ];
 	double angleXY_0 = params[ 9 + 1 ];
 	double angleXZ_0 = params[ 9 + 2 ];
-	//double angleZY_0 = params[ 9 + 3 ];
 	double length_1 = params[ 9 + 4 ];
 	double angleXY_1 = params[ 9 + 5 ];
 	double angleXZ_1 = params[ 9 + 6 ];
-	//double angleZY_1 = params[ 9 + 7 ];
 	double length_2 = params[ 9 + 8 ];
 	double angleXY_2 = params[ 9 + 9 ];
 	double angleXZ_2 = params[ 9 + 10 ];
-	//double angleZY_2 = params[ 9 + 11 ];
 	double length_3 = params[ 9 + 12 ];
 	double angleXY_3 = params[ 9 + 13 ];
 	double angleXZ_3 = params[ 9 + 14 ];
-	//double angleZY_3 = params[ 9 + 15 ];
 	double length_4 = params[ 9 + 16 ];
 	double angleXY_4 = params[ 9 + 17 ];
 	double angleXZ_4 = params[ 9 + 18 ];
-	//double angleZY_4 = params[ 9 + 19 ];
 
-	double result = -pow( pow( length_2*cos( angleXZ_2+angleXZ_1+angleXZ_0)*cos( angleXY_1+angleXY_0+angleXY_2)+5.0*initialOffsetX+cos(angleXZ_0)*cos(angleXY_0)*length_0+initialX-targetX+cos( angleXY_4+angleXY_1+angleXY_3+angleXY_0+angleXY_2)*cos( angleXZ_2+angleXZ_4+angleXZ_1+angleXZ_3+angleXZ_0)*length_4+cos( angleXY_1+angleXY_3+angleXY_0+angleXY_2)*length_3*cos( angleXZ_2+angleXZ_1+angleXZ_3+angleXZ_0)+cos( angleXY_1+angleXY_0)*cos( angleXZ_1+angleXZ_0)*length_1,2.0)+pow( initialY-targetY+sin( angleXY_4+angleXY_1+angleXY_3+angleXY_0+angleXY_2)*length_4+length_0*sin(angleXY_0)+length_3*sin( angleXY_1+angleXY_3+angleXY_0+angleXY_2)+length_2*sin( angleXY_1+angleXY_0+angleXY_2)+sin( angleXY_1+angleXY_0)*length_1+5.0*initialOffsetY,2.0)+pow( 5.0*initialOffsetZ+cos( angleXY_1+angleXY_0)*sin( angleXZ_1+angleXZ_0)*length_1+initialZ-targetZ+cos( angleXY_4+angleXY_1+angleXY_3+angleXY_0+angleXY_2)*sin( angleXZ_2+angleXZ_4+angleXZ_1+angleXZ_3+angleXZ_0)*length_4+cos(angleXY_0)*sin(angleXZ_0)*length_0+sin( angleXZ_2+angleXZ_1+angleXZ_3+angleXZ_0)*cos( angleXY_1+angleXY_3+angleXY_0+angleXY_2)*length_3+length_2*sin( angleXZ_2+angleXZ_1+angleXZ_0)*cos( angleXY_1+angleXY_0+angleXY_2),2.0),-(1.0/2.0))*( sin( angleXY_4+angleXY_1+angleXY_3+angleXY_0+angleXY_2)*( length_2*cos( angleXZ_2+angleXZ_1+angleXZ_0)*cos( angleXY_1+angleXY_0+angleXY_2)+5.0*initialOffsetX+cos(angleXZ_0)*cos(angleXY_0)*length_0+initialX-targetX+cos( angleXY_4+angleXY_1+angleXY_3+angleXY_0+angleXY_2)*cos( angleXZ_2+angleXZ_4+angleXZ_1+angleXZ_3+angleXZ_0)*length_4+cos( angleXY_1+angleXY_3+angleXY_0+angleXY_2)*length_3*cos( angleXZ_2+angleXZ_1+angleXZ_3+angleXZ_0)+cos( angleXY_1+angleXY_0)*cos( angleXZ_1+angleXZ_0)*length_1)*cos( angleXZ_2+angleXZ_4+angleXZ_1+angleXZ_3+angleXZ_0)*length_4+( 5.0*initialOffsetZ+cos( angleXY_1+angleXY_0)*sin( angleXZ_1+angleXZ_0)*length_1+initialZ-targetZ+cos( angleXY_4+angleXY_1+angleXY_3+angleXY_0+angleXY_2)*sin( angleXZ_2+angleXZ_4+angleXZ_1+angleXZ_3+angleXZ_0)*length_4+cos(angleXY_0)*sin(angleXZ_0)*length_0+sin( angleXZ_2+angleXZ_1+angleXZ_3+angleXZ_0)*cos( angleXY_1+angleXY_3+angleXY_0+angleXY_2)*length_3+length_2*sin( angleXZ_2+angleXZ_1+angleXZ_0)*cos( angleXY_1+angleXY_0+angleXY_2))*sin( angleXZ_2+angleXZ_4+angleXZ_1+angleXZ_3+angleXZ_0)*sin( angleXY_4+angleXY_1+angleXY_3+angleXY_0+angleXY_2)*length_4-cos( angleXY_4+angleXY_1+angleXY_3+angleXY_0+angleXY_2)*( initialY-targetY+sin( angleXY_4+angleXY_1+angleXY_3+angleXY_0+angleXY_2)*length_4+length_0*sin(angleXY_0)+length_3*sin( angleXY_1+angleXY_3+angleXY_0+angleXY_2)+length_2*sin( angleXY_1+angleXY_0+angleXY_2)+sin( angleXY_1+angleXY_0)*length_1+5.0*initialOffsetY)*length_4);
+	double result = ( cos( angleXY_3+angleXY_0+angleXY_2+angleXY_4+angleXY_1)*length_4*( length_4*sin( angleXY_3+angleXY_0+angleXY_2+angleXY_4+angleXY_1)+5.0*initialOffsetY+sin( angleXY_0+angleXY_1)*length_1+length_3*sin( angleXY_3+angleXY_0+angleXY_2+angleXY_1)+length_2*sin( angleXY_0+angleXY_2+angleXY_1)+initialY+length_0*sin(angleXY_0)-targetY)-length_4*sin( angleXZ_1+angleXZ_3+angleXZ_0+angleXZ_2+angleXZ_4)*( length_0*sin(angleXZ_0)*cos(angleXY_0)+length_3*sin( angleXZ_1+angleXZ_3+angleXZ_0+angleXZ_2)*cos( angleXY_3+angleXY_0+angleXY_2+angleXY_1)+cos( angleXY_3+angleXY_0+angleXY_2+angleXY_4+angleXY_1)*length_4*sin( angleXZ_1+angleXZ_3+angleXZ_0+angleXZ_2+angleXZ_4)+cos( angleXY_0+angleXY_2+angleXY_1)*sin( angleXZ_1+angleXZ_0+angleXZ_2)*length_2+5.0*initialOffsetZ+initialZ+length_1*sin( angleXZ_1+angleXZ_0)*cos( angleXY_0+angleXY_1)-targetZ)*sin( angleXY_3+angleXY_0+angleXY_2+angleXY_4+angleXY_1)-cos( angleXZ_1+angleXZ_3+angleXZ_0+angleXZ_2+angleXZ_4)*length_4*( cos( angleXY_3+angleXY_0+angleXY_2+angleXY_4+angleXY_1)*cos( angleXZ_1+angleXZ_3+angleXZ_0+angleXZ_2+angleXZ_4)*length_4+5.0*initialOffsetX+cos( angleXY_0+angleXY_2+angleXY_1)*cos( angleXZ_1+angleXZ_0+angleXZ_2)*length_2+length_0*cos(angleXY_0)*cos(angleXZ_0)+initialX-targetX+length_3*cos( angleXZ_1+angleXZ_3+angleXZ_0+angleXZ_2)*cos( angleXY_3+angleXY_0+angleXY_2+angleXY_1)+cos( angleXZ_1+angleXZ_0)*length_1*cos( angleXY_0+angleXY_1))*sin( angleXY_3+angleXY_0+angleXY_2+angleXY_4+angleXY_1))*pow( pow( length_4*sin( angleXY_3+angleXY_0+angleXY_2+angleXY_4+angleXY_1)+5.0*initialOffsetY+sin( angleXY_0+angleXY_1)*length_1+length_3*sin( angleXY_3+angleXY_0+angleXY_2+angleXY_1)+length_2*sin( angleXY_0+angleXY_2+angleXY_1)+initialY+length_0*sin(angleXY_0)-targetY,2.0)+pow( cos( angleXY_3+angleXY_0+angleXY_2+angleXY_4+angleXY_1)*cos( angleXZ_1+angleXZ_3+angleXZ_0+angleXZ_2+angleXZ_4)*length_4+5.0*initialOffsetX+cos( angleXY_0+angleXY_2+angleXY_1)*cos( angleXZ_1+angleXZ_0+angleXZ_2)*length_2+length_0*cos(angleXY_0)*cos(angleXZ_0)+initialX-targetX+length_3*cos( angleXZ_1+angleXZ_3+angleXZ_0+angleXZ_2)*cos( angleXY_3+angleXY_0+angleXY_2+angleXY_1)+cos( angleXZ_1+angleXZ_0)*length_1*cos( angleXY_0+angleXY_1),2.0)+pow( length_0*sin(angleXZ_0)*cos(angleXY_0)+length_3*sin( angleXZ_1+angleXZ_3+angleXZ_0+angleXZ_2)*cos( angleXY_3+angleXY_0+angleXY_2+angleXY_1)+cos( angleXY_3+angleXY_0+angleXY_2+angleXY_4+angleXY_1)*length_4*sin( angleXZ_1+angleXZ_3+angleXZ_0+angleXZ_2+angleXZ_4)+cos( angleXY_0+angleXY_2+angleXY_1)*sin( angleXZ_1+angleXZ_0+angleXZ_2)*length_2+5.0*initialOffsetZ+initialZ+length_1*sin( angleXZ_1+angleXZ_0)*cos( angleXY_0+angleXY_1)-targetZ,2.0),-(1.0/2.0))+2.0*angleXY_4;
 
 	return result;
 }
 
-double DerivativeFunctions::derivative_XZ_5_Legs_0( std::vector<double> & params )
+double DerivativeFunctions::derivative_XZ_5_Legs_0( const std::vector<double> & params )
 {
 	assert( params.size() == 29 );
 
@@ -845,30 +820,25 @@ double DerivativeFunctions::derivative_XZ_5_Legs_0( std::vector<double> & params
 	double length_0 = params[ 9 + 0 ];
 	double angleXY_0 = params[ 9 + 1 ];
 	double angleXZ_0 = params[ 9 + 2 ];
-	//double angleZY_0 = params[ 9 + 3 ];
 	double length_1 = params[ 9 + 4 ];
 	double angleXY_1 = params[ 9 + 5 ];
 	double angleXZ_1 = params[ 9 + 6 ];
-	//double angleZY_1 = params[ 9 + 7 ];
 	double length_2 = params[ 9 + 8 ];
 	double angleXY_2 = params[ 9 + 9 ];
 	double angleXZ_2 = params[ 9 + 10 ];
-	//double angleZY_2 = params[ 9 + 11 ];
 	double length_3 = params[ 9 + 12 ];
 	double angleXY_3 = params[ 9 + 13 ];
 	double angleXZ_3 = params[ 9 + 14 ];
-	//double angleZY_3 = params[ 9 + 15 ];
 	double length_4 = params[ 9 + 16 ];
 	double angleXY_4 = params[ 9 + 17 ];
 	double angleXZ_4 = params[ 9 + 18 ];
-	//double angleZY_4 = params[ 9 + 19 ];
 
-	double result = pow( pow( length_2*cos( angleXZ_2+angleXZ_1+angleXZ_0)*cos( angleXY_1+angleXY_0+angleXY_2)+5.0*initialOffsetX+cos(angleXZ_0)*cos(angleXY_0)*length_0+initialX-targetX+cos( angleXY_4+angleXY_1+angleXY_3+angleXY_0+angleXY_2)*cos( angleXZ_2+angleXZ_4+angleXZ_1+angleXZ_3+angleXZ_0)*length_4+cos( angleXY_1+angleXY_3+angleXY_0+angleXY_2)*length_3*cos( angleXZ_2+angleXZ_1+angleXZ_3+angleXZ_0)+cos( angleXY_1+angleXY_0)*cos( angleXZ_1+angleXZ_0)*length_1,2.0)+pow( initialY-targetY+sin( angleXY_4+angleXY_1+angleXY_3+angleXY_0+angleXY_2)*length_4+length_0*sin(angleXY_0)+length_3*sin( angleXY_1+angleXY_3+angleXY_0+angleXY_2)+length_2*sin( angleXY_1+angleXY_0+angleXY_2)+sin( angleXY_1+angleXY_0)*length_1+5.0*initialOffsetY,2.0)+pow( 5.0*initialOffsetZ+cos( angleXY_1+angleXY_0)*sin( angleXZ_1+angleXZ_0)*length_1+initialZ-targetZ+cos( angleXY_4+angleXY_1+angleXY_3+angleXY_0+angleXY_2)*sin( angleXZ_2+angleXZ_4+angleXZ_1+angleXZ_3+angleXZ_0)*length_4+cos(angleXY_0)*sin(angleXZ_0)*length_0+sin( angleXZ_2+angleXZ_1+angleXZ_3+angleXZ_0)*cos( angleXY_1+angleXY_3+angleXY_0+angleXY_2)*length_3+length_2*sin( angleXZ_2+angleXZ_1+angleXZ_0)*cos( angleXY_1+angleXY_0+angleXY_2),2.0),-(1.0/2.0))*( ( 5.0*initialOffsetZ+cos( angleXY_1+angleXY_0)*sin( angleXZ_1+angleXZ_0)*length_1+initialZ-targetZ+cos( angleXY_4+angleXY_1+angleXY_3+angleXY_0+angleXY_2)*sin( angleXZ_2+angleXZ_4+angleXZ_1+angleXZ_3+angleXZ_0)*length_4+cos(angleXY_0)*sin(angleXZ_0)*length_0+sin( angleXZ_2+angleXZ_1+angleXZ_3+angleXZ_0)*cos( angleXY_1+angleXY_3+angleXY_0+angleXY_2)*length_3+length_2*sin( angleXZ_2+angleXZ_1+angleXZ_0)*cos( angleXY_1+angleXY_0+angleXY_2))*( length_2*cos( angleXZ_2+angleXZ_1+angleXZ_0)*cos( angleXY_1+angleXY_0+angleXY_2)+cos(angleXZ_0)*cos(angleXY_0)*length_0+cos( angleXY_4+angleXY_1+angleXY_3+angleXY_0+angleXY_2)*cos( angleXZ_2+angleXZ_4+angleXZ_1+angleXZ_3+angleXZ_0)*length_4+cos( angleXY_1+angleXY_3+angleXY_0+angleXY_2)*length_3*cos( angleXZ_2+angleXZ_1+angleXZ_3+angleXZ_0)+cos( angleXY_1+angleXY_0)*cos( angleXZ_1+angleXZ_0)*length_1)-( cos( angleXY_1+angleXY_0)*sin( angleXZ_1+angleXZ_0)*length_1+cos( angleXY_4+angleXY_1+angleXY_3+angleXY_0+angleXY_2)*sin( angleXZ_2+angleXZ_4+angleXZ_1+angleXZ_3+angleXZ_0)*length_4+cos(angleXY_0)*sin(angleXZ_0)*length_0+sin( angleXZ_2+angleXZ_1+angleXZ_3+angleXZ_0)*cos( angleXY_1+angleXY_3+angleXY_0+angleXY_2)*length_3+length_2*sin( angleXZ_2+angleXZ_1+angleXZ_0)*cos( angleXY_1+angleXY_0+angleXY_2))*( length_2*cos( angleXZ_2+angleXZ_1+angleXZ_0)*cos( angleXY_1+angleXY_0+angleXY_2)+5.0*initialOffsetX+cos(angleXZ_0)*cos(angleXY_0)*length_0+initialX-targetX+cos( angleXY_4+angleXY_1+angleXY_3+angleXY_0+angleXY_2)*cos( angleXZ_2+angleXZ_4+angleXZ_1+angleXZ_3+angleXZ_0)*length_4+cos( angleXY_1+angleXY_3+angleXY_0+angleXY_2)*length_3*cos( angleXZ_2+angleXZ_1+angleXZ_3+angleXZ_0)+cos( angleXY_1+angleXY_0)*cos( angleXZ_1+angleXZ_0)*length_1));
+	double result = ( ( cos( angleXY_3+angleXY_0+angleXY_2+angleXY_4+angleXY_1)*cos( angleXZ_1+angleXZ_3+angleXZ_0+angleXZ_2+angleXZ_4)*length_4+cos( angleXY_0+angleXY_2+angleXY_1)*cos( angleXZ_1+angleXZ_0+angleXZ_2)*length_2+length_0*cos(angleXY_0)*cos(angleXZ_0)+length_3*cos( angleXZ_1+angleXZ_3+angleXZ_0+angleXZ_2)*cos( angleXY_3+angleXY_0+angleXY_2+angleXY_1)+cos( angleXZ_1+angleXZ_0)*length_1*cos( angleXY_0+angleXY_1))*( length_0*sin(angleXZ_0)*cos(angleXY_0)+length_3*sin( angleXZ_1+angleXZ_3+angleXZ_0+angleXZ_2)*cos( angleXY_3+angleXY_0+angleXY_2+angleXY_1)+cos( angleXY_3+angleXY_0+angleXY_2+angleXY_4+angleXY_1)*length_4*sin( angleXZ_1+angleXZ_3+angleXZ_0+angleXZ_2+angleXZ_4)+cos( angleXY_0+angleXY_2+angleXY_1)*sin( angleXZ_1+angleXZ_0+angleXZ_2)*length_2+5.0*initialOffsetZ+initialZ+length_1*sin( angleXZ_1+angleXZ_0)*cos( angleXY_0+angleXY_1)-targetZ)-( length_0*sin(angleXZ_0)*cos(angleXY_0)+length_3*sin( angleXZ_1+angleXZ_3+angleXZ_0+angleXZ_2)*cos( angleXY_3+angleXY_0+angleXY_2+angleXY_1)+cos( angleXY_3+angleXY_0+angleXY_2+angleXY_4+angleXY_1)*length_4*sin( angleXZ_1+angleXZ_3+angleXZ_0+angleXZ_2+angleXZ_4)+cos( angleXY_0+angleXY_2+angleXY_1)*sin( angleXZ_1+angleXZ_0+angleXZ_2)*length_2+length_1*sin( angleXZ_1+angleXZ_0)*cos( angleXY_0+angleXY_1))*( cos( angleXY_3+angleXY_0+angleXY_2+angleXY_4+angleXY_1)*cos( angleXZ_1+angleXZ_3+angleXZ_0+angleXZ_2+angleXZ_4)*length_4+5.0*initialOffsetX+cos( angleXY_0+angleXY_2+angleXY_1)*cos( angleXZ_1+angleXZ_0+angleXZ_2)*length_2+length_0*cos(angleXY_0)*cos(angleXZ_0)+initialX-targetX+length_3*cos( angleXZ_1+angleXZ_3+angleXZ_0+angleXZ_2)*cos( angleXY_3+angleXY_0+angleXY_2+angleXY_1)+cos( angleXZ_1+angleXZ_0)*length_1*cos( angleXY_0+angleXY_1)))*pow( pow( length_4*sin( angleXY_3+angleXY_0+angleXY_2+angleXY_4+angleXY_1)+5.0*initialOffsetY+sin( angleXY_0+angleXY_1)*length_1+length_3*sin( angleXY_3+angleXY_0+angleXY_2+angleXY_1)+length_2*sin( angleXY_0+angleXY_2+angleXY_1)+initialY+length_0*sin(angleXY_0)-targetY,2.0)+pow( cos( angleXY_3+angleXY_0+angleXY_2+angleXY_4+angleXY_1)*cos( angleXZ_1+angleXZ_3+angleXZ_0+angleXZ_2+angleXZ_4)*length_4+5.0*initialOffsetX+cos( angleXY_0+angleXY_2+angleXY_1)*cos( angleXZ_1+angleXZ_0+angleXZ_2)*length_2+length_0*cos(angleXY_0)*cos(angleXZ_0)+initialX-targetX+length_3*cos( angleXZ_1+angleXZ_3+angleXZ_0+angleXZ_2)*cos( angleXY_3+angleXY_0+angleXY_2+angleXY_1)+cos( angleXZ_1+angleXZ_0)*length_1*cos( angleXY_0+angleXY_1),2.0)+pow( length_0*sin(angleXZ_0)*cos(angleXY_0)+length_3*sin( angleXZ_1+angleXZ_3+angleXZ_0+angleXZ_2)*cos( angleXY_3+angleXY_0+angleXY_2+angleXY_1)+cos( angleXY_3+angleXY_0+angleXY_2+angleXY_4+angleXY_1)*length_4*sin( angleXZ_1+angleXZ_3+angleXZ_0+angleXZ_2+angleXZ_4)+cos( angleXY_0+angleXY_2+angleXY_1)*sin( angleXZ_1+angleXZ_0+angleXZ_2)*length_2+5.0*initialOffsetZ+initialZ+length_1*sin( angleXZ_1+angleXZ_0)*cos( angleXY_0+angleXY_1)-targetZ,2.0),-(1.0/2.0));
 
 	return result;
 }
 
-double DerivativeFunctions::derivative_XZ_5_Legs_1( std::vector<double> & params )
+double DerivativeFunctions::derivative_XZ_5_Legs_1( const std::vector<double> & params )
 {
 	assert( params.size() == 29 );
 
@@ -884,30 +854,25 @@ double DerivativeFunctions::derivative_XZ_5_Legs_1( std::vector<double> & params
 	double length_0 = params[ 9 + 0 ];
 	double angleXY_0 = params[ 9 + 1 ];
 	double angleXZ_0 = params[ 9 + 2 ];
-	//double angleZY_0 = params[ 9 + 3 ];
 	double length_1 = params[ 9 + 4 ];
 	double angleXY_1 = params[ 9 + 5 ];
 	double angleXZ_1 = params[ 9 + 6 ];
-	//double angleZY_1 = params[ 9 + 7 ];
 	double length_2 = params[ 9 + 8 ];
 	double angleXY_2 = params[ 9 + 9 ];
 	double angleXZ_2 = params[ 9 + 10 ];
-	//double angleZY_2 = params[ 9 + 11 ];
 	double length_3 = params[ 9 + 12 ];
 	double angleXY_3 = params[ 9 + 13 ];
 	double angleXZ_3 = params[ 9 + 14 ];
-	//double angleZY_3 = params[ 9 + 15 ];
 	double length_4 = params[ 9 + 16 ];
 	double angleXY_4 = params[ 9 + 17 ];
 	double angleXZ_4 = params[ 9 + 18 ];
-	//double angleZY_4 = params[ 9 + 19 ];
 
-	double result = ( ( length_2*cos( angleXZ_2+angleXZ_1+angleXZ_0)*cos( angleXY_1+angleXY_0+angleXY_2)+cos( angleXY_4+angleXY_1+angleXY_3+angleXY_0+angleXY_2)*cos( angleXZ_2+angleXZ_4+angleXZ_1+angleXZ_3+angleXZ_0)*length_4+cos( angleXY_1+angleXY_3+angleXY_0+angleXY_2)*length_3*cos( angleXZ_2+angleXZ_1+angleXZ_3+angleXZ_0)+cos( angleXY_1+angleXY_0)*cos( angleXZ_1+angleXZ_0)*length_1)*( 5.0*initialOffsetZ+cos( angleXY_1+angleXY_0)*sin( angleXZ_1+angleXZ_0)*length_1+initialZ-targetZ+cos( angleXY_4+angleXY_1+angleXY_3+angleXY_0+angleXY_2)*sin( angleXZ_2+angleXZ_4+angleXZ_1+angleXZ_3+angleXZ_0)*length_4+cos(angleXY_0)*sin(angleXZ_0)*length_0+sin( angleXZ_2+angleXZ_1+angleXZ_3+angleXZ_0)*cos( angleXY_1+angleXY_3+angleXY_0+angleXY_2)*length_3+length_2*sin( angleXZ_2+angleXZ_1+angleXZ_0)*cos( angleXY_1+angleXY_0+angleXY_2))-( cos( angleXY_1+angleXY_0)*sin( angleXZ_1+angleXZ_0)*length_1+cos( angleXY_4+angleXY_1+angleXY_3+angleXY_0+angleXY_2)*sin( angleXZ_2+angleXZ_4+angleXZ_1+angleXZ_3+angleXZ_0)*length_4+sin( angleXZ_2+angleXZ_1+angleXZ_3+angleXZ_0)*cos( angleXY_1+angleXY_3+angleXY_0+angleXY_2)*length_3+length_2*sin( angleXZ_2+angleXZ_1+angleXZ_0)*cos( angleXY_1+angleXY_0+angleXY_2))*( length_2*cos( angleXZ_2+angleXZ_1+angleXZ_0)*cos( angleXY_1+angleXY_0+angleXY_2)+5.0*initialOffsetX+cos(angleXZ_0)*cos(angleXY_0)*length_0+initialX-targetX+cos( angleXY_4+angleXY_1+angleXY_3+angleXY_0+angleXY_2)*cos( angleXZ_2+angleXZ_4+angleXZ_1+angleXZ_3+angleXZ_0)*length_4+cos( angleXY_1+angleXY_3+angleXY_0+angleXY_2)*length_3*cos( angleXZ_2+angleXZ_1+angleXZ_3+angleXZ_0)+cos( angleXY_1+angleXY_0)*cos( angleXZ_1+angleXZ_0)*length_1))*pow( pow( length_2*cos( angleXZ_2+angleXZ_1+angleXZ_0)*cos( angleXY_1+angleXY_0+angleXY_2)+5.0*initialOffsetX+cos(angleXZ_0)*cos(angleXY_0)*length_0+initialX-targetX+cos( angleXY_4+angleXY_1+angleXY_3+angleXY_0+angleXY_2)*cos( angleXZ_2+angleXZ_4+angleXZ_1+angleXZ_3+angleXZ_0)*length_4+cos( angleXY_1+angleXY_3+angleXY_0+angleXY_2)*length_3*cos( angleXZ_2+angleXZ_1+angleXZ_3+angleXZ_0)+cos( angleXY_1+angleXY_0)*cos( angleXZ_1+angleXZ_0)*length_1,2.0)+pow( initialY-targetY+sin( angleXY_4+angleXY_1+angleXY_3+angleXY_0+angleXY_2)*length_4+length_0*sin(angleXY_0)+length_3*sin( angleXY_1+angleXY_3+angleXY_0+angleXY_2)+length_2*sin( angleXY_1+angleXY_0+angleXY_2)+sin( angleXY_1+angleXY_0)*length_1+5.0*initialOffsetY,2.0)+pow( 5.0*initialOffsetZ+cos( angleXY_1+angleXY_0)*sin( angleXZ_1+angleXZ_0)*length_1+initialZ-targetZ+cos( angleXY_4+angleXY_1+angleXY_3+angleXY_0+angleXY_2)*sin( angleXZ_2+angleXZ_4+angleXZ_1+angleXZ_3+angleXZ_0)*length_4+cos(angleXY_0)*sin(angleXZ_0)*length_0+sin( angleXZ_2+angleXZ_1+angleXZ_3+angleXZ_0)*cos( angleXY_1+angleXY_3+angleXY_0+angleXY_2)*length_3+length_2*sin( angleXZ_2+angleXZ_1+angleXZ_0)*cos( angleXY_1+angleXY_0+angleXY_2),2.0),-(1.0/2.0));
+	double result = -( ( length_3*sin( angleXZ_1+angleXZ_3+angleXZ_0+angleXZ_2)*cos( angleXY_3+angleXY_0+angleXY_2+angleXY_1)+cos( angleXY_3+angleXY_0+angleXY_2+angleXY_4+angleXY_1)*length_4*sin( angleXZ_1+angleXZ_3+angleXZ_0+angleXZ_2+angleXZ_4)+cos( angleXY_0+angleXY_2+angleXY_1)*sin( angleXZ_1+angleXZ_0+angleXZ_2)*length_2+length_1*sin( angleXZ_1+angleXZ_0)*cos( angleXY_0+angleXY_1))*( cos( angleXY_3+angleXY_0+angleXY_2+angleXY_4+angleXY_1)*cos( angleXZ_1+angleXZ_3+angleXZ_0+angleXZ_2+angleXZ_4)*length_4+5.0*initialOffsetX+cos( angleXY_0+angleXY_2+angleXY_1)*cos( angleXZ_1+angleXZ_0+angleXZ_2)*length_2+length_0*cos(angleXY_0)*cos(angleXZ_0)+initialX-targetX+length_3*cos( angleXZ_1+angleXZ_3+angleXZ_0+angleXZ_2)*cos( angleXY_3+angleXY_0+angleXY_2+angleXY_1)+cos( angleXZ_1+angleXZ_0)*length_1*cos( angleXY_0+angleXY_1))-( cos( angleXY_3+angleXY_0+angleXY_2+angleXY_4+angleXY_1)*cos( angleXZ_1+angleXZ_3+angleXZ_0+angleXZ_2+angleXZ_4)*length_4+cos( angleXY_0+angleXY_2+angleXY_1)*cos( angleXZ_1+angleXZ_0+angleXZ_2)*length_2+length_3*cos( angleXZ_1+angleXZ_3+angleXZ_0+angleXZ_2)*cos( angleXY_3+angleXY_0+angleXY_2+angleXY_1)+cos( angleXZ_1+angleXZ_0)*length_1*cos( angleXY_0+angleXY_1))*( length_0*sin(angleXZ_0)*cos(angleXY_0)+length_3*sin( angleXZ_1+angleXZ_3+angleXZ_0+angleXZ_2)*cos( angleXY_3+angleXY_0+angleXY_2+angleXY_1)+cos( angleXY_3+angleXY_0+angleXY_2+angleXY_4+angleXY_1)*length_4*sin( angleXZ_1+angleXZ_3+angleXZ_0+angleXZ_2+angleXZ_4)+cos( angleXY_0+angleXY_2+angleXY_1)*sin( angleXZ_1+angleXZ_0+angleXZ_2)*length_2+5.0*initialOffsetZ+initialZ+length_1*sin( angleXZ_1+angleXZ_0)*cos( angleXY_0+angleXY_1)-targetZ))*pow( pow( length_4*sin( angleXY_3+angleXY_0+angleXY_2+angleXY_4+angleXY_1)+5.0*initialOffsetY+sin( angleXY_0+angleXY_1)*length_1+length_3*sin( angleXY_3+angleXY_0+angleXY_2+angleXY_1)+length_2*sin( angleXY_0+angleXY_2+angleXY_1)+initialY+length_0*sin(angleXY_0)-targetY,2.0)+pow( cos( angleXY_3+angleXY_0+angleXY_2+angleXY_4+angleXY_1)*cos( angleXZ_1+angleXZ_3+angleXZ_0+angleXZ_2+angleXZ_4)*length_4+5.0*initialOffsetX+cos( angleXY_0+angleXY_2+angleXY_1)*cos( angleXZ_1+angleXZ_0+angleXZ_2)*length_2+length_0*cos(angleXY_0)*cos(angleXZ_0)+initialX-targetX+length_3*cos( angleXZ_1+angleXZ_3+angleXZ_0+angleXZ_2)*cos( angleXY_3+angleXY_0+angleXY_2+angleXY_1)+cos( angleXZ_1+angleXZ_0)*length_1*cos( angleXY_0+angleXY_1),2.0)+pow( length_0*sin(angleXZ_0)*cos(angleXY_0)+length_3*sin( angleXZ_1+angleXZ_3+angleXZ_0+angleXZ_2)*cos( angleXY_3+angleXY_0+angleXY_2+angleXY_1)+cos( angleXY_3+angleXY_0+angleXY_2+angleXY_4+angleXY_1)*length_4*sin( angleXZ_1+angleXZ_3+angleXZ_0+angleXZ_2+angleXZ_4)+cos( angleXY_0+angleXY_2+angleXY_1)*sin( angleXZ_1+angleXZ_0+angleXZ_2)*length_2+5.0*initialOffsetZ+initialZ+length_1*sin( angleXZ_1+angleXZ_0)*cos( angleXY_0+angleXY_1)-targetZ,2.0),-(1.0/2.0));
 
 	return result;
 }
 
-double DerivativeFunctions::derivative_XZ_5_Legs_2( std::vector<double> & params )
+double DerivativeFunctions::derivative_XZ_5_Legs_2( const std::vector<double> & params )
 {
 	assert( params.size() == 29 );
 
@@ -923,30 +888,25 @@ double DerivativeFunctions::derivative_XZ_5_Legs_2( std::vector<double> & params
 	double length_0 = params[ 9 + 0 ];
 	double angleXY_0 = params[ 9 + 1 ];
 	double angleXZ_0 = params[ 9 + 2 ];
-	//double angleZY_0 = params[ 9 + 3 ];
 	double length_1 = params[ 9 + 4 ];
 	double angleXY_1 = params[ 9 + 5 ];
 	double angleXZ_1 = params[ 9 + 6 ];
-	//double angleZY_1 = params[ 9 + 7 ];
 	double length_2 = params[ 9 + 8 ];
 	double angleXY_2 = params[ 9 + 9 ];
 	double angleXZ_2 = params[ 9 + 10 ];
-	//double angleZY_2 = params[ 9 + 11 ];
 	double length_3 = params[ 9 + 12 ];
 	double angleXY_3 = params[ 9 + 13 ];
 	double angleXZ_3 = params[ 9 + 14 ];
-	//double angleZY_3 = params[ 9 + 15 ];
 	double length_4 = params[ 9 + 16 ];
 	double angleXY_4 = params[ 9 + 17 ];
 	double angleXZ_4 = params[ 9 + 18 ];
-	//double angleZY_4 = params[ 9 + 19 ];
 
-	double result = ( ( 5.0*initialOffsetZ+cos( angleXY_1+angleXY_0)*sin( angleXZ_1+angleXZ_0)*length_1+initialZ-targetZ+cos( angleXY_4+angleXY_1+angleXY_3+angleXY_0+angleXY_2)*sin( angleXZ_2+angleXZ_4+angleXZ_1+angleXZ_3+angleXZ_0)*length_4+cos(angleXY_0)*sin(angleXZ_0)*length_0+sin( angleXZ_2+angleXZ_1+angleXZ_3+angleXZ_0)*cos( angleXY_1+angleXY_3+angleXY_0+angleXY_2)*length_3+length_2*sin( angleXZ_2+angleXZ_1+angleXZ_0)*cos( angleXY_1+angleXY_0+angleXY_2))*( length_2*cos( angleXZ_2+angleXZ_1+angleXZ_0)*cos( angleXY_1+angleXY_0+angleXY_2)+cos( angleXY_4+angleXY_1+angleXY_3+angleXY_0+angleXY_2)*cos( angleXZ_2+angleXZ_4+angleXZ_1+angleXZ_3+angleXZ_0)*length_4+cos( angleXY_1+angleXY_3+angleXY_0+angleXY_2)*length_3*cos( angleXZ_2+angleXZ_1+angleXZ_3+angleXZ_0))-( cos( angleXY_4+angleXY_1+angleXY_3+angleXY_0+angleXY_2)*sin( angleXZ_2+angleXZ_4+angleXZ_1+angleXZ_3+angleXZ_0)*length_4+sin( angleXZ_2+angleXZ_1+angleXZ_3+angleXZ_0)*cos( angleXY_1+angleXY_3+angleXY_0+angleXY_2)*length_3+length_2*sin( angleXZ_2+angleXZ_1+angleXZ_0)*cos( angleXY_1+angleXY_0+angleXY_2))*( length_2*cos( angleXZ_2+angleXZ_1+angleXZ_0)*cos( angleXY_1+angleXY_0+angleXY_2)+5.0*initialOffsetX+cos(angleXZ_0)*cos(angleXY_0)*length_0+initialX-targetX+cos( angleXY_4+angleXY_1+angleXY_3+angleXY_0+angleXY_2)*cos( angleXZ_2+angleXZ_4+angleXZ_1+angleXZ_3+angleXZ_0)*length_4+cos( angleXY_1+angleXY_3+angleXY_0+angleXY_2)*length_3*cos( angleXZ_2+angleXZ_1+angleXZ_3+angleXZ_0)+cos( angleXY_1+angleXY_0)*cos( angleXZ_1+angleXZ_0)*length_1))*pow( pow( length_2*cos( angleXZ_2+angleXZ_1+angleXZ_0)*cos( angleXY_1+angleXY_0+angleXY_2)+5.0*initialOffsetX+cos(angleXZ_0)*cos(angleXY_0)*length_0+initialX-targetX+cos( angleXY_4+angleXY_1+angleXY_3+angleXY_0+angleXY_2)*cos( angleXZ_2+angleXZ_4+angleXZ_1+angleXZ_3+angleXZ_0)*length_4+cos( angleXY_1+angleXY_3+angleXY_0+angleXY_2)*length_3*cos( angleXZ_2+angleXZ_1+angleXZ_3+angleXZ_0)+cos( angleXY_1+angleXY_0)*cos( angleXZ_1+angleXZ_0)*length_1,2.0)+pow( initialY-targetY+sin( angleXY_4+angleXY_1+angleXY_3+angleXY_0+angleXY_2)*length_4+length_0*sin(angleXY_0)+length_3*sin( angleXY_1+angleXY_3+angleXY_0+angleXY_2)+length_2*sin( angleXY_1+angleXY_0+angleXY_2)+sin( angleXY_1+angleXY_0)*length_1+5.0*initialOffsetY,2.0)+pow( 5.0*initialOffsetZ+cos( angleXY_1+angleXY_0)*sin( angleXZ_1+angleXZ_0)*length_1+initialZ-targetZ+cos( angleXY_4+angleXY_1+angleXY_3+angleXY_0+angleXY_2)*sin( angleXZ_2+angleXZ_4+angleXZ_1+angleXZ_3+angleXZ_0)*length_4+cos(angleXY_0)*sin(angleXZ_0)*length_0+sin( angleXZ_2+angleXZ_1+angleXZ_3+angleXZ_0)*cos( angleXY_1+angleXY_3+angleXY_0+angleXY_2)*length_3+length_2*sin( angleXZ_2+angleXZ_1+angleXZ_0)*cos( angleXY_1+angleXY_0+angleXY_2),2.0),-(1.0/2.0));
+	double result = pow( pow( length_4*sin( angleXY_3+angleXY_0+angleXY_2+angleXY_4+angleXY_1)+5.0*initialOffsetY+sin( angleXY_0+angleXY_1)*length_1+length_3*sin( angleXY_3+angleXY_0+angleXY_2+angleXY_1)+length_2*sin( angleXY_0+angleXY_2+angleXY_1)+initialY+length_0*sin(angleXY_0)-targetY,2.0)+pow( cos( angleXY_3+angleXY_0+angleXY_2+angleXY_4+angleXY_1)*cos( angleXZ_1+angleXZ_3+angleXZ_0+angleXZ_2+angleXZ_4)*length_4+5.0*initialOffsetX+cos( angleXY_0+angleXY_2+angleXY_1)*cos( angleXZ_1+angleXZ_0+angleXZ_2)*length_2+length_0*cos(angleXY_0)*cos(angleXZ_0)+initialX-targetX+length_3*cos( angleXZ_1+angleXZ_3+angleXZ_0+angleXZ_2)*cos( angleXY_3+angleXY_0+angleXY_2+angleXY_1)+cos( angleXZ_1+angleXZ_0)*length_1*cos( angleXY_0+angleXY_1),2.0)+pow( length_0*sin(angleXZ_0)*cos(angleXY_0)+length_3*sin( angleXZ_1+angleXZ_3+angleXZ_0+angleXZ_2)*cos( angleXY_3+angleXY_0+angleXY_2+angleXY_1)+cos( angleXY_3+angleXY_0+angleXY_2+angleXY_4+angleXY_1)*length_4*sin( angleXZ_1+angleXZ_3+angleXZ_0+angleXZ_2+angleXZ_4)+cos( angleXY_0+angleXY_2+angleXY_1)*sin( angleXZ_1+angleXZ_0+angleXZ_2)*length_2+5.0*initialOffsetZ+initialZ+length_1*sin( angleXZ_1+angleXZ_0)*cos( angleXY_0+angleXY_1)-targetZ,2.0),-(1.0/2.0))*( ( cos( angleXY_3+angleXY_0+angleXY_2+angleXY_4+angleXY_1)*cos( angleXZ_1+angleXZ_3+angleXZ_0+angleXZ_2+angleXZ_4)*length_4+cos( angleXY_0+angleXY_2+angleXY_1)*cos( angleXZ_1+angleXZ_0+angleXZ_2)*length_2+length_3*cos( angleXZ_1+angleXZ_3+angleXZ_0+angleXZ_2)*cos( angleXY_3+angleXY_0+angleXY_2+angleXY_1))*( length_0*sin(angleXZ_0)*cos(angleXY_0)+length_3*sin( angleXZ_1+angleXZ_3+angleXZ_0+angleXZ_2)*cos( angleXY_3+angleXY_0+angleXY_2+angleXY_1)+cos( angleXY_3+angleXY_0+angleXY_2+angleXY_4+angleXY_1)*length_4*sin( angleXZ_1+angleXZ_3+angleXZ_0+angleXZ_2+angleXZ_4)+cos( angleXY_0+angleXY_2+angleXY_1)*sin( angleXZ_1+angleXZ_0+angleXZ_2)*length_2+5.0*initialOffsetZ+initialZ+length_1*sin( angleXZ_1+angleXZ_0)*cos( angleXY_0+angleXY_1)-targetZ)-( length_3*sin( angleXZ_1+angleXZ_3+angleXZ_0+angleXZ_2)*cos( angleXY_3+angleXY_0+angleXY_2+angleXY_1)+cos( angleXY_3+angleXY_0+angleXY_2+angleXY_4+angleXY_1)*length_4*sin( angleXZ_1+angleXZ_3+angleXZ_0+angleXZ_2+angleXZ_4)+cos( angleXY_0+angleXY_2+angleXY_1)*sin( angleXZ_1+angleXZ_0+angleXZ_2)*length_2)*( cos( angleXY_3+angleXY_0+angleXY_2+angleXY_4+angleXY_1)*cos( angleXZ_1+angleXZ_3+angleXZ_0+angleXZ_2+angleXZ_4)*length_4+5.0*initialOffsetX+cos( angleXY_0+angleXY_2+angleXY_1)*cos( angleXZ_1+angleXZ_0+angleXZ_2)*length_2+length_0*cos(angleXY_0)*cos(angleXZ_0)+initialX-targetX+length_3*cos( angleXZ_1+angleXZ_3+angleXZ_0+angleXZ_2)*cos( angleXY_3+angleXY_0+angleXY_2+angleXY_1)+cos( angleXZ_1+angleXZ_0)*length_1*cos( angleXY_0+angleXY_1)));
 
 	return result;
 }
 
-double DerivativeFunctions::derivative_XZ_5_Legs_3( std::vector<double> & params )
+double DerivativeFunctions::derivative_XZ_5_Legs_3( const std::vector<double> & params )
 {
 	assert( params.size() == 29 );
 
@@ -962,30 +922,25 @@ double DerivativeFunctions::derivative_XZ_5_Legs_3( std::vector<double> & params
 	double length_0 = params[ 9 + 0 ];
 	double angleXY_0 = params[ 9 + 1 ];
 	double angleXZ_0 = params[ 9 + 2 ];
-	//double angleZY_0 = params[ 9 + 3 ];
 	double length_1 = params[ 9 + 4 ];
 	double angleXY_1 = params[ 9 + 5 ];
 	double angleXZ_1 = params[ 9 + 6 ];
-	//double angleZY_1 = params[ 9 + 7 ];
 	double length_2 = params[ 9 + 8 ];
 	double angleXY_2 = params[ 9 + 9 ];
 	double angleXZ_2 = params[ 9 + 10 ];
-	//double angleZY_2 = params[ 9 + 11 ];
 	double length_3 = params[ 9 + 12 ];
 	double angleXY_3 = params[ 9 + 13 ];
 	double angleXZ_3 = params[ 9 + 14 ];
-	//double angleZY_3 = params[ 9 + 15 ];
 	double length_4 = params[ 9 + 16 ];
 	double angleXY_4 = params[ 9 + 17 ];
 	double angleXZ_4 = params[ 9 + 18 ];
-	//double angleZY_4 = params[ 9 + 19 ];
 
-	double result = pow( pow( length_2*cos( angleXZ_2+angleXZ_1+angleXZ_0)*cos( angleXY_1+angleXY_0+angleXY_2)+5.0*initialOffsetX+cos(angleXZ_0)*cos(angleXY_0)*length_0+initialX-targetX+cos( angleXY_4+angleXY_1+angleXY_3+angleXY_0+angleXY_2)*cos( angleXZ_2+angleXZ_4+angleXZ_1+angleXZ_3+angleXZ_0)*length_4+cos( angleXY_1+angleXY_3+angleXY_0+angleXY_2)*length_3*cos( angleXZ_2+angleXZ_1+angleXZ_3+angleXZ_0)+cos( angleXY_1+angleXY_0)*cos( angleXZ_1+angleXZ_0)*length_1,2.0)+pow( initialY-targetY+sin( angleXY_4+angleXY_1+angleXY_3+angleXY_0+angleXY_2)*length_4+length_0*sin(angleXY_0)+length_3*sin( angleXY_1+angleXY_3+angleXY_0+angleXY_2)+length_2*sin( angleXY_1+angleXY_0+angleXY_2)+sin( angleXY_1+angleXY_0)*length_1+5.0*initialOffsetY,2.0)+pow( 5.0*initialOffsetZ+cos( angleXY_1+angleXY_0)*sin( angleXZ_1+angleXZ_0)*length_1+initialZ-targetZ+cos( angleXY_4+angleXY_1+angleXY_3+angleXY_0+angleXY_2)*sin( angleXZ_2+angleXZ_4+angleXZ_1+angleXZ_3+angleXZ_0)*length_4+cos(angleXY_0)*sin(angleXZ_0)*length_0+sin( angleXZ_2+angleXZ_1+angleXZ_3+angleXZ_0)*cos( angleXY_1+angleXY_3+angleXY_0+angleXY_2)*length_3+length_2*sin( angleXZ_2+angleXZ_1+angleXZ_0)*cos( angleXY_1+angleXY_0+angleXY_2),2.0),-(1.0/2.0))*( ( 5.0*initialOffsetZ+cos( angleXY_1+angleXY_0)*sin( angleXZ_1+angleXZ_0)*length_1+initialZ-targetZ+cos( angleXY_4+angleXY_1+angleXY_3+angleXY_0+angleXY_2)*sin( angleXZ_2+angleXZ_4+angleXZ_1+angleXZ_3+angleXZ_0)*length_4+cos(angleXY_0)*sin(angleXZ_0)*length_0+sin( angleXZ_2+angleXZ_1+angleXZ_3+angleXZ_0)*cos( angleXY_1+angleXY_3+angleXY_0+angleXY_2)*length_3+length_2*sin( angleXZ_2+angleXZ_1+angleXZ_0)*cos( angleXY_1+angleXY_0+angleXY_2))*( cos( angleXY_4+angleXY_1+angleXY_3+angleXY_0+angleXY_2)*cos( angleXZ_2+angleXZ_4+angleXZ_1+angleXZ_3+angleXZ_0)*length_4+cos( angleXY_1+angleXY_3+angleXY_0+angleXY_2)*length_3*cos( angleXZ_2+angleXZ_1+angleXZ_3+angleXZ_0))-( cos( angleXY_4+angleXY_1+angleXY_3+angleXY_0+angleXY_2)*sin( angleXZ_2+angleXZ_4+angleXZ_1+angleXZ_3+angleXZ_0)*length_4+sin( angleXZ_2+angleXZ_1+angleXZ_3+angleXZ_0)*cos( angleXY_1+angleXY_3+angleXY_0+angleXY_2)*length_3)*( length_2*cos( angleXZ_2+angleXZ_1+angleXZ_0)*cos( angleXY_1+angleXY_0+angleXY_2)+5.0*initialOffsetX+cos(angleXZ_0)*cos(angleXY_0)*length_0+initialX-targetX+cos( angleXY_4+angleXY_1+angleXY_3+angleXY_0+angleXY_2)*cos( angleXZ_2+angleXZ_4+angleXZ_1+angleXZ_3+angleXZ_0)*length_4+cos( angleXY_1+angleXY_3+angleXY_0+angleXY_2)*length_3*cos( angleXZ_2+angleXZ_1+angleXZ_3+angleXZ_0)+cos( angleXY_1+angleXY_0)*cos( angleXZ_1+angleXZ_0)*length_1));
+	double result = ( ( cos( angleXY_3+angleXY_0+angleXY_2+angleXY_4+angleXY_1)*cos( angleXZ_1+angleXZ_3+angleXZ_0+angleXZ_2+angleXZ_4)*length_4+length_3*cos( angleXZ_1+angleXZ_3+angleXZ_0+angleXZ_2)*cos( angleXY_3+angleXY_0+angleXY_2+angleXY_1))*( length_0*sin(angleXZ_0)*cos(angleXY_0)+length_3*sin( angleXZ_1+angleXZ_3+angleXZ_0+angleXZ_2)*cos( angleXY_3+angleXY_0+angleXY_2+angleXY_1)+cos( angleXY_3+angleXY_0+angleXY_2+angleXY_4+angleXY_1)*length_4*sin( angleXZ_1+angleXZ_3+angleXZ_0+angleXZ_2+angleXZ_4)+cos( angleXY_0+angleXY_2+angleXY_1)*sin( angleXZ_1+angleXZ_0+angleXZ_2)*length_2+5.0*initialOffsetZ+initialZ+length_1*sin( angleXZ_1+angleXZ_0)*cos( angleXY_0+angleXY_1)-targetZ)-( cos( angleXY_3+angleXY_0+angleXY_2+angleXY_4+angleXY_1)*cos( angleXZ_1+angleXZ_3+angleXZ_0+angleXZ_2+angleXZ_4)*length_4+5.0*initialOffsetX+cos( angleXY_0+angleXY_2+angleXY_1)*cos( angleXZ_1+angleXZ_0+angleXZ_2)*length_2+length_0*cos(angleXY_0)*cos(angleXZ_0)+initialX-targetX+length_3*cos( angleXZ_1+angleXZ_3+angleXZ_0+angleXZ_2)*cos( angleXY_3+angleXY_0+angleXY_2+angleXY_1)+cos( angleXZ_1+angleXZ_0)*length_1*cos( angleXY_0+angleXY_1))*( length_3*sin( angleXZ_1+angleXZ_3+angleXZ_0+angleXZ_2)*cos( angleXY_3+angleXY_0+angleXY_2+angleXY_1)+cos( angleXY_3+angleXY_0+angleXY_2+angleXY_4+angleXY_1)*length_4*sin( angleXZ_1+angleXZ_3+angleXZ_0+angleXZ_2+angleXZ_4)))*pow( pow( length_4*sin( angleXY_3+angleXY_0+angleXY_2+angleXY_4+angleXY_1)+5.0*initialOffsetY+sin( angleXY_0+angleXY_1)*length_1+length_3*sin( angleXY_3+angleXY_0+angleXY_2+angleXY_1)+length_2*sin( angleXY_0+angleXY_2+angleXY_1)+initialY+length_0*sin(angleXY_0)-targetY,2.0)+pow( cos( angleXY_3+angleXY_0+angleXY_2+angleXY_4+angleXY_1)*cos( angleXZ_1+angleXZ_3+angleXZ_0+angleXZ_2+angleXZ_4)*length_4+5.0*initialOffsetX+cos( angleXY_0+angleXY_2+angleXY_1)*cos( angleXZ_1+angleXZ_0+angleXZ_2)*length_2+length_0*cos(angleXY_0)*cos(angleXZ_0)+initialX-targetX+length_3*cos( angleXZ_1+angleXZ_3+angleXZ_0+angleXZ_2)*cos( angleXY_3+angleXY_0+angleXY_2+angleXY_1)+cos( angleXZ_1+angleXZ_0)*length_1*cos( angleXY_0+angleXY_1),2.0)+pow( length_0*sin(angleXZ_0)*cos(angleXY_0)+length_3*sin( angleXZ_1+angleXZ_3+angleXZ_0+angleXZ_2)*cos( angleXY_3+angleXY_0+angleXY_2+angleXY_1)+cos( angleXY_3+angleXY_0+angleXY_2+angleXY_4+angleXY_1)*length_4*sin( angleXZ_1+angleXZ_3+angleXZ_0+angleXZ_2+angleXZ_4)+cos( angleXY_0+angleXY_2+angleXY_1)*sin( angleXZ_1+angleXZ_0+angleXZ_2)*length_2+5.0*initialOffsetZ+initialZ+length_1*sin( angleXZ_1+angleXZ_0)*cos( angleXY_0+angleXY_1)-targetZ,2.0),-(1.0/2.0));
 
 	return result;
 }
 
-double DerivativeFunctions::derivative_XZ_5_Legs_4( std::vector<double> & params )
+double DerivativeFunctions::derivative_XZ_5_Legs_4( const std::vector<double> & params )
 {
 	assert( params.size() == 29 );
 
@@ -1001,31 +956,26 @@ double DerivativeFunctions::derivative_XZ_5_Legs_4( std::vector<double> & params
 	double length_0 = params[ 9 + 0 ];
 	double angleXY_0 = params[ 9 + 1 ];
 	double angleXZ_0 = params[ 9 + 2 ];
-	//double angleZY_0 = params[ 9 + 3 ];
 	double length_1 = params[ 9 + 4 ];
 	double angleXY_1 = params[ 9 + 5 ];
 	double angleXZ_1 = params[ 9 + 6 ];
-	//double angleZY_1 = params[ 9 + 7 ];
 	double length_2 = params[ 9 + 8 ];
 	double angleXY_2 = params[ 9 + 9 ];
 	double angleXZ_2 = params[ 9 + 10 ];
-	//double angleZY_2 = params[ 9 + 11 ];
 	double length_3 = params[ 9 + 12 ];
 	double angleXY_3 = params[ 9 + 13 ];
 	double angleXZ_3 = params[ 9 + 14 ];
-	//double angleZY_3 = params[ 9 + 15 ];
 	double length_4 = params[ 9 + 16 ];
 	double angleXY_4 = params[ 9 + 17 ];
 	double angleXZ_4 = params[ 9 + 18 ];
-	//double angleZY_4 = params[ 9 + 19 ];
 
-	double result = -pow( pow( length_2*cos( angleXZ_2+angleXZ_1+angleXZ_0)*cos( angleXY_1+angleXY_0+angleXY_2)+5.0*initialOffsetX+cos(angleXZ_0)*cos(angleXY_0)*length_0+initialX-targetX+cos( angleXY_4+angleXY_1+angleXY_3+angleXY_0+angleXY_2)*cos( angleXZ_2+angleXZ_4+angleXZ_1+angleXZ_3+angleXZ_0)*length_4+cos( angleXY_1+angleXY_3+angleXY_0+angleXY_2)*length_3*cos( angleXZ_2+angleXZ_1+angleXZ_3+angleXZ_0)+cos( angleXY_1+angleXY_0)*cos( angleXZ_1+angleXZ_0)*length_1,2.0)+pow( initialY-targetY+sin( angleXY_4+angleXY_1+angleXY_3+angleXY_0+angleXY_2)*length_4+length_0*sin(angleXY_0)+length_3*sin( angleXY_1+angleXY_3+angleXY_0+angleXY_2)+length_2*sin( angleXY_1+angleXY_0+angleXY_2)+sin( angleXY_1+angleXY_0)*length_1+5.0*initialOffsetY,2.0)+pow( 5.0*initialOffsetZ+cos( angleXY_1+angleXY_0)*sin( angleXZ_1+angleXZ_0)*length_1+initialZ-targetZ+cos( angleXY_4+angleXY_1+angleXY_3+angleXY_0+angleXY_2)*sin( angleXZ_2+angleXZ_4+angleXZ_1+angleXZ_3+angleXZ_0)*length_4+cos(angleXY_0)*sin(angleXZ_0)*length_0+sin( angleXZ_2+angleXZ_1+angleXZ_3+angleXZ_0)*cos( angleXY_1+angleXY_3+angleXY_0+angleXY_2)*length_3+length_2*sin( angleXZ_2+angleXZ_1+angleXZ_0)*cos( angleXY_1+angleXY_0+angleXY_2),2.0),-(1.0/2.0))*( cos( angleXY_4+angleXY_1+angleXY_3+angleXY_0+angleXY_2)*sin( angleXZ_2+angleXZ_4+angleXZ_1+angleXZ_3+angleXZ_0)*( length_2*cos( angleXZ_2+angleXZ_1+angleXZ_0)*cos( angleXY_1+angleXY_0+angleXY_2)+5.0*initialOffsetX+cos(angleXZ_0)*cos(angleXY_0)*length_0+initialX-targetX+cos( angleXY_4+angleXY_1+angleXY_3+angleXY_0+angleXY_2)*cos( angleXZ_2+angleXZ_4+angleXZ_1+angleXZ_3+angleXZ_0)*length_4+cos( angleXY_1+angleXY_3+angleXY_0+angleXY_2)*length_3*cos( angleXZ_2+angleXZ_1+angleXZ_3+angleXZ_0)+cos( angleXY_1+angleXY_0)*cos( angleXZ_1+angleXZ_0)*length_1)*length_4-cos( angleXY_4+angleXY_1+angleXY_3+angleXY_0+angleXY_2)*( 5.0*initialOffsetZ+cos( angleXY_1+angleXY_0)*sin( angleXZ_1+angleXZ_0)*length_1+initialZ-targetZ+cos( angleXY_4+angleXY_1+angleXY_3+angleXY_0+angleXY_2)*sin( angleXZ_2+angleXZ_4+angleXZ_1+angleXZ_3+angleXZ_0)*length_4+cos(angleXY_0)*sin(angleXZ_0)*length_0+sin( angleXZ_2+angleXZ_1+angleXZ_3+angleXZ_0)*cos( angleXY_1+angleXY_3+angleXY_0+angleXY_2)*length_3+length_2*sin( angleXZ_2+angleXZ_1+angleXZ_0)*cos( angleXY_1+angleXY_0+angleXY_2))*cos( angleXZ_2+angleXZ_4+angleXZ_1+angleXZ_3+angleXZ_0)*length_4);
+	double result = ( cos( angleXY_3+angleXY_0+angleXY_2+angleXY_4+angleXY_1)*cos( angleXZ_1+angleXZ_3+angleXZ_0+angleXZ_2+angleXZ_4)*length_4*( length_0*sin(angleXZ_0)*cos(angleXY_0)+length_3*sin( angleXZ_1+angleXZ_3+angleXZ_0+angleXZ_2)*cos( angleXY_3+angleXY_0+angleXY_2+angleXY_1)+cos( angleXY_3+angleXY_0+angleXY_2+angleXY_4+angleXY_1)*length_4*sin( angleXZ_1+angleXZ_3+angleXZ_0+angleXZ_2+angleXZ_4)+cos( angleXY_0+angleXY_2+angleXY_1)*sin( angleXZ_1+angleXZ_0+angleXZ_2)*length_2+5.0*initialOffsetZ+initialZ+length_1*sin( angleXZ_1+angleXZ_0)*cos( angleXY_0+angleXY_1)-targetZ)-cos( angleXY_3+angleXY_0+angleXY_2+angleXY_4+angleXY_1)*length_4*( cos( angleXY_3+angleXY_0+angleXY_2+angleXY_4+angleXY_1)*cos( angleXZ_1+angleXZ_3+angleXZ_0+angleXZ_2+angleXZ_4)*length_4+5.0*initialOffsetX+cos( angleXY_0+angleXY_2+angleXY_1)*cos( angleXZ_1+angleXZ_0+angleXZ_2)*length_2+length_0*cos(angleXY_0)*cos(angleXZ_0)+initialX-targetX+length_3*cos( angleXZ_1+angleXZ_3+angleXZ_0+angleXZ_2)*cos( angleXY_3+angleXY_0+angleXY_2+angleXY_1)+cos( angleXZ_1+angleXZ_0)*length_1*cos( angleXY_0+angleXY_1))*sin( angleXZ_1+angleXZ_3+angleXZ_0+angleXZ_2+angleXZ_4))*pow( pow( length_4*sin( angleXY_3+angleXY_0+angleXY_2+angleXY_4+angleXY_1)+5.0*initialOffsetY+sin( angleXY_0+angleXY_1)*length_1+length_3*sin( angleXY_3+angleXY_0+angleXY_2+angleXY_1)+length_2*sin( angleXY_0+angleXY_2+angleXY_1)+initialY+length_0*sin(angleXY_0)-targetY,2.0)+pow( cos( angleXY_3+angleXY_0+angleXY_2+angleXY_4+angleXY_1)*cos( angleXZ_1+angleXZ_3+angleXZ_0+angleXZ_2+angleXZ_4)*length_4+5.0*initialOffsetX+cos( angleXY_0+angleXY_2+angleXY_1)*cos( angleXZ_1+angleXZ_0+angleXZ_2)*length_2+length_0*cos(angleXY_0)*cos(angleXZ_0)+initialX-targetX+length_3*cos( angleXZ_1+angleXZ_3+angleXZ_0+angleXZ_2)*cos( angleXY_3+angleXY_0+angleXY_2+angleXY_1)+cos( angleXZ_1+angleXZ_0)*length_1*cos( angleXY_0+angleXY_1),2.0)+pow( length_0*sin(angleXZ_0)*cos(angleXY_0)+length_3*sin( angleXZ_1+angleXZ_3+angleXZ_0+angleXZ_2)*cos( angleXY_3+angleXY_0+angleXY_2+angleXY_1)+cos( angleXY_3+angleXY_0+angleXY_2+angleXY_4+angleXY_1)*length_4*sin( angleXZ_1+angleXZ_3+angleXZ_0+angleXZ_2+angleXZ_4)+cos( angleXY_0+angleXY_2+angleXY_1)*sin( angleXZ_1+angleXZ_0+angleXZ_2)*length_2+5.0*initialOffsetZ+initialZ+length_1*sin( angleXZ_1+angleXZ_0)*cos( angleXY_0+angleXY_1)-targetZ,2.0),-(1.0/2.0));
 
 	return result;
 }
 
 
-double DerivativeFunctions::derivative_XY_10_Legs_0( std::vector<double> & params )
+double DerivativeFunctions::derivative_XY_10_Legs_0( const std::vector<double> & params )
 {
 	assert( params.size() == 49 );
 
@@ -1084,7 +1034,7 @@ double DerivativeFunctions::derivative_XY_10_Legs_0( std::vector<double> & param
 	return result;
 }
 
-double DerivativeFunctions::derivative_XY_10_Legs_1( std::vector<double> & params )
+double DerivativeFunctions::derivative_XY_10_Legs_1( const std::vector<double> & params )
 {
 	assert( params.size() == 49 );
 
@@ -1143,7 +1093,7 @@ double DerivativeFunctions::derivative_XY_10_Legs_1( std::vector<double> & param
 	return result;
 }
 
-double DerivativeFunctions::derivative_XY_10_Legs_2( std::vector<double> & params )
+double DerivativeFunctions::derivative_XY_10_Legs_2( const std::vector<double> & params )
 {
 	assert( params.size() == 49 );
 
@@ -1202,7 +1152,7 @@ double DerivativeFunctions::derivative_XY_10_Legs_2( std::vector<double> & param
 	return result;
 }
 
-double DerivativeFunctions::derivative_XY_10_Legs_3( std::vector<double> & params )
+double DerivativeFunctions::derivative_XY_10_Legs_3( const std::vector<double> & params )
 {
 	assert( params.size() == 49 );
 
@@ -1261,7 +1211,7 @@ double DerivativeFunctions::derivative_XY_10_Legs_3( std::vector<double> & param
 	return result;
 }
 
-double DerivativeFunctions::derivative_XY_10_Legs_4( std::vector<double> & params )
+double DerivativeFunctions::derivative_XY_10_Legs_4( const std::vector<double> & params )
 {
 	assert( params.size() == 49 );
 
@@ -1320,7 +1270,7 @@ double DerivativeFunctions::derivative_XY_10_Legs_4( std::vector<double> & param
 	return result;
 }
 
-double DerivativeFunctions::derivative_XY_10_Legs_5( std::vector<double> & params )
+double DerivativeFunctions::derivative_XY_10_Legs_5( const std::vector<double> & params )
 {
 	assert( params.size() == 49 );
 
@@ -1379,7 +1329,7 @@ double DerivativeFunctions::derivative_XY_10_Legs_5( std::vector<double> & param
 	return result;
 }
 
-double DerivativeFunctions::derivative_XY_10_Legs_6( std::vector<double> & params )
+double DerivativeFunctions::derivative_XY_10_Legs_6( const std::vector<double> & params )
 {
 	assert( params.size() == 49 );
 
@@ -1438,7 +1388,7 @@ double DerivativeFunctions::derivative_XY_10_Legs_6( std::vector<double> & param
 	return result;
 }
 
-double DerivativeFunctions::derivative_XY_10_Legs_7( std::vector<double> & params )
+double DerivativeFunctions::derivative_XY_10_Legs_7( const std::vector<double> & params )
 {
 	assert( params.size() == 49 );
 
@@ -1497,7 +1447,7 @@ double DerivativeFunctions::derivative_XY_10_Legs_7( std::vector<double> & param
 	return result;
 }
 
-double DerivativeFunctions::derivative_XY_10_Legs_8( std::vector<double> & params )
+double DerivativeFunctions::derivative_XY_10_Legs_8( const std::vector<double> & params )
 {
 	assert( params.size() == 49 );
 
@@ -1556,7 +1506,7 @@ double DerivativeFunctions::derivative_XY_10_Legs_8( std::vector<double> & param
 	return result;
 }
 
-double DerivativeFunctions::derivative_XY_10_Legs_9( std::vector<double> & params )
+double DerivativeFunctions::derivative_XY_10_Legs_9( const std::vector<double> & params )
 {
 	assert( params.size() == 49 );
 
@@ -1615,7 +1565,7 @@ double DerivativeFunctions::derivative_XY_10_Legs_9( std::vector<double> & param
 	return result;
 }
 
-double DerivativeFunctions::derivative_XZ_10_Legs_0( std::vector<double> & params )
+double DerivativeFunctions::derivative_XZ_10_Legs_0( const std::vector<double> & params )
 {
 	assert( params.size() == 49 );
 
@@ -1674,7 +1624,7 @@ double DerivativeFunctions::derivative_XZ_10_Legs_0( std::vector<double> & param
 	return result;
 }
 
-double DerivativeFunctions::derivative_XZ_10_Legs_1( std::vector<double> & params )
+double DerivativeFunctions::derivative_XZ_10_Legs_1( const std::vector<double> & params )
 {
 	assert( params.size() == 49 );
 
@@ -1733,7 +1683,7 @@ double DerivativeFunctions::derivative_XZ_10_Legs_1( std::vector<double> & param
 	return result;
 }
 
-double DerivativeFunctions::derivative_XZ_10_Legs_2( std::vector<double> & params )
+double DerivativeFunctions::derivative_XZ_10_Legs_2( const std::vector<double> & params )
 {
 	assert( params.size() == 49 );
 
@@ -1792,7 +1742,7 @@ double DerivativeFunctions::derivative_XZ_10_Legs_2( std::vector<double> & param
 	return result;
 }
 
-double DerivativeFunctions::derivative_XZ_10_Legs_3( std::vector<double> & params )
+double DerivativeFunctions::derivative_XZ_10_Legs_3( const std::vector<double> & params )
 {
 	assert( params.size() == 49 );
 
@@ -1851,7 +1801,7 @@ double DerivativeFunctions::derivative_XZ_10_Legs_3( std::vector<double> & param
 	return result;
 }
 
-double DerivativeFunctions::derivative_XZ_10_Legs_4( std::vector<double> & params )
+double DerivativeFunctions::derivative_XZ_10_Legs_4( const std::vector<double> & params )
 {
 	assert( params.size() == 49 );
 
@@ -1910,7 +1860,7 @@ double DerivativeFunctions::derivative_XZ_10_Legs_4( std::vector<double> & param
 	return result;
 }
 
-double DerivativeFunctions::derivative_XZ_10_Legs_5( std::vector<double> & params )
+double DerivativeFunctions::derivative_XZ_10_Legs_5( const std::vector<double> & params )
 {
 	assert( params.size() == 49 );
 
@@ -1969,7 +1919,7 @@ double DerivativeFunctions::derivative_XZ_10_Legs_5( std::vector<double> & param
 	return result;
 }
 
-double DerivativeFunctions::derivative_XZ_10_Legs_6( std::vector<double> & params )
+double DerivativeFunctions::derivative_XZ_10_Legs_6( const std::vector<double> & params )
 {
 	assert( params.size() == 49 );
 
@@ -2028,7 +1978,7 @@ double DerivativeFunctions::derivative_XZ_10_Legs_6( std::vector<double> & param
 	return result;
 }
 
-double DerivativeFunctions::derivative_XZ_10_Legs_7( std::vector<double> & params )
+double DerivativeFunctions::derivative_XZ_10_Legs_7( const std::vector<double> & params )
 {
 	assert( params.size() == 49 );
 
@@ -2087,7 +2037,7 @@ double DerivativeFunctions::derivative_XZ_10_Legs_7( std::vector<double> & param
 	return result;
 }
 
-double DerivativeFunctions::derivative_XZ_10_Legs_8( std::vector<double> & params )
+double DerivativeFunctions::derivative_XZ_10_Legs_8( const std::vector<double> & params )
 {
 	assert( params.size() == 49 );
 
@@ -2146,7 +2096,7 @@ double DerivativeFunctions::derivative_XZ_10_Legs_8( std::vector<double> & param
 	return result;
 }
 
-double DerivativeFunctions::derivative_XZ_10_Legs_9( std::vector<double> & params )
+double DerivativeFunctions::derivative_XZ_10_Legs_9( const std::vector<double> & params )
 {
 	assert( params.size() == 49 );
 

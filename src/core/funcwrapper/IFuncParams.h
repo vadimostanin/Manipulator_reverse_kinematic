@@ -17,7 +17,8 @@ public:
 		eDistance,
 		eAngle,
 		eLegsAngles,
-		eGiNaCTypes
+		eGiNaCTypes,
+		NativeFuncParams,
 	};
 
 	IFuncParams( eParamType type ) : m_Type( type ){}

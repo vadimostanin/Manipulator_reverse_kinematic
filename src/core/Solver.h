@@ -75,12 +75,13 @@ public:
 	void initPreSolv( int32_t x, int32_t y, int32_t z, bool angled = false, double angleDegree = 0.0 );
 	void initPreSolvStochastic( int32_t x, int32_t y, int32_t z, bool angled, double angleDegree );
 private:
-	void fillPredefinedDerErrorFunctions();
+	void fillPredefinedErrorFunctions();
 
 	void updateLearningRate( const std::vector<double> & angleErrors, uint32_t index = 0 );
 
 	void fillParams( int32_t targetX, int32_t targetY, int32_t targetZ, std::vector<double> & params );
 	std::vector<double> forwardLegv3( uint32_t legIndex, int32_t targetX, int32_t targetY, int32_t targetZ );
+	std::vector<double> forwardv3_2( IFuncSh funcDerivatives );
 	std::vector<double> forwardv3( int32_t expectedX, int32_t expectedY, int32_t expectedZ, bool angled = false, double angleDegree = 0.0 );
 	std::vector<double> forwardv2_1( IFuncSh funcDerivatives );
 	std::vector<double> forwardv2( int32_t expectedX, int32_t expectedY, int32_t expectedZ, bool angled = false, double angleDegree = 0.0 );
@@ -121,11 +122,10 @@ private:
 	ShSymbol                    m_ginacAngleDegree{std::make_shared<GiNaC::symbol>("angleDegree")};
 	std::vector<GiNaC::ex> 		m_errorDerivativeFunctions;
 	GiNaC::ex 					m_errorFunction;
-	std::vector<DerivFuncType> 	m_preDefinedDerivativeFunctions;
-	ErroFuncType				m_preDefinedErrorFunction;
+	std::vector<ErrorFuncType> 	m_preDefinedDerivativeFunctions;
+	ErrorFuncType				m_preDefinedErrorFunction;
 
 	std::vector<ErrorFunctionInfo> m_errorFunctionsTyped;
-//	FunctionVector m_derivatesVector;
 
 	double m_minEcceptableDistance{0.05};
 
