@@ -26,10 +26,10 @@
 
 Solver::Solver( const ShLegManipulator & manipulator ) : m_manipulator( manipulator )
 {
-	fillPredefinedErrorFunctions();
-/*	initGiNaCVars();
+//	fillPredefinedErrorFunctions();
+	initGiNaCVars();
 	initGiNaCDistanceErrorFunction();
-	initGiNaCAngleErrorFunction();
+//	initGiNaCAngleErrorFunction();
 	{
 		GiNaCTypesDataParams ginacTypes;
 		ginacTypes.setXYSymbols( m_ginacXYoZAngles );
@@ -49,7 +49,6 @@ Solver::Solver( const ShLegManipulator & manipulator ) : m_manipulator( manipula
 			funcInfo.errorDerivativeFunctions->onReceive( legsAnglesChunk );
 		}
 	}
-*/
 }
 
 Solver::~Solver()
@@ -456,11 +455,11 @@ void Solver::initGiNaCDistanceErrorFunction()
 
 	ErrorFunctionInfo tFunc;
 	tFunc.errorDerivativeFunctions = std::make_shared<FunctionVector>();
-//	tFunc.type = ErrorFunctionInfo::eDistance;
 
 	std::shared_ptr<IFunction> errorFunction = std::make_shared<GiNaCErrorFunction>( std::make_shared<GiNaC::ex>(
-			GiNaC::sqrt( GiNaC::pow( exComponentX, 2 ) + GiNaC::pow( exComponentY, 2 ) + GiNaC::pow( exComponentZ, 2 ) )
+			GiNaC::sqrt( GiNaC::pow( exComponentX, 2 ) + GiNaC::pow( exComponentY, 2 ) + GiNaC::pow( exComponentZ, 2 )
 	+ sumXYoZSquaredAngles
+	)
 	)
 
 					 );
@@ -960,7 +959,7 @@ void Solver::solveFromCurrentAngled( int32_t x, int32_t y, int32_t z, double ang
 //	std::cout << std::endl << std::endl;
 }
 
-void Solver::solveFromCurrentAngledStochastic( int32_t x, int32_t y, int32_t z, double angleDegree, double epsilon, uint32_t maxSteps, SolveEndCb cbPerStep )
+void Solver::solveFromCurrentAngledStochastic( int32_t x, int32_t y, int32_t z, double angleDegree, double epsilon, uint32_t maxSteps, SolveEndCb cbPerStep, double gradientThreshold )
 {
 	std::vector<double> errorCurrent;
 	std::vector<double> errorPrev;
@@ -992,12 +991,14 @@ void Solver::solveFromCurrentAngledStochastic( int32_t x, int32_t y, int32_t z, 
 		accumalatedErrorDelta = std::abs( std::abs( accumulatedPrevError ) - std::abs( accumulatedCurrentError ) );
 
 		error = getErrorFunctionValueAllTypes();
-		std::cout << "accumalatedErrorDelta=" << accumalatedErrorDelta << ", error=" << error << std::endl;
+		std::cout << "accumalatedErrorDelta=" << accumalatedErrorDelta
+				  << ", error=" << error
+				  << ", gradientSum=" << getSumOfLastGradients() << std::endl;
 
 		stepsCounter++;
 	}
 	while( /* accumalatedErrorDelta >= epsilon && */ error >= epsilon &&
-		   stepsCounter < maxSteps );
+		   stepsCounter < maxSteps && std::abs( getSumOfLastGradients() ) > gradientThreshold );
 
 	std::vector<double> afterAngles = getLegsAngles();
 	double accumulatedAnglesBefore = std::accumulate( std::begin( beforeAngles ), std::end( beforeAngles ), 0.0,
@@ -1865,6 +1866,8 @@ void Solver::backward( const std::vector<double> & angleErrors )
 {
 	assert( m_manipulator->size() * m_anglesPerLeg == angleErrors.size() );
 	assert( m_manipulator->size() * m_anglesPerLeg == m_learningRates.front().size() );
+	m_lastGradients.clear();
+	m_lastGradients.resize( m_manipulator->size() * m_anglesPerLeg );
 
 //	std::stringstream ioss;
 //	copy(angleErrors.begin(), angleErrors.end(),
@@ -1874,6 +1877,7 @@ void Solver::backward( const std::vector<double> & angleErrors )
 	auto legIter = std::begin( *m_manipulator );
 	auto errorIter = std::begin( angleErrors );
 	auto learningRateIter = std::begin( m_learningRates.front() );
+	auto lastGradientIter = std::begin( m_lastGradients );
 
 //	auto legIter = m_manipulator->rbegin();
 //	auto errorIter = angleErrors.rbegin();
@@ -1894,6 +1898,8 @@ void Solver::backward( const std::vector<double> & angleErrors )
 			double radianDelta = gradient * (*learningRateIter);
 //			double radianDelta = gradient * (*learningRateIter + 1);
 			double radianNew = radianXYoZ - radianDelta;
+			lastGradientIter++;
+			(*lastGradientIter) = radianDelta;
 
 			if( true == std::isnan( std::abs( radianNew ) ) )
 			{
@@ -1922,6 +1928,7 @@ void Solver::backward( const std::vector<double> & angleErrors )
 			}
 		}
 
+		lastGradientIter++;
 		{
 			//update angle XZoY
 			double angleXZoY = (*legIter)->getAngleXZ();
@@ -1934,6 +1941,7 @@ void Solver::backward( const std::vector<double> & angleErrors )
 			double radianDelta = gradient * (*( learningRateIter + 1 ) );
 //			double radianDelta = gradient * (*learningRateIter);
 			double radianNew = radianXZoY - radianDelta;
+			(*lastGradientIter) = radianDelta;
 
 			if( true == std::isnan( std::abs( radianNew ) ) )
 			{
@@ -2106,9 +2114,19 @@ bool Solver::isAccumulativeAngleTooBig( const double maxAngle )
 	return tooBig;
 }
 
-std::vector<double> Solver::getError()
+std::vector<double> Solver::getError() const
 {
 	return m_errors;
+}
+
+std::vector<double> Solver::getLastGradients() const
+{
+	return m_lastGradients;
+}
+
+double Solver::getSumOfLastGradients() const
+{
+	return std::accumulate( std::begin( m_lastGradients ), std::end( m_lastGradients ), 0.0 );
 }
 
 double Solver::getErrorFunctionValue( TypePrecision targetX, TypePrecision targetY, TypePrecision targetZ, bool angled, double angleDegree )
@@ -2164,13 +2182,13 @@ double Solver::getErrorFunctionValue( ShLegManipulator manipulator, TypePrecisio
 	return result;
 }
 
-double Solver::getErrorFunctionValue( const IFuncSh func )
+double Solver::getErrorFunctionValue( const IFuncSh func ) const
 {
 	std::vector<double> errors = func->evaluate();
 	return std::accumulate(std::begin(errors), std::end(errors), 0.0 );
 }
 
-double Solver::getErrorFunctionValueAllTypes()
+double Solver::getErrorFunctionValueAllTypes() const
 {
 	double error = 0.0f;
 	for( const auto & funcInfo : m_errorFunctionsTyped )

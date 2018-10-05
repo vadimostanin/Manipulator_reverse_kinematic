@@ -250,7 +250,7 @@ void onsolveFromCurrentAngledStochastic( HelloWorld * lpHelloWorld)
 			[&lpHelloWorld]( const std::vector<double> & error )
 			{
 				lpHelloWorld->redraw();
-			}
+			}, 1e-4
 	);
 	std::cout << "after solve" << std::endl;
 }

@@ -37,11 +37,9 @@ public:
 	Solver( const ShLegManipulator & legs );
 	virtual ~Solver();
 
-	std::vector<double> getError();
-
 	void solveFromCurrent( int32_t x, int32_t y, int32_t z, double epsilon = 0.01, uint32_t maxSteps = 1000, SolveEndCb cbPerStep = empty );
 	void solveFromCurrentAngled( int32_t x, int32_t y, int32_t z, double angleDegree, double epsilon = 0.01, uint32_t maxSteps = 1000, SolveEndCb cbPerStep = empty );
-	void solveFromCurrentAngledStochastic( int32_t x, int32_t y, int32_t z, double angleDegree, double epsilon, uint32_t maxSteps, SolveEndCb cbPerStep );
+	void solveFromCurrentAngledStochastic( int32_t x, int32_t y, int32_t z, double angleDegree, double epsilon, uint32_t maxSteps, SolveEndCb cbPerStep, double gradientThreshold = 1e-5 );
 	void solveContiniouslyShuffling( int32_t x, int32_t y, int32_t z, double epsilon = 0.01, uint32_t maxStepsPerSolving = 1000, uint32_t maxSolvingCount = 10, SolveEndCb cbPerStep = empty );
 
 	void solvePerpendicular( int32_t x, int32_t y, int32_t z, double angleDegree, double epsilon = 0.01, uint32_t maxSteps = 1000, SolveEndCb cbPerStep = empty );
@@ -62,8 +60,12 @@ public:
 	double getErrorFunctionValue( TypePrecision targetX, TypePrecision targetY, TypePrecision targetZ, bool angled = false, double angleDegree = 0.0 );
 	double getErrorFunctionValue( ShLegManipulator manipulator, TypePrecision targetX, TypePrecision targetY, TypePrecision targetZ, bool angled = false, double angleDegree = 0.0 );
 
-	double getErrorFunctionValue( const IFuncSh func );
-	double getErrorFunctionValueAllTypes();
+	double getErrorFunctionValue( const IFuncSh func ) const;
+	double getErrorFunctionValueAllTypes() const;
+	std::vector<double> getError() const;
+	std::vector<double> getLastGradients() const;
+	double getSumOfLastGradients() const;
+
 
 	ShLegManipulator getCurrentManipulator() const;
 
@@ -135,6 +137,8 @@ private:
 	const uint32_t m_anglesPerLeg{2};
 
 	ContrainsTooClose m_constrinTooClose;
+
+	std::vector<double> m_lastGradients;
 };
 
 #endif /* SOLVER_H_ */
