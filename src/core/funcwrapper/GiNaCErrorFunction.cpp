@@ -23,6 +23,7 @@ GiNaCErrorFunction::GiNaCErrorFunction( std::shared_ptr<GiNaC::ex> ex ):
 std::vector<double> GiNaCErrorFunction::evaluate() const
 {
 	assert( m_legsCurrentAngles.size() == m_legsInitialAngles.size() );
+	assert( m_ginacCurrentXZoYAnglesSymbols.size() == m_ginacInitialXYoZAnglesSymbols.size() );
 
 	GiNaC::lst functionVars;
 	auto legCurrentAngleIter = std::begin( m_legsCurrentAngles );

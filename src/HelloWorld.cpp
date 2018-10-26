@@ -55,6 +55,24 @@ void onPerpendicularSolve( HelloWorld * lpHelloWorld )
 	double epsilonChangeError = 0.0001;
 	try
 	{
+		lpHelloWorld->m_solver.solvePerpendicular( lpHelloWorld->m_desirablePoint.getX(), lpHelloWorld->m_desirablePoint.getY(), lpHelloWorld->m_desirablePoint.getZ(), lpHelloWorld->m_XYoZArea.getAngle(), epsilonChangeError, 100,
+				[&lpHelloWorld]( const std::vector<double> & error )
+				{
+					lpHelloWorld->redraw();
+				}
+		);
+	}
+	catch(std::exception & ex )
+	{
+		std::cout << ex.what() << std::endl;
+	}
+}
+
+void onPerpendicularNativeSolve( HelloWorld * lpHelloWorld )
+{
+	double epsilonChangeError = 0.0001;
+	try
+	{
 		lpHelloWorld->m_solver.solvePerpendicularNative( lpHelloWorld->m_desirablePoint.getX(), lpHelloWorld->m_desirablePoint.getY(), lpHelloWorld->m_desirablePoint.getZ(), lpHelloWorld->m_XYoZArea.getAngle(), epsilonChangeError, 100,
 				[&lpHelloWorld]( const std::vector<double> & error )
 				{
@@ -129,10 +147,10 @@ void onOneStep( HelloWorld * lpHelloWorld )
 
 bool onAngleChangeValue( Gtk::ScrollType type, double value, HelloWorld * lpHelloWorld )
 {
-  lpHelloWorld->m_XYoZArea.setAngle( value );
-//  onOptimize( lpHelloWorld );
-  onPerpendicularSolve( lpHelloWorld );
-  return true;
+    lpHelloWorld->m_XYoZArea.setAngle( value );
+//    onOptimize( lpHelloWorld );
+    onPerpendicularSolve( lpHelloWorld );
+    return true;
 }
 
 void onShuffledSolve( HelloWorld * lpHelloWorld)
@@ -269,23 +287,23 @@ bool onXYoZButtonPressed(GdkEventButton* event, HelloWorld * lpHelloWorld)
 	try
 	{
 //		std::cout << "on_my_button_press_event" << std::endl;
-		static int counter = 0;
-		if( counter == 0 )
-		{
-			event->x = 200;
-			event->y = 200;
-		}
-		else if( counter == 1 )
-		{
-			event->x = 220;
-			event->y = 220;
-		}
-		else if( counter == 2 )
-		{
-			event->x = 240;
-			event->y = 240;
-		}
-		counter++;
+//		static int counter = 0;
+//		if( counter == 0 )
+//		{
+//			event->x = 200;
+//			event->y = 200;
+//		}
+//		else if( counter == 1 )
+//		{
+//			event->x = 220;
+//			event->y = 220;
+//		}
+//		else if( counter == 2 )
+//		{
+//			event->x = 240;
+//			event->y = 240;
+//		}
+//		counter++;
 		lpHelloWorld->m_XYoZArea.setX( event->x );//106, 332
 		lpHelloWorld->m_XYoZArea.setY( event->y );
 
@@ -311,9 +329,9 @@ bool onXYoZButtonPressed(GdkEventButton* event, HelloWorld * lpHelloWorld)
 //		onShuffledLessAngleSolve( lpHelloWorld );
 //		onContIterShuffledLessAngleSolve( lpHelloWorld );
 //		onContIterShuffledSolve( lpHelloWorld );
-//		onPerpendicularSolve( lpHelloWorld );
+		onPerpendicularSolve( lpHelloWorld );
 //		onPerpendicularShuffleSolve( lpHelloWorld );
-		onPerpendicularNativeStochasticSolve( lpHelloWorld );
+//		onPerpendicularNativeStochasticSolve( lpHelloWorld );
 //		onsolveFromCurrentAngledStochastic( lpHelloWorld );
 //		onOneStep( lpHelloWorld );
 
@@ -355,7 +373,7 @@ bool onXYoZButtonMove(GdkEventMotion* event, HelloWorld * lpHelloWorld)
 		Leg3DDrawWindow::solveForX = event->x;
 		Leg3DDrawWindow::solveForY = event->y;
 
-		onOptimize( lpHelloWorld );
+//		onOptimize( lpHelloWorld );
 //		onOptimizeClone( lpHelloWorld );
 //		onShuffledSolve( lpHelloWorld );
 //		onShuffledLessErrorSolve( lpHelloWorld );
@@ -363,6 +381,7 @@ bool onXYoZButtonMove(GdkEventMotion* event, HelloWorld * lpHelloWorld)
 //		onPerpendicularSolve( lpHelloWorld );
 //		onContIterShuffledLessAngleSolve( lpHelloWorld );
 //		onsolveFromCurrentAngledStochastic( lpHelloWorld );
+//		onPerpendicularNativeStochasticSolve( lpHelloWorld );
 		lpHelloWorld->redraw();
 	}
 	catch( std::exception & ex )
@@ -396,8 +415,8 @@ bool onXZoYButtonPressed(GdkEventButton* event, HelloWorld * lpHelloWorld)
 //	onShuffledLessAngleSolve( lpHelloWorld );
 //	onContIterShuffledLessAngleSolve( lpHelloWorld );
 //	onContIterShuffledSolve( lpHelloWorld );
-//	onPerpendicularSolve( lpHelloWorld );
-	onsolveFromCurrentAngledStochastic( lpHelloWorld );
+	onPerpendicularSolve( lpHelloWorld );
+//	onsolveFromCurrentAngledStochastic( lpHelloWorld );
 
 	std::vector<double>varAngles = ManipulatorUniConverter::getFormatedAngles( lpHelloWorld->m_solver.getCurrentManipulator() );
 	InterpolatedMove2::get().setVars( varAngles );

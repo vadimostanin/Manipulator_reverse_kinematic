@@ -91,9 +91,10 @@ private:
 	std::vector<double> forwardv1( int32_t x, int32_t y );
 	void backward( const std::vector<double> & angleErrors );
 	void backwardLeg( uint32_t legIndex, const std::vector<double> & angleErrors );
-	void initGiNaCVars();
+	void reInitGiNaCVars();
+	void notifyFuncInfoAboutGiNaCVars();
 	void initGiNaCErrorFunction( bool isAngled = false );
-	void initGiNaCDistanceErrorFunction();
+	void reInitGiNaCDistanceErrorFunction();
 	void initGiNaCAngleErrorFunction();
 
 	bool isCrossingLegsFound( const ShLeg& leg, uint32_t legIndex );

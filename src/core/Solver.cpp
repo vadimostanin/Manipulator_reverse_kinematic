@@ -26,35 +26,38 @@
 Solver::Solver( const ShLegManipulator & manipulator ) : m_manipulator( manipulator )
 {
 //	fillPredefinedErrorFunctions();
-	initGiNaCVars();
-	initGiNaCDistanceErrorFunction();
+	reInitGiNaCVars();
+	reInitGiNaCDistanceErrorFunction();
 //	initGiNaCAngleErrorFunction();
-	{
-		GiNaCTypesDataParams ginacTypes;
-		ginacTypes.setCurrentXYSymbols( m_ginacCurrentXYoZAngles );
-		ginacTypes.setCurrentXZSymbols( m_ginacCurrentXZoYAngles );
-		ginacTypes.setInitialXYSymbols( m_ginacInitialXYoZAngles );
-		ginacTypes.setInitialXZSymbols( m_ginacInitialXZoYAngles );
-		ginacTypes.setTargetSymbols( m_ginacTargetX, m_ginacTargetY, m_ginacTargetZ );
-		ginacTypes.setAngleSymbol( m_ginacAngleDegree );
-
-		auto angles = std::move( getLegsAngles() );
-		m_legAngleDataParams.setLegsCurrentAngles( angles );
-		m_legAngleDataParams.setLegsInitialAngles( std::move( m_legAngleDataParams.getLegsCurrentAngles() ) );
-
-		for( auto & funcInfo : m_errorFunctionsTyped )
-		{
-			funcInfo.errorFunction->onReceive( ginacTypes );
-			funcInfo.errorDerivativeFunctions->onReceive( ginacTypes );
-
-			funcInfo.errorFunction->onReceive( m_legAngleDataParams );
-			funcInfo.errorDerivativeFunctions->onReceive( m_legAngleDataParams );
-		}
-	}
+	notifyFuncInfoAboutGiNaCVars();
 }
 
 Solver::~Solver()
 {
+}
+
+void Solver::notifyFuncInfoAboutGiNaCVars()
+{
+	GiNaCTypesDataParams ginacTypes;
+	ginacTypes.setCurrentXYSymbols( m_ginacCurrentXYoZAngles );
+	ginacTypes.setCurrentXZSymbols( m_ginacCurrentXZoYAngles );
+	ginacTypes.setInitialXYSymbols( m_ginacInitialXYoZAngles );
+	ginacTypes.setInitialXZSymbols( m_ginacInitialXZoYAngles );
+	ginacTypes.setTargetSymbols( m_ginacTargetX, m_ginacTargetY, m_ginacTargetZ );
+	ginacTypes.setAngleSymbol( m_ginacAngleDegree );
+
+	auto angles = std::move( getLegsAngles() );
+	m_legAngleDataParams.setLegsCurrentAngles( angles );
+	m_legAngleDataParams.setLegsInitialAngles( std::move( m_legAngleDataParams.getLegsCurrentAngles() ) );
+
+	for( auto & funcInfo : m_errorFunctionsTyped )
+	{
+		funcInfo.errorFunction->onReceive( ginacTypes );
+		funcInfo.errorDerivativeFunctions->onReceive( ginacTypes );
+
+		funcInfo.errorFunction->onReceive( m_legAngleDataParams );
+		funcInfo.errorDerivativeFunctions->onReceive( m_legAngleDataParams );
+	}
 }
 
 void Solver::initPreSolv( int32_t x, int32_t y, int32_t z, bool angled, double angleDegree  )
@@ -219,7 +222,7 @@ void Solver::updateLearningRate( const std::vector<double> & currentErrors, uint
 	prevErrors = currentErrors;
 }
 
-void Solver::initGiNaCVars()
+void Solver::reInitGiNaCVars()
 {
 	m_ginacCurrentXYoZAngles.clear();
 	m_ginacCurrentXZoYAngles.clear();
@@ -380,7 +383,7 @@ void Solver::initGiNaCErrorFunction( bool isAngled )
 	}
 }
 
-void Solver::initGiNaCDistanceErrorFunction()
+void Solver::reInitGiNaCDistanceErrorFunction()
 {
 	GiNaC::ex exComponentX;
 	GiNaC::ex exComponentY;
@@ -899,7 +902,7 @@ void Solver::shuffleReverseIncrementLegs( uint32_t legsCount )
 void Solver::solveFromCurrent( int32_t x, int32_t y, int32_t z, double epsilon, uint32_t maxSteps, SolveEndCb cbPerStep )
 {
 //	int size = m_manipulator->size();
-	initGiNaCVars();
+	reInitGiNaCVars();
 	initGiNaCErrorFunction();
 	std::vector<double> errorCurrent;
 	std::vector<double> errorPrev;
@@ -913,8 +916,9 @@ void Solver::solveFromCurrent( int32_t x, int32_t y, int32_t z, double epsilon, 
 	do
 	{
 		errorPrev = errorCurrent;
-		errorCurrent = oneStep( x, y, z );
+//		errorCurrent = oneStep( x, y, z );
 //		errorCurrent = oneStepV2( x, y, z );
+		errorCurrent = oneStepStochastic( x, y, z, false, 0 );
 
 		accumulatedPrevError = accumulatedCurrentError;
 		accumulatedCurrentError = std::accumulate( std::begin( errorCurrent ), std::end( errorCurrent ), 0.0 );
@@ -936,7 +940,7 @@ void Solver::solveFromCurrent( int32_t x, int32_t y, int32_t z, double epsilon, 
 void Solver::solveFromCurrentAngled( int32_t x, int32_t y, int32_t z, double angleDegree, double epsilon, uint32_t maxSteps, SolveEndCb cbPerStep )
 {
 //	int size = m_manipulator->size();
-	initGiNaCVars();
+	reInitGiNaCVars();
 	initGiNaCErrorFunction( true );
 	std::vector<double> errorCurrent;
 	std::vector<double> errorPrev;
@@ -1038,17 +1042,24 @@ void Solver::solvePerpendicular( int32_t x, int32_t y, int32_t z, double angleDe
 	uint32_t lastLegLength = lastLeg->getLength();
 	int32_t withoutLastLegX = x + lastLegLength * std::cos( Utils::deg2Rad( angleDegree - 90 ) );
 	int32_t withoutLastLegY = y + lastLegLength * std::sin( Utils::deg2Rad( angleDegree - 90 ) );
-	int32_t withoutLastLegZ = 0;
+	int32_t withoutLastLegZ = z;
 
 
 	ShLegManipulator legsOrigin = m_manipulator;
 	ShLegManipulator legMinusLast = std::make_shared<LegManipulator>( std::begin( *m_manipulator ), std::prev( std::end( *m_manipulator ) ) );
 	m_manipulator = legMinusLast;
 
+/*
 	fillPredefinedErrorFunctions();
 	initPreSolv( withoutLastLegX, withoutLastLegY, withoutLastLegZ );
+*/
+	reInitGiNaCVars();
+	m_errorFunctionsTyped.clear();
+	reInitGiNaCDistanceErrorFunction();
+	notifyFuncInfoAboutGiNaCVars();
+	initPreSolvStochastic( withoutLastLegX, withoutLastLegY, withoutLastLegZ, true, angleDegree );
 
-	solveFromCurrent( withoutLastLegX, withoutLastLegY, withoutLastLegZ, epsilon, maxSteps, cbPerStep );
+	solveFromCurrentAngledStochastic( withoutLastLegX, withoutLastLegY, withoutLastLegZ, angleDegree, epsilon, maxSteps, cbPerStep );
 
 	double lastLegAccumulativeAngle = lastLeg->getAccumulativeParentAngleXY();
 	double lastLegAngle = lastLegAccumulativeAngle - 90;// angle + 90 + lastLegAccumulativeAngle
@@ -1059,8 +1070,8 @@ void Solver::solvePerpendicular( int32_t x, int32_t y, int32_t z, double angleDe
 
 	m_manipulator.reset();
 	m_manipulator = legsOrigin;
-	fillPredefinedErrorFunctions();
-	initPreSolv( x, y, z );
+//	fillPredefinedErrorFunctions();
+//	initPreSolv( x, y, z );
 }
 
 void Solver::solvePerpendicularNative( int32_t x, int32_t y, int32_t z, double angleDegree, double epsilon, uint32_t maxSteps, SolveEndCb cbPerStep )

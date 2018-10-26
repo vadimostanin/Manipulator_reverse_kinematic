@@ -72,7 +72,7 @@ int main( int argc, char ** argv)
 		LegsMgr::get().getManipulator()->add( 80 );
 		LegsMgr::get().getManipulator()->add( 60 );
 		LegsMgr::get().getManipulator()->add( 40 );
-		LegsMgr::get().getManipulator()->add( 20 );
+//		LegsMgr::get().getManipulator()->add( 20 );
 	}
 //	LegsMgr::get().add( 100 );
 //	LegsMgr::get().add( 100 );
