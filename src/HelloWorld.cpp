@@ -313,8 +313,8 @@ bool onXYoZButtonPressed(GdkEventButton* event, HelloWorld * lpHelloWorld)
 //		onContIterShuffledSolve( lpHelloWorld );
 //		onPerpendicularSolve( lpHelloWorld );
 //		onPerpendicularShuffleSolve( lpHelloWorld );
-//		onPerpendicularNativeStochasticSolve( lpHelloWorld );
-		onsolveFromCurrentAngledStochastic( lpHelloWorld );
+		onPerpendicularNativeStochasticSolve( lpHelloWorld );
+//		onsolveFromCurrentAngledStochastic( lpHelloWorld );
 //		onOneStep( lpHelloWorld );
 
 		{
@@ -355,14 +355,14 @@ bool onXYoZButtonMove(GdkEventMotion* event, HelloWorld * lpHelloWorld)
 		Leg3DDrawWindow::solveForX = event->x;
 		Leg3DDrawWindow::solveForY = event->y;
 
-//		onOptimize( lpHelloWorld );
+		onOptimize( lpHelloWorld );
 //		onOptimizeClone( lpHelloWorld );
 //		onShuffledSolve( lpHelloWorld );
 //		onShuffledLessErrorSolve( lpHelloWorld );
 //		onShuffledLessAngleSolve( lpHelloWorld );
 //		onPerpendicularSolve( lpHelloWorld );
 //		onContIterShuffledLessAngleSolve( lpHelloWorld );
-		onsolveFromCurrentAngledStochastic( lpHelloWorld );
+//		onsolveFromCurrentAngledStochastic( lpHelloWorld );
 		lpHelloWorld->redraw();
 	}
 	catch( std::exception & ex )

@@ -39,6 +39,12 @@ Leg3DDrawWindow::Leg3DDrawWindow()
 
 Leg3DDrawWindow::~Leg3DDrawWindow()
 {
+	glutDisplayFunc( emptyRenderScene );
+	glutReshapeFunc( nullptr );
+	glutIdleFunc( nullptr );
+	glutDestroyWindow( m_windowId );
+	m_drawLegs.clear();
+	m_mainLoop.join();
 }
 
 void Leg3DDrawWindow::run()
@@ -50,7 +56,7 @@ void Leg3DDrawWindow::run()
 	glutInitDisplayMode( GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA );
 	glutInitWindowPosition( 100, 100 );
 	glutInitWindowSize( 300, 300 );
-	glutCreateWindow("ManipulatorPlane");
+	m_windowId = glutCreateWindow("ManipulatorPlane");
 
 	// регистрация
 	glutDisplayFunc(renderScene);
@@ -110,36 +116,6 @@ int rotateAngles[3] = { 0, 45, 90 };
 
 int rotateAngleZ = 0;
 
-void Leg3DDrawWindow::drawBox(void)
-{
-	  /* Setup cube vertex data. */
-	  v[0][0] = v[1][0] = v[2][0] = v[3][0] = -1;
-	  v[4][0] = v[5][0] = v[6][0] = v[7][0] = 1;
-	  v[0][1] = v[1][1] = v[4][1] = v[5][1] = -1;
-	  v[2][1] = v[3][1] = v[6][1] = v[7][1] = 1;
-	  v[0][2] = v[3][2] = v[4][2] = v[7][2] = 1;
-	  v[1][2] = v[2][2] = v[5][2] = v[6][2] = -1;
-
-  int i;
-
-  for (i = 0; i < 6; i++) {
-    glBegin(GL_QUADS);
-    glNormal3fv(&n[i][0]);
-    glVertex3fv(&v[faces[i][0]][0]);
-    glVertex3fv(&v[faces[i][1]][0]);
-    glVertex3fv(&v[faces[i][2]][0]);
-    glVertex3fv(&v[faces[i][3]][0]);
-    glEnd();
-  }
-}
-
-void Leg3DDrawWindow::drawLeg( int x, int y, int z, int width, int height )
-{
-	  glTranslatef( x, y, z );
-	  glScaled( width, height, width );
-	  glutSolidCube( 1 );
-}
-
 GLfloat light_diffuse_1[] = {1.0, 0.0, 0.0, 1.0};  /* Red diffuse light. */
 GLfloat light_position_1[] = {1.0, 1.0, 1, 0.0};  /* Infinite light location. */
 
@@ -197,6 +173,7 @@ void Leg3DDrawWindow::init(void)
 //  glRotatef(60, 1.0, 0.0, 0.0);
 //  glRotatef(-20, 0.0, 0.0, 1.0);
 }
+void Leg3DDrawWindow::emptyRenderScene(void){}
 void Leg3DDrawWindow::renderScene(void)
 {
 	TypePrecision initialPosX, initialPosY, initialPosZ;

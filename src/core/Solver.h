@@ -14,6 +14,7 @@
 #include "ContrainsTooClose.h"
 #include <symbol.h>
 #include "funcwrapper/FunctionVector.h"
+#include "funcwrapper/LegAnglesDataParams.h"
 
 static void empty( const std::vector<double> & ){}
 typedef std::function<void( const std::vector<double> & )> SolveEndCb;
@@ -116,8 +117,10 @@ private:
 	std::vector<std::vector<double>> 		m_learningRates;
 	std::vector<std::vector<double>> 		m_learningRatesPerErrorFunction;
 	ShLegManipulator 			m_manipulator;
-	std::vector<ShSymbol> 		m_ginacXYoZAngles;
-	std::vector<ShSymbol> 		m_ginacXZoYAngles;
+	std::vector<ShSymbol> 		m_ginacInitialXYoZAngles;
+	std::vector<ShSymbol> 		m_ginacInitialXZoYAngles;
+	std::vector<ShSymbol> 		m_ginacCurrentXYoZAngles;
+	std::vector<ShSymbol> 		m_ginacCurrentXZoYAngles;
 	ShSymbol                    m_ginacTargetX{std::make_shared<GiNaC::symbol>("targetX")};
 	ShSymbol                    m_ginacTargetY{std::make_shared<GiNaC::symbol>("targetY")};
 	ShSymbol                    m_ginacTargetZ{std::make_shared<GiNaC::symbol>("targetZ")};
@@ -139,6 +142,8 @@ private:
 	ContrainsTooClose m_constrinTooClose;
 
 	std::vector<double> m_lastGradients;
+
+	LegAnglesDataParams m_legAngleDataParams;
 };
 
 #endif /* SOLVER_H_ */

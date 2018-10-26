@@ -13,6 +13,7 @@
 #include "LegAnglesDataParams.h"
 #include "AngleFuncParams.h"
 #include "../Utils.h"
+#include <assert.h>
 
 GiNaCErrorFunction::GiNaCErrorFunction( std::shared_ptr<GiNaC::ex> ex ):
 	m_Ex( ex )
@@ -21,24 +22,44 @@ GiNaCErrorFunction::GiNaCErrorFunction( std::shared_ptr<GiNaC::ex> ex ):
 
 std::vector<double> GiNaCErrorFunction::evaluate() const
 {
+	assert( m_legsCurrentAngles.size() == m_legsInitialAngles.size() );
+
 	GiNaC::lst functionVars;
-	auto legAngleIter = std::begin( m_legsAngles );
-	auto angleXYSymbolIter = std::begin( m_ginacXYoZAngles );
-	auto angleXZSymbolIter = std::begin( m_ginacXZoYAngles );
-	for(  ; legAngleIter != std::end( m_legsAngles ) ; legAngleIter ++, angleXYSymbolIter++, angleXZSymbolIter++ )
+	auto legCurrentAngleIter = std::begin( m_legsCurrentAngles );
+	auto legCurrentAngleEndIter = std::end( m_legsCurrentAngles );
+	auto legInitialAngleIter = std::begin( m_legsInitialAngles );
+	auto currentAngleXYSymbolIter = std::begin( m_ginacCurrentXYoZAnglesSymbols );
+	auto currentAngleXZSymbolIter = std::begin( m_ginacCurrentXZoYAnglesSymbols );
+	auto initialAngleXYSymbolIter = std::begin( m_ginacInitialXYoZAnglesSymbols );
+	auto initialAngleXZSymbolIter = std::begin( m_ginacInitialXZoYAnglesSymbols );
+	for(  ; legCurrentAngleIter != legCurrentAngleEndIter ; legCurrentAngleIter ++, currentAngleXYSymbolIter++, currentAngleXZSymbolIter++,
+															initialAngleXYSymbolIter++, initialAngleXZSymbolIter++, legInitialAngleIter++ )
 	{
 		{
-			const double radian = *legAngleIter;
+			const double radian = *legCurrentAngleIter;
 
 //			std::cout << "(**angleXYSymbolIter)=" << (**angleXYSymbolIter) << std::endl;
 
-			functionVars.append( (**angleXYSymbolIter) == radian );
+			functionVars.append( (**currentAngleXYSymbolIter) == radian );
 		}
-		legAngleIter++;
+		legCurrentAngleIter++;
 		{
-			const double radian = *legAngleIter;
+			const double radian = *legCurrentAngleIter;
 
-			functionVars.append( (**angleXZSymbolIter) == radian );
+			functionVars.append( (**currentAngleXZSymbolIter) == radian );
+		}
+		{
+			const double radian = *legInitialAngleIter;
+
+//			std::cout << "(**angleXYSymbolIter)=" << (**angleXYSymbolIter) << std::endl;
+
+			functionVars.append( (**initialAngleXYSymbolIter) == radian );
+		}
+		legInitialAngleIter++;
+		{
+			const double radian = *legInitialAngleIter;
+
+			functionVars.append( (**initialAngleXZSymbolIter) == radian );
 		}
 	}
 
@@ -90,7 +111,8 @@ void GiNaCErrorFunction::onReceive( const IFuncParams & data )
 	else if( IFuncParams::eParamType::eLegsAngles == data.type() )
 	{
 		const auto & obj = static_cast<const LegAnglesDataParams&>( data );
-		m_legsAngles = std::move( obj.getLegsAngles() );
+		m_legsCurrentAngles = std::move( obj.getLegsCurrentAngles() );
+		m_legsInitialAngles = std::move( obj.getLegsInitialAngles() );
 	}
 	else if( IFuncParams::eParamType::eAngle == data.type() )
 	{
@@ -102,8 +124,10 @@ void GiNaCErrorFunction::onReceive( const IFuncParams & data )
 	{
 		const auto & obj = static_cast<const GiNaCTypesDataParams&>( data );
 		obj.getTargetSymbols( m_ginacTargetX, m_ginacTargetY, m_ginacTargetZ );
-		m_ginacXYoZAngles = std::move( obj.getXYSymbols() );
-		m_ginacXZoYAngles = std::move( obj.getXZSymbols() );
+		m_ginacCurrentXYoZAnglesSymbols = std::move( obj.getCurrentXYSymbols() );
+		m_ginacCurrentXZoYAnglesSymbols = std::move( obj.getCurrentXZSymbols() );
+		m_ginacInitialXYoZAnglesSymbols = std::move( obj.getInitialXYSymbols() );
+		m_ginacInitialXZoYAnglesSymbols = std::move( obj.getInitialXZSymbols() );
 		obj.getAngleSymbol( m_ginacAngleDegree );
 	}
 }

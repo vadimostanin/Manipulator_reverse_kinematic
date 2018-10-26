@@ -8,7 +8,6 @@
 #include "Solver.h"
 #include "Utils.h"
 #include "funcwrapper/GiNaCTypesDataParams.h"
-#include "funcwrapper/LegAnglesDataParams.h"
 #include "funcwrapper/GiNaCFuncDiffParams.h"
 #include "funcwrapper/NativeFuncDiffParam.h"
 
@@ -32,21 +31,24 @@ Solver::Solver( const ShLegManipulator & manipulator ) : m_manipulator( manipula
 //	initGiNaCAngleErrorFunction();
 	{
 		GiNaCTypesDataParams ginacTypes;
-		ginacTypes.setXYSymbols( m_ginacXYoZAngles );
-		ginacTypes.setXZSymbols( m_ginacXZoYAngles );
+		ginacTypes.setCurrentXYSymbols( m_ginacCurrentXYoZAngles );
+		ginacTypes.setCurrentXZSymbols( m_ginacCurrentXZoYAngles );
+		ginacTypes.setInitialXYSymbols( m_ginacInitialXYoZAngles );
+		ginacTypes.setInitialXZSymbols( m_ginacInitialXZoYAngles );
 		ginacTypes.setTargetSymbols( m_ginacTargetX, m_ginacTargetY, m_ginacTargetZ );
 		ginacTypes.setAngleSymbol( m_ginacAngleDegree );
 
 		auto angles = std::move( getLegsAngles() );
-		LegAnglesDataParams legsAnglesChunk( angles );
+		m_legAngleDataParams.setLegsCurrentAngles( angles );
+		m_legAngleDataParams.setLegsInitialAngles( std::move( m_legAngleDataParams.getLegsCurrentAngles() ) );
 
 		for( auto & funcInfo : m_errorFunctionsTyped )
 		{
 			funcInfo.errorFunction->onReceive( ginacTypes );
 			funcInfo.errorDerivativeFunctions->onReceive( ginacTypes );
 
-			funcInfo.errorFunction->onReceive( legsAnglesChunk );
-			funcInfo.errorDerivativeFunctions->onReceive( legsAnglesChunk );
+			funcInfo.errorFunction->onReceive( m_legAngleDataParams );
+			funcInfo.errorDerivativeFunctions->onReceive( m_legAngleDataParams );
 		}
 	}
 }
@@ -55,7 +57,7 @@ Solver::~Solver()
 {
 }
 
-void Solver::initPreSolv( int32_t x, int32_t y, int32_t z, bool angled, double angleDegree )
+void Solver::initPreSolv( int32_t x, int32_t y, int32_t z, bool angled, double angleDegree  )
 {
 	m_learningRates.clear();
 	const size_t legsCount = m_manipulator->size();
@@ -119,8 +121,10 @@ void Solver::initPreSolvStochastic( int32_t targetX, int32_t targetY, int32_t ta
 	DistanceDataParams distChunk( targetX, targetY, targetZ );
 	AngleFuncParams angleChunk( angleDegree );
 
+
 	auto angles = std::move( getLegsAngles() );
-	LegAnglesDataParams legsAnglesChunk( angles );
+	m_legAngleDataParams.setLegsCurrentAngles( std::move( angles ) );
+	m_legAngleDataParams.setLegsInitialAngles( std::move( m_legAngleDataParams.getLegsCurrentAngles() ) );
 
 	std::vector<double> params;//offsetX, offsetY, targetX, targetY, length * m_leg.size(), angle * m_leg.size()
 	fillParams( targetX, targetY, targetZ, params );
@@ -133,11 +137,11 @@ void Solver::initPreSolvStochastic( int32_t targetX, int32_t targetY, int32_t ta
 	for( auto & funcInfo : m_errorFunctionsTyped )
 	{
 		funcInfo.errorFunction->onReceive( distChunk );
-		funcInfo.errorFunction->onReceive( legsAnglesChunk );
+		funcInfo.errorFunction->onReceive( m_legAngleDataParams );
 		funcInfo.errorFunction->onReceive( funcParams );
 
 		funcInfo.errorDerivativeFunctions->onReceive( distChunk );
-		funcInfo.errorDerivativeFunctions->onReceive( legsAnglesChunk );
+		funcInfo.errorDerivativeFunctions->onReceive( m_legAngleDataParams );
 		funcInfo.errorDerivativeFunctions->onReceive( funcParams );
 
 		if( true == angled )
@@ -217,16 +221,24 @@ void Solver::updateLearningRate( const std::vector<double> & currentErrors, uint
 
 void Solver::initGiNaCVars()
 {
-	m_ginacXYoZAngles.clear();
-	m_ginacXZoYAngles.clear();
+	m_ginacCurrentXYoZAngles.clear();
+	m_ginacCurrentXZoYAngles.clear();
+	m_ginacInitialXYoZAngles.clear();
+	m_ginacInitialXZoYAngles.clear();
 	const size_t size = m_manipulator->size();
 	for( size_t leg_i = 0; leg_i < size ; leg_i ++ )
 	{
 		std::string xyAngleName = std::string("angleXY_") + std::to_string( leg_i );
-		m_ginacXYoZAngles.emplace_back( std::make_shared<GiNaC::symbol>( xyAngleName ) );
+		m_ginacCurrentXYoZAngles.emplace_back( std::make_shared<GiNaC::symbol>( xyAngleName ) );
 
 		std::string xzAngleName = std::string("angleXZ_") + std::to_string( leg_i );
-		m_ginacXZoYAngles.emplace_back( std::make_shared<GiNaC::symbol>( xzAngleName ) );
+		m_ginacCurrentXZoYAngles.emplace_back( std::make_shared<GiNaC::symbol>( xzAngleName ) );
+
+		std::string xyInitialAngleName = std::string("initialAngleXY_") + std::to_string( leg_i );
+		m_ginacInitialXYoZAngles.emplace_back( std::make_shared<GiNaC::symbol>( xyInitialAngleName ) );
+
+		std::string xzInitialAngleName = std::string("initialAngleXZ_") + std::to_string( leg_i );
+		m_ginacInitialXZoYAngles.emplace_back( std::make_shared<GiNaC::symbol>( xzInitialAngleName ) );
 	}
 }
 
@@ -242,11 +254,11 @@ void Solver::initGiNaCErrorFunction( bool isAngled )
 	GiNaC::ex anglesLengthedOffsettedZ;
 
 //	int accumulativeAngle = 0.0;
-	uint32_t leg_i = 0;
 	for( const auto & leg : *m_manipulator )
 	{
-		const auto &symbolXYoZAngle = *m_ginacXYoZAngles[leg_i];
-		const auto &symbolXZoYAngle = *m_ginacXZoYAngles[leg_i];
+		const int32_t leg_i = leg->getLevel();
+		const auto &symbolXYoZAngle = *m_ginacCurrentXYoZAngles[leg_i];
+		const auto &symbolXZoYAngle = *m_ginacCurrentXZoYAngles[leg_i];
 
 		if( true == leg->getAngleXYEnabled() )
 		{
@@ -329,11 +341,6 @@ void Solver::initGiNaCErrorFunction( bool isAngled )
 //		const double angle = leg->getAngle();
 //		const double radian = Utils::deg2Rad( angle );
 //		accumulativeAngle += angle;
-
-
-
-
-		leg_i++;
 	}
 
 	exComponentX = anglesLengthedOffsettedX - *m_ginacTargetX;
@@ -356,8 +363,8 @@ void Solver::initGiNaCErrorFunction( bool isAngled )
 //	std::cout << "errorFunction=" << m_errorFunction << std::endl;
 	m_errorDerivativeFunctions.clear();
 
-	auto angleXYSymbolIter = std::begin( m_ginacXYoZAngles );
-	auto angleXZSymbolIter = std::begin( m_ginacXZoYAngles );
+	auto angleXYSymbolIter = std::begin( m_ginacCurrentXYoZAngles );
+	auto angleXZSymbolIter = std::begin( m_ginacCurrentXZoYAngles );
 	for( size_t leg_i = 0 ; leg_i < m_manipulator->size() ; leg_i++, angleXYSymbolIter++, angleXZSymbolIter++ )
 	{
 		{
@@ -380,21 +387,26 @@ void Solver::initGiNaCDistanceErrorFunction()
 	GiNaC::ex exComponentZ;
 	GiNaC::ex sumXYoZAngles;
 	GiNaC::ex sumXYoZSquaredAngles;
+	GiNaC::ex sumXYoZSquaredInitialDifferenceCurrentAngle;
 	GiNaC::ex sumXZoYAngles;
 	GiNaC::ex anglesLengthedOffsettedX;
 	GiNaC::ex anglesLengthedOffsettedY;
 	GiNaC::ex anglesLengthedOffsettedZ;
 
-	uint32_t leg_i = 0;
 	for( const auto & leg : *m_manipulator )
 	{
-		const auto &symbolXYoZAngle = *m_ginacXYoZAngles[leg_i];
-		const auto &symbolXZoYAngle = *m_ginacXZoYAngles[leg_i];
+		const int32_t leg_i = leg->getLevel();
+		const auto &symbolXYoZAngle = *m_ginacCurrentXYoZAngles[leg_i];
+		const auto &symbolXZoYAngle = *m_ginacCurrentXZoYAngles[leg_i];
+
+		const auto &symbolInitialXYoZAngle = *m_ginacInitialXYoZAngles[leg_i];
+//		const auto &symbolInitialXZoYAngle = *m_ginacInitialXZoYAngles[leg_i];
 
 //		if( true == leg->getAngleXYEnabled() )
 		{
 			sumXYoZAngles += symbolXYoZAngle;//angle_1, angle_1 + angle_2, angle_1 + angle_2 + angle_3
 			sumXYoZSquaredAngles += GiNaC::pow( symbolXYoZAngle, 2 );
+			sumXYoZSquaredInitialDifferenceCurrentAngle += GiNaC::pow( GiNaC::sqrt( GiNaC::pow( symbolInitialXYoZAngle, 2 ) ) - symbolXYoZAngle, 2 );
 		}
 //		if( true == leg->getAngleXZEnabled() )
 		{
@@ -445,8 +457,6 @@ void Solver::initGiNaCDistanceErrorFunction()
 
 			anglesLengthedOffsettedZ += currAngleLengthZ;
 		}
-
-		leg_i++;
 	}
 
 	exComponentX = anglesLengthedOffsettedX - *m_ginacTargetX;
@@ -455,10 +465,11 @@ void Solver::initGiNaCDistanceErrorFunction()
 
 	ErrorFunctionInfo tFunc;
 	tFunc.errorDerivativeFunctions = std::make_shared<FunctionVector>();
+	const double stabilityCoefficient = 0.1;
 
 	std::shared_ptr<IFunction> errorFunction = std::make_shared<GiNaCErrorFunction>( std::make_shared<GiNaC::ex>(
-			GiNaC::sqrt( GiNaC::pow( exComponentX, 2 ) + GiNaC::pow( exComponentY, 2 ) + GiNaC::pow( exComponentZ, 2 )
-	+ sumXYoZSquaredAngles
+			stabilityCoefficient*GiNaC::sqrt( GiNaC::pow( exComponentX, 2 ) + GiNaC::pow( exComponentY, 2 ) + GiNaC::pow( exComponentZ, 2 )
+	+ sumXYoZSquaredInitialDifferenceCurrentAngle
 	)
 	)
 
@@ -466,18 +477,18 @@ void Solver::initGiNaCDistanceErrorFunction()
 
 	tFunc.errorFunction = errorFunction;
 
-//	std::cout << "errorFunction=" << *((GiNaCErrorFunction*)errorFunction.get())->getEx() << std::endl;
+	std::cout << "errorFunction=" << *((GiNaCErrorFunction*)errorFunction.get())->getEx() << std::endl;
 	std::cout << "sumXZoYAngles=" << sumXZoYAngles << std::endl;
 
 
-	auto angleXYSymbolIter = std::begin( m_ginacXYoZAngles );
-	auto angleXZSymbolIter = std::begin( m_ginacXZoYAngles );
+	auto angleXYSymbolIter = std::begin( m_ginacCurrentXYoZAngles );
+	auto angleXZSymbolIter = std::begin( m_ginacCurrentXZoYAngles );
 	for( size_t leg_i = 0 ; leg_i < m_manipulator->size() ; leg_i++, angleXYSymbolIter++, angleXZSymbolIter++ )
 	{
 		{
 			GiNaCFuncDiffParams diffParams( *angleXYSymbolIter, 1 );
 			const auto derivative = errorFunction->diff( diffParams );
-//			std::cout << "derivative=" << *derivative << std::endl;
+			std::cout << "derivative=" << *((GiNaCErrorFunction*)derivative.get())->getEx() << std::endl;
 			tFunc.errorDerivativeFunctions->emplace_back( derivative );
 		}
 		{
@@ -519,8 +530,8 @@ void Solver::initGiNaCAngleErrorFunction()
 	uint32_t leg_i = 0;
 	for( const auto & leg : *m_manipulator )
 	{
-		const auto &symbolXYoZAngle = *m_ginacXYoZAngles[leg_i];
-		const auto &symbolXZoYAngle = *m_ginacXZoYAngles[leg_i];
+		const auto &symbolXYoZAngle = *m_ginacCurrentXYoZAngles[leg_i];
+		const auto &symbolXZoYAngle = *m_ginacCurrentXZoYAngles[leg_i];
 
 		if( true == leg->getAngleXYEnabled() )
 		{
@@ -545,8 +556,8 @@ void Solver::initGiNaCAngleErrorFunction()
 
 //	std::cout << "errorFunction=" << m_errorFunction << std::endl;
 
-	auto angleXYSymbolIter = std::begin( m_ginacXYoZAngles );
-	auto angleXZSymbolIter = std::begin( m_ginacXZoYAngles );
+	auto angleXYSymbolIter = std::begin( m_ginacCurrentXYoZAngles );
+	auto angleXZSymbolIter = std::begin( m_ginacCurrentXZoYAngles );
 	for( size_t leg_i = 0 ; leg_i < m_manipulator->size() ; leg_i++, angleXYSymbolIter++, angleXZSymbolIter++ )
 	{
 		{
@@ -595,8 +606,8 @@ std::string Solver::generateErroFunctionDerivatives()
        const size_t legsCount = m_manipulator->size();
        for( size_t leg_i = 0 ; leg_i < legsCount ; leg_i++ )
        {
-		   const auto &symbolXYAngle = *m_ginacXYoZAngles[leg_i];
-		   const auto &symbolXZAngle = *m_ginacXZoYAngles[leg_i];
+		   const auto &symbolXYAngle = *m_ginacCurrentXYoZAngles[leg_i];
+		   const auto &symbolXZAngle = *m_ginacCurrentXZoYAngles[leg_i];
 
 		   sumXYAngles += ( symbolXYAngle );//angle_1, angle_1 + angle_2, angle_1 + angle_2 + angle_3
 		   sumXZAngles += ( symbolXZAngle );//angle_1, angle_1 + angle_2, angle_1 + angle_2 + angle_3
@@ -679,7 +690,7 @@ std::string Solver::generateErroFunctionDerivatives()
 	std::stringstream sErrorFunction;
 	std::stringstream sErrorFunctionHeaders;
 	{
-		size_t anglesCount = m_ginacXYoZAngles.size();
+		size_t anglesCount = m_ginacCurrentXYoZAngles.size();
 
 		std::cout << "errorFunction=" << errorFunction << std::endl;
 
@@ -688,7 +699,7 @@ std::string Solver::generateErroFunctionDerivatives()
 
 		sErrorFunction << "double ErrorFunctions::error_Legs_" + std::to_string( anglesCount ) + "( const std::vector<double> & params )\n";
 		sErrorFunction << "{\n";
-		sErrorFunction << "\tassert( params.size() == " + std::to_string( m_ginacXYoZAngles.size() * 4 + 9 ) + " );\n\n";
+		sErrorFunction << "\tassert( params.size() == " + std::to_string( m_ginacCurrentXYoZAngles.size() * 4 + 9 ) + " );\n\n";
 		sErrorFunction << "\tdouble initialX       = params[ 0 ];\n";
 		sErrorFunction << "\tdouble initialY       = params[ 1 ];\n";
 		sErrorFunction << "\tdouble initialZ       = params[ 2 ];\n";
@@ -720,10 +731,10 @@ std::string Solver::generateErroFunctionDerivatives()
 	std::stringstream sDerivates;
 	std::stringstream sDerivatesHeaders;
 	{
-		size_t anglesCount = m_ginacXYoZAngles.size();
-		auto angleSymbolIter = std::begin( m_ginacXYoZAngles );
+		size_t anglesCount = m_ginacCurrentXYoZAngles.size();
+		auto angleSymbolIter = std::begin( m_ginacCurrentXYoZAngles );
 		uint32_t leg_i = 0;
-		for( ; angleSymbolIter != std::end( m_ginacXYoZAngles ) ; angleSymbolIter++, leg_i++ )
+		for( ; angleSymbolIter != std::end( m_ginacCurrentXYoZAngles ) ; angleSymbolIter++, leg_i++ )
 		{
 			GiNaC::ex derivative = errorFunction.diff( **angleSymbolIter, 1 );
 			std::cout << "derivative=" << derivative << std::endl;
@@ -734,7 +745,7 @@ std::string Solver::generateErroFunctionDerivatives()
 			sDerivates << "\n";
 			sDerivates << "double DerivativeFunctions::derivative_XY_" + std::to_string( legsCount ) + "_Legs_" + std::to_string( leg_i ) + "( const std::vector<double> & params )\n";
 			sDerivates << "{\n";
-			sDerivates << "\tassert( params.size() == " + std::to_string( m_ginacXYoZAngles.size() * 4 + 9 ) + " );\n\n";
+			sDerivates << "\tassert( params.size() == " + std::to_string( m_ginacCurrentXYoZAngles.size() * 4 + 9 ) + " );\n\n";
 			sDerivates << "\tdouble initialX       = params[ 0 ];\n";
 			sDerivates << "\tdouble initialY       = params[ 1 ];\n";
 			sDerivates << "\tdouble initialZ       = params[ 2 ];\n";
@@ -765,10 +776,10 @@ std::string Solver::generateErroFunctionDerivatives()
 		}
 	}
 	{
-		size_t anglesCount = m_ginacXZoYAngles.size();
-		auto angleSymbolIter = std::begin( m_ginacXZoYAngles );
+		size_t anglesCount = m_ginacCurrentXZoYAngles.size();
+		auto angleSymbolIter = std::begin( m_ginacCurrentXZoYAngles );
 		uint32_t leg_i = 0;
-		for( ; angleSymbolIter != std::end( m_ginacXZoYAngles ) ; angleSymbolIter++, leg_i++ )
+		for( ; angleSymbolIter != std::end( m_ginacCurrentXZoYAngles ) ; angleSymbolIter++, leg_i++ )
 		{
 			GiNaC::ex derivative = errorFunction.diff( **angleSymbolIter, 1 );
 			std::cout << "derivative=" << derivative << ", by variable=" << (**angleSymbolIter).get_name() << std::endl;
@@ -779,7 +790,7 @@ std::string Solver::generateErroFunctionDerivatives()
 			sDerivates << "\n";
 			sDerivates << "double DerivativeFunctions::derivative_XZ_" + std::to_string( legsCount ) + "_Legs_" + std::to_string( leg_i ) + "( const std::vector<double> & params )\n";
 			sDerivates << "{\n";
-			sDerivates << "\tassert( params.size() == " + std::to_string( m_ginacXZoYAngles.size() * 4 + 9 ) + " );\n\n";
+			sDerivates << "\tassert( params.size() == " + std::to_string( m_ginacCurrentXZoYAngles.size() * 4 + 9 ) + " );\n\n";
 			sDerivates << "\tdouble initialX       = params[ 0 ];\n";
 			sDerivates << "\tdouble initialY       = params[ 1 ];\n";
 			sDerivates << "\tdouble initialZ       = params[ 2 ];\n";
@@ -997,7 +1008,7 @@ void Solver::solveFromCurrentAngledStochastic( int32_t x, int32_t y, int32_t z, 
 
 		stepsCounter++;
 	}
-	while( /* accumalatedErrorDelta >= epsilon && */ error >= epsilon &&
+	while( accumalatedErrorDelta >= epsilon && error >= epsilon &&
 		   stepsCounter < maxSteps && std::abs( getSumOfLastGradients() ) > gradientThreshold );
 
 	std::vector<double> afterAngles = getLegsAngles();
@@ -1493,8 +1504,7 @@ std::vector<double> Solver::oneStepStochastic( int32_t targetX, int32_t targetY,
 		DistanceDataParams distChunk( targetX, targetY, targetZ );
 		AngleFuncParams angleChunk( angleDegree );
 
-		auto angles = std::move( getLegsAngles() );
-		LegAnglesDataParams legsAnglesChunk( angles );
+		m_legAngleDataParams.setLegsCurrentAngles( std::move( getLegsAngles() ) );
 
 		fillParams( targetX, targetY, targetZ, params );
 		NativeFuncDiffParam funcParams( params );
@@ -1502,11 +1512,11 @@ std::vector<double> Solver::oneStepStochastic( int32_t targetX, int32_t targetY,
 		for( auto & funcInfo : m_errorFunctionsTyped )
 		{
 			funcInfo.errorFunction->onReceive( distChunk );
-			funcInfo.errorFunction->onReceive( legsAnglesChunk );
+			funcInfo.errorFunction->onReceive( m_legAngleDataParams );
 			funcInfo.errorFunction->onReceive( funcParams );
 
 			funcInfo.errorDerivativeFunctions->onReceive( distChunk );
-			funcInfo.errorDerivativeFunctions->onReceive( legsAnglesChunk );
+			funcInfo.errorDerivativeFunctions->onReceive( m_legAngleDataParams );
 			funcInfo.errorDerivativeFunctions->onReceive( funcParams );
 
 			if( true == angled )
@@ -1530,10 +1540,10 @@ std::vector<double> Solver::oneStepStochastic( int32_t targetX, int32_t targetY,
 //		m_errors = forwardv2_1( func.errorDerivativeFunctions );
 		fillParams( targetX, targetY, targetZ, params );
 		NativeFuncDiffParam funcParams( params );
-		auto angles = std::move( getLegsAngles() );
-		LegAnglesDataParams legsAnglesChunk( angles );
+		m_legAngleDataParams.setLegsCurrentAngles( std::move( getLegsAngles() ) );
+
 		func.errorDerivativeFunctions->onReceive( funcParams );
-		func.errorDerivativeFunctions->onReceive( legsAnglesChunk );
+		func.errorDerivativeFunctions->onReceive( m_legAngleDataParams );
 		m_errors = forwardv3_2( func.errorDerivativeFunctions );
 //		std::cout << __FUNCTION__ << " 5" << std::endl;
 	}
@@ -1659,7 +1669,7 @@ std::vector<double> Solver::forwardv2_1( IFuncSh funcDerivatives )
 
 std::vector<double> Solver::forwardv2( int32_t expectedX, int32_t expectedY, int32_t expectedZ, bool angled, double angleDegree )
 {
-	assert( m_ginacXYoZAngles.size() == m_manipulator->size() );
+	assert( m_ginacCurrentXYoZAngles.size() == m_manipulator->size() );
 
 	std::vector<double> errors( m_manipulator->size() * m_anglesPerLeg, 0.0 );//angles XYoZ and angles XZoY
 
@@ -1667,8 +1677,8 @@ std::vector<double> Solver::forwardv2( int32_t expectedX, int32_t expectedY, int
 
 	GiNaC::lst functionVars;
 	auto legIter = std::begin( *m_manipulator );
-	auto angleXYSymbolIter = std::begin( m_ginacXYoZAngles );
-	auto angleXZSymbolIter = std::begin( m_ginacXZoYAngles );
+	auto angleXYSymbolIter = std::begin( m_ginacCurrentXYoZAngles );
+	auto angleXZSymbolIter = std::begin( m_ginacCurrentXZoYAngles );
 	for(  ; legIter != std::end( *m_manipulator ) ; legIter++, angleXYSymbolIter++, angleXZSymbolIter++ )
 	{
 		{
@@ -2138,8 +2148,8 @@ double Solver::getErrorFunctionValue( ShLegManipulator manipulator, TypePrecisio
 {
 	GiNaC::lst functionVars;
 	auto legIter = std::begin( *manipulator );
-	auto angleXYSymbolIter = std::begin( m_ginacXYoZAngles );
-	auto angleXZSymbolIter = std::begin( m_ginacXZoYAngles );
+	auto angleXYSymbolIter = std::begin( m_ginacCurrentXYoZAngles );
+	auto angleXZSymbolIter = std::begin( m_ginacCurrentXZoYAngles );
 	for(  ; legIter != std::end( *manipulator ) ; legIter++, angleXYSymbolIter++, angleXZSymbolIter++ )
 	{
 		{

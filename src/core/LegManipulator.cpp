@@ -123,7 +123,7 @@ ShLegManipulator LegManipulator::clone()
 	{
 //		const auto newLeg = std::make_shared<Leg>( *leg );
 		const auto & newLegObj = *leg;
-		const auto newLeg = std::shared_ptr<Leg>( new Leg( newLegObj ));
+		const auto newLeg = std::make_shared<Leg>( newLegObj );
 		clonedManipulator->push_back( newLeg );
 	}
 	clonedManipulator->pair();

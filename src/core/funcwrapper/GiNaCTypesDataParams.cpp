@@ -15,24 +15,44 @@ GiNaCTypesDataParams::~GiNaCTypesDataParams()
 {
 }
 
-void GiNaCTypesDataParams::setXYSymbols( const std::vector<std::shared_ptr<GiNaC::symbol>> & xySymbols )
+void GiNaCTypesDataParams::setCurrentXYSymbols( std::vector<std::shared_ptr<GiNaC::symbol>> currentXYSymbols )
 {
-	m_xySymbols = xySymbols;
+	m_currentXYSymbols = std::move( currentXYSymbols );
 }
 
-std::vector<std::shared_ptr<GiNaC::symbol>> GiNaCTypesDataParams::getXYSymbols() const
+std::vector<std::shared_ptr<GiNaC::symbol>> GiNaCTypesDataParams::getCurrentXYSymbols() const
 {
-	return m_xySymbols;
+	return m_currentXYSymbols;
 }
 
-void GiNaCTypesDataParams::setXZSymbols( const std::vector<std::shared_ptr<GiNaC::symbol>> & xzSymbols )
+void GiNaCTypesDataParams::setCurrentXZSymbols( std::vector<std::shared_ptr<GiNaC::symbol>> currentXZSymbols )
 {
-	m_xzSymbols = xzSymbols;
+	m_currentXZSymbols = std::move( currentXZSymbols );
 }
 
-std::vector<std::shared_ptr<GiNaC::symbol>> GiNaCTypesDataParams::getXZSymbols() const
+std::vector<std::shared_ptr<GiNaC::symbol>> GiNaCTypesDataParams::getCurrentXZSymbols() const
 {
-	return m_xzSymbols;
+	return m_currentXZSymbols;
+}
+
+void GiNaCTypesDataParams::setInitialXYSymbols( std::vector<std::shared_ptr<GiNaC::symbol>> xyInitialSymbols )
+{
+	m_initialXYSymbols = std::move( xyInitialSymbols );
+}
+
+std::vector<std::shared_ptr<GiNaC::symbol>> GiNaCTypesDataParams::getInitialXYSymbols() const
+{
+	return m_initialXYSymbols;
+}
+
+void GiNaCTypesDataParams::setInitialXZSymbols( std::vector<std::shared_ptr<GiNaC::symbol>> xzInitialSymbols )
+{
+	m_initialXZSymbols = std::move( xzInitialSymbols );
+}
+
+std::vector<std::shared_ptr<GiNaC::symbol>> GiNaCTypesDataParams::getInitialXZSymbols() const
+{
+	return m_initialXZSymbols;
 }
 
 void GiNaCTypesDataParams::setTargetSymbols( std::shared_ptr<GiNaC::symbol> targetX, std::shared_ptr<GiNaC::symbol> targetY, std::shared_ptr<GiNaC::symbol> targetZ )

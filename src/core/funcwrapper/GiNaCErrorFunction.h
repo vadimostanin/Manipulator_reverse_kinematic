@@ -36,11 +36,14 @@ private:
 	std::shared_ptr<GiNaC::symbol> m_ginacTargetY;
 	std::shared_ptr<GiNaC::symbol> m_ginacTargetZ;
 
-	std::vector<std::shared_ptr<GiNaC::symbol>> 		m_ginacXYoZAngles;
-	std::vector<std::shared_ptr<GiNaC::symbol>> 		m_ginacXZoYAngles;
+	std::vector<std::shared_ptr<GiNaC::symbol>> 		m_ginacCurrentXYoZAnglesSymbols;
+	std::vector<std::shared_ptr<GiNaC::symbol>> 		m_ginacCurrentXZoYAnglesSymbols;
+	std::vector<std::shared_ptr<GiNaC::symbol>> 		m_ginacInitialXYoZAnglesSymbols;
+	std::vector<std::shared_ptr<GiNaC::symbol>> 		m_ginacInitialXZoYAnglesSymbols;
 	std::shared_ptr<GiNaC::symbol> 						m_ginacAngleDegree;
 
-	std::vector<double> m_legsAngles;
+	std::vector<double> m_legsCurrentAngles;
+	std::vector<double> m_legsInitialAngles;
 	std::shared_ptr<GiNaC::ex> m_Ex;
 
 	double m_AngleDegree{0};

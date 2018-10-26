@@ -29,6 +29,6 @@ void PerpendicularAngleDerivate::onReceive( const IFuncParams & data )
 	else if( IFuncParams::eParamType::eLegsAngles == data.type() )
 	{
 		const auto & obj = static_cast<const LegAnglesDataParams&>( data );
-		m_legsAngles = std::move( obj.getLegsAngles() );
+		m_legsAngles = std::move( obj.getLegsCurrentAngles() );
 	}
 }

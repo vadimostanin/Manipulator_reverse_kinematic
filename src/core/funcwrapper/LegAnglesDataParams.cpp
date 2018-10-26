@@ -7,8 +7,8 @@
 
 #include "LegAnglesDataParams.h"
 
-LegAnglesDataParams::LegAnglesDataParams( const std::vector<double> & legsAngles ): IFuncParams( IFuncParams::eParamType::eLegsAngles ),
-m_legsAngles( legsAngles )
+LegAnglesDataParams::LegAnglesDataParams():
+IFuncParams( IFuncParams::eParamType::eLegsAngles )
 {
 }
 

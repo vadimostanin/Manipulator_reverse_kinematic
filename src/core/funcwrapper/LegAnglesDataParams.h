@@ -14,11 +14,16 @@
 class LegAnglesDataParams: public IFuncParams
 {
 public:
-	LegAnglesDataParams( const std::vector<double> & legsAngles );
+	LegAnglesDataParams();
 
-	const std::vector<double> getLegsAngles() const { return m_legsAngles; }
+	void setLegsCurrentAngles( std::vector<double> legsCurrentAngles) { m_legsCurrentAngles = std::move( legsCurrentAngles ); }
+	void setLegsInitialAngles( std::vector<double> legsInitialAngles ) { m_legsInitialAngles = std::move( legsInitialAngles ); }
+
+	std::vector<double> getLegsCurrentAngles() const { return m_legsCurrentAngles; }
+	std::vector<double> getLegsInitialAngles() const { return m_legsInitialAngles; }
 private:
-	std::vector<double> m_legsAngles;
+	std::vector<double> m_legsCurrentAngles;
+	std::vector<double> m_legsInitialAngles;
 };
 
 #endif /* CORE_LEGANGLESDATACHUCK_H_ */

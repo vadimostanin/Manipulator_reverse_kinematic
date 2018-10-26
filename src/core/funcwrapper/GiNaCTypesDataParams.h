@@ -17,11 +17,17 @@ public:
 	GiNaCTypesDataParams();
 	virtual ~GiNaCTypesDataParams();
 
-	void setXYSymbols( const std::vector<std::shared_ptr<GiNaC::symbol>> & xySymbols );
-	std::vector<std::shared_ptr<GiNaC::symbol>> getXYSymbols() const;
+	void setCurrentXYSymbols( std::vector<std::shared_ptr<GiNaC::symbol>> currentXYSymbols );
+	std::vector<std::shared_ptr<GiNaC::symbol>> getCurrentXYSymbols() const;
 
-	void setXZSymbols( const std::vector<std::shared_ptr<GiNaC::symbol>> & xzSymbols );
-	std::vector<std::shared_ptr<GiNaC::symbol>> getXZSymbols() const;
+	void setCurrentXZSymbols( std::vector<std::shared_ptr<GiNaC::symbol>> currentXZSymbols );
+	std::vector<std::shared_ptr<GiNaC::symbol>> getCurrentXZSymbols() const;
+
+	void setInitialXYSymbols( std::vector<std::shared_ptr<GiNaC::symbol>> xyInitialSymbols );
+	std::vector<std::shared_ptr<GiNaC::symbol>> getInitialXYSymbols() const;
+
+	void setInitialXZSymbols( std::vector<std::shared_ptr<GiNaC::symbol>> xzInitialSymbols );
+	std::vector<std::shared_ptr<GiNaC::symbol>> getInitialXZSymbols() const;
 
 	void setTargetSymbols( std::shared_ptr<GiNaC::symbol> targetX, std::shared_ptr<GiNaC::symbol> targetY, std::shared_ptr<GiNaC::symbol> targetZ );
 	void getTargetSymbols( std::shared_ptr<GiNaC::symbol> & targetX, std::shared_ptr<GiNaC::symbol> & targetY, std::shared_ptr<GiNaC::symbol> & targetZ ) const;
@@ -30,8 +36,11 @@ public:
 	void getAngleSymbol( std::shared_ptr<GiNaC::symbol> & targetAngle ) const;
 
 private:
-	std::vector<std::shared_ptr<GiNaC::symbol>> m_xySymbols;
-	std::vector<std::shared_ptr<GiNaC::symbol>> m_xzSymbols;
+	std::vector<std::shared_ptr<GiNaC::symbol>> m_initialXYSymbols;
+	std::vector<std::shared_ptr<GiNaC::symbol>> m_initialXZSymbols;
+
+	std::vector<std::shared_ptr<GiNaC::symbol>> m_currentXYSymbols;
+	std::vector<std::shared_ptr<GiNaC::symbol>> m_currentXZSymbols;
 
 	std::shared_ptr<GiNaC::symbol>               m_ginacTargetX;
 	std::shared_ptr<GiNaC::symbol>               m_ginacTargetY;

@@ -17,6 +17,7 @@ public:
 	virtual ~Leg3DDrawWindow();
 
 	void run();
+	void stop();
 
 	void updateDrawLegs( Legs legs );
 
@@ -26,6 +27,7 @@ public:
 private:
 	static void changeSize(int w, int h);
 	static void renderScene(void);
+	static void emptyRenderScene(void);
 	static void processNormalKeys(unsigned char key, int xx, int yy);
 	static void pressKey(int key, int xx, int yy);
 	static void releaseKey(int key, int x, int y);
@@ -34,8 +36,6 @@ private:
 	static void init(void);
 	static void myGlutIdle();
 	static void initLegs();
-	static void drawBox(void);
-	static void drawLeg( int x, int y, int z, int width, int height );
 
 	static int buttonPressedType;
 	static int buttonPressedX, buttonPressedY;
@@ -54,6 +54,7 @@ private:
 	DrawGL3DLegs m_drawLegs;
 
 	static Leg3DDrawWindow * lpThis;
+	int m_windowId{0};
 };
 
 #endif /* LEG3DDRAWWINDOW_H_ */
