@@ -39,11 +39,16 @@ Leg3DDrawWindow::Leg3DDrawWindow()
 
 Leg3DDrawWindow::~Leg3DDrawWindow()
 {
-	glutDisplayFunc( emptyRenderScene );
-	glutReshapeFunc( nullptr );
-	glutIdleFunc( nullptr );
-	glutDestroyWindow( m_windowId );
-	m_drawLegs.clear();
+	{
+		std::lock_guard<std::mutex> lock( lpThis->mContextMutex );
+
+		glutDisplayFunc( emptyRenderScene );
+		glutReshapeFunc( nullptr );
+		glutIdleFunc( nullptr );
+		glutDestroyWindow( m_windowId );
+		m_windowId = -1;
+		m_drawLegs.clear();
+	}
 	m_mainLoop.join();
 }
 
@@ -176,47 +181,51 @@ void Leg3DDrawWindow::init(void)
 void Leg3DDrawWindow::emptyRenderScene(void){}
 void Leg3DDrawWindow::renderScene(void)
 {
-	TypePrecision initialPosX, initialPosY, initialPosZ;
-	lpThis->m_drawLegs[0]->getLeg()->getInitialPosition( initialPosX, initialPosY, initialPosZ );
-
-	//очистить буфер цвета и глубины
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	// обнулить трансформацию
-//	glLoadIdentity();
-	glPushMatrix();
-	// установить камеру
-	gluLookAt( initialPosX + std::cos( Utils::deg2Rad( cameraAngleAroundY ) ) * ( 200.0 + cameraToX ), 450.0 + cameraToY, std::sin( Utils::deg2Rad( cameraAngleAroundY ) ) * ( 100.0 ),  /* eye is at (0,0,5) */
-			initialPosX + 1.0 + cameraFromX, 5.0 + cameraFromY, 0.0 + cameraFromZ,      /* center is at (0,0,0) */
-	    0.0, 1.0, 0.0);      /* up is in positive Y direction */
-
-  /* Use depth buffering for hidden surface elimination. */
-  glEnable(GL_DEPTH_TEST);
-
-	// нарисуем "землю"
-	glColor3f(0.9f, 0.9f, 0.9f);
-	// полигон (plaine)
-	glBegin(GL_QUADS);
-		glVertex3f( initialPosX + -50.0f, 0.0f, -50.0f);
-		glVertex3f( initialPosX + -50.0f, 0.0f,  50.0f);
-		glVertex3f( initialPosX +  50.0f, 0.0f,  50.0f);
-		glVertex3f( initialPosX +  50.0f, 0.0f, -50.0f);
-	glEnd();
-
-	for( const auto & drawLeg : lpThis->m_drawLegs )
+	std::lock_guard<std::mutex> lock( lpThis->mContextMutex );
+	if( lpThis->m_windowId != -1 )
 	{
-//		glColor3f( 0.1, 0.4, 0.9 );
-		drawLeg->render();
-	}
+		TypePrecision initialPosX, initialPosY, initialPosZ;
+		lpThis->m_drawLegs[0]->getLeg()->getInitialPosition( initialPosX, initialPosY, initialPosZ );
+
+		//очистить буфер цвета и глубины
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		// обнулить трансформацию
+	//	glLoadIdentity();
 		glPushMatrix();
-		glColor3f(0.2f, 0.2f, 0.9f);
-			glTranslatef( solveForX, solveForY, solveForZ );
-			glutSolidSphere( 20, 32, 32 );
+		// установить камеру
+		gluLookAt( initialPosX + std::cos( Utils::deg2Rad( cameraAngleAroundY ) ) * ( 200.0 + cameraToX ), 450.0 + cameraToY, std::sin( Utils::deg2Rad( cameraAngleAroundY ) ) * ( 100.0 ),  /* eye is at (0,0,5) */
+				initialPosX + 1.0 + cameraFromX, 5.0 + cameraFromY, 0.0 + cameraFromZ,      /* center is at (0,0,0) */
+			0.0, 1.0, 0.0);      /* up is in positive Y direction */
+
+	  /* Use depth buffering for hidden surface elimination. */
+	  glEnable(GL_DEPTH_TEST);
+
+		// нарисуем "землю"
+		glColor3f(0.9f, 0.9f, 0.9f);
+		// полигон (plaine)
+		glBegin(GL_QUADS);
+			glVertex3f( initialPosX + -50.0f, 0.0f, -50.0f);
+			glVertex3f( initialPosX + -50.0f, 0.0f,  50.0f);
+			glVertex3f( initialPosX +  50.0f, 0.0f,  50.0f);
+			glVertex3f( initialPosX +  50.0f, 0.0f, -50.0f);
+		glEnd();
+
+		for( const auto & drawLeg : lpThis->m_drawLegs )
+		{
+	//		glColor3f( 0.1, 0.4, 0.9 );
+			drawLeg->render();
+		}
+			glPushMatrix();
+			glColor3f(0.2f, 0.2f, 0.9f);
+				glTranslatef( solveForX, solveForY, solveForZ );
+				glutSolidSphere( 20, 32, 32 );
+			glPopMatrix();
 		glPopMatrix();
-	glPopMatrix();
 
-	glutPostRedisplay();
+	//	glutPostRedisplay();
 
-	glutSwapBuffers();
+		glutSwapBuffers();
+	}
 }
 
 void Leg3DDrawWindow::processNormalKeys(unsigned char key, int xx, int yy)

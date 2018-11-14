@@ -35,8 +35,8 @@ public:
 	double getWidth1() const;
 	Leg& setWidth1( double w1 );
 
-	double getWidth2() const;
-	Leg& setWindth2( double w2 );
+//	double getWidth2() const;
+//	Leg& setWindth2( double w2 );
 
 	Leg& setInitialOffsets( double offsetX, double offsetY, double offsetZ );
 	Leg& getInitialOffsets( double & offsetX, double & offsetY, double & offsetZ );

@@ -57,16 +57,16 @@ Leg& Leg::setWidth1( double w1 )
 	return *this;
 }
 
-double Leg::getWidth2() const
-{
-	return m_width2;
-}
-
-Leg& Leg::setWindth2( double w2 )
-{
-	m_width2 = w2;
-	return *this;
-}
+//double Leg::getWidth2() const
+//{
+//	return m_width2;
+//}
+//
+//Leg& Leg::setWindth2( double w2 )
+//{
+//	m_width2 = w2;
+//	return *this;
+//}
 
 Leg& Leg::setInitialOffsets( double offsetX, double offsetY, double offsetZ )
 {

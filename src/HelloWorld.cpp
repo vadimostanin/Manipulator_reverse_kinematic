@@ -19,7 +19,7 @@
 void onOptimize( HelloWorld * lpHelloWorld )
 {
 //	std::cout << "Optimize by: x=" << lpHelloWorld->m_XYoZArea.getX() << ", y=" << lpHelloWorld->m_XYoZArea.getY() << std::endl;
-	double epsilonChangeError = 0.1;
+	double epsilonChangeError = 0.001;
 //	std::cout << "before solve" << std::endl;
 //	LegsMgr::get().print();
 
@@ -30,13 +30,8 @@ void onOptimize( HelloWorld * lpHelloWorld )
 			}
 	);
 
-//	std::cout << "after solve" << std::endl;
 //	LegsMgr::get().print();
-	TypePrecision finalX, finalY, finalZ;
-	lpHelloWorld->m_solver.getCurrentManipulator()->getLastLeg()->getCalulatedFinalPosition( finalX, finalY, finalZ );
 	double distance = lpHelloWorld->m_solver.getErrorFunctionValue( lpHelloWorld->m_desirablePoint.getX(), lpHelloWorld->m_desirablePoint.getY(), lpHelloWorld->m_desirablePoint.getZ() );
-//	Utils::distance( finalX, finalY, finalZ, lpHelloWorld->m_XYoZArea.getX(), lpHelloWorld->m_desirablePoint.getY(), lpHelloWorld->m_desirablePoint.getZ() );
-//	std::cout << "Distance=" << distance << ", error=" << lpHelloWorld->m_solver.getErrorFunctionValue() << std::endl;
 	lpHelloWorld->m_solver.getCurrentManipulator()->print();
 	if( distance > 1.0 )
 	{
@@ -282,10 +277,15 @@ void onInterpolateExp5( HelloWorld * lpHelloWorld)
 	startInterpolate = true;
 }
 
+void onMovebase( HelloWorld * lpHelloWorld)
+{
+
+}
+
 bool onXYoZButtonPressed(GdkEventButton* event, HelloWorld * lpHelloWorld)
 {
-	try
-	{
+//	try
+//	{
 //		std::cout << "on_my_button_press_event" << std::endl;
 //		static int counter = 0;
 //		if( counter == 0 )
@@ -304,6 +304,12 @@ bool onXYoZButtonPressed(GdkEventButton* event, HelloWorld * lpHelloWorld)
 //			event->y = 240;
 //		}
 //		counter++;
+	if( lpHelloWorld->m_moveBaseButton.get_active() )
+	{
+		lpHelloWorld->m_solver.getCurrentManipulator()->front()->setInitialPosition( event->x, event->y, lpHelloWorld->m_desirablePoint.getZ() );
+	}
+	else
+	{
 		lpHelloWorld->m_XYoZArea.setX( event->x );//106, 332
 		lpHelloWorld->m_XYoZArea.setY( event->y );
 
@@ -314,43 +320,43 @@ bool onXYoZButtonPressed(GdkEventButton* event, HelloWorld * lpHelloWorld)
 
 		Leg3DDrawWindow::solveForX = event->x;
 		Leg3DDrawWindow::solveForY = event->y;
-
-//		ShLegManipulator initiatedManipulatorClone = lpHelloWorld->m_solver.getCurrentManipulator()->clone();
-//		initiatedManipulatorClone->print();
-
-//		{
-//			std::vector<double> varAngles = ManipulatorUniConverter::getFormatedAngles( lpHelloWorld->m_solver.getCurrentManipulator() );
-//			InterpolatedMove::get().setInitialVars( varAngles );
-//		}
-//		onOptimize( lpHelloWorld );
-//		onOptimizeClone( lpHelloWorld );
-//		onShuffledSolve( lpHelloWorld );
-//		onShuffledLessErrorSolve( lpHelloWorld );
-//		onShuffledLessAngleSolve( lpHelloWorld );
-//		onContIterShuffledLessAngleSolve( lpHelloWorld );
-//		onContIterShuffledSolve( lpHelloWorld );
-		onPerpendicularSolve( lpHelloWorld );
-//		onPerpendicularShuffleSolve( lpHelloWorld );
-//		onPerpendicularNativeStochasticSolve( lpHelloWorld );
-//		onsolveFromCurrentAngledStochastic( lpHelloWorld );
-//		onOneStep( lpHelloWorld );
-
-		{
-//			std::vector<double> varAngles = ManipulatorUniConverter::getFormatedAngles( lpHelloWorld->m_solver.getCurrentManipulator() );
-//			InterpolatedMove2::get().setVars( varAngles );
-		}
-
-//		lpHelloWorld->m_solver.getCurrentManipulator()->print();
-//		LegsMgr::get().getManipulator()->deepAssign( initiatedManipulatorClone );
-
-		lpHelloWorld->redraw();
 	}
-	catch( std::exception & ex )
-	{
-		std::cout << "Exception catched" << std::endl;
-		int a = 0;
-		a++;
-	}
+
+//	ShLegManipulator initiatedManipulatorClone = lpHelloWorld->m_solver.getCurrentManipulator()->clone();
+//	initiatedManipulatorClone->print();
+//
+//	{
+//		std::vector<double> varAngles = ManipulatorUniConverter::getFormatedAngles( lpHelloWorld->m_solver.getCurrentManipulator() );
+//		InterpolatedMove::get().setInitialVars( varAngles );
+//	}
+	onOptimize( lpHelloWorld );
+//	onOptimizeClone( lpHelloWorld );
+//	onShuffledSolve( lpHelloWorld );
+//	onShuffledLessErrorSolve( lpHelloWorld );
+//	onShuffledLessAngleSolve( lpHelloWorld );
+//	onContIterShuffledLessAngleSolve( lpHelloWorld );
+//	onContIterShuffledSolve( lpHelloWorld );
+//	onPerpendicularSolve( lpHelloWorld );
+//	onPerpendicularShuffleSolve( lpHelloWorld );
+//	onPerpendicularNativeStochasticSolve( lpHelloWorld );
+//	onsolveFromCurrentAngledStochastic( lpHelloWorld );
+//	onOneStep( lpHelloWorld );
+//	{
+//		std::vector<double> varAngles = ManipulatorUniConverter::getFormatedAngles( lpHelloWorld->m_solver.getCurrentManipulator() );
+//		InterpolatedMove2::get().setVars( varAngles );
+//	}
+//	lpHelloWorld->m_solver.getCurrentManipulator()->print();
+//	LegsMgr::get().getManipulator()->deepAssign( initiatedManipulatorClone );
+
+	lpHelloWorld->redraw();
+//
+//	}
+//	catch( std::exception & ex )
+//	{
+//		std::cout << "Exception catched" << std::endl;
+//		int a = 0;
+//		a++;
+//	}
 
 	return true;
 }
@@ -362,16 +368,16 @@ bool onXYoZButtonMove(GdkEventMotion* event, HelloWorld * lpHelloWorld)
 //		event->x = 106;
 //		event->y = 332;
 //		std::cout << "on_my_button_press_event" << std::endl;
-		lpHelloWorld->m_XYoZArea.setX( event->x );
-		lpHelloWorld->m_XYoZArea.setY( event->y );
-
-		lpHelloWorld->m_XZoYArea.setX( event->x );
-
-		lpHelloWorld->m_desirablePoint.setX( event->x );
-		lpHelloWorld->m_desirablePoint.setY( event->y );
-
-		Leg3DDrawWindow::solveForX = event->x;
-		Leg3DDrawWindow::solveForY = event->y;
+//		lpHelloWorld->m_XYoZArea.setX( event->x );
+//		lpHelloWorld->m_XYoZArea.setY( event->y );
+//
+//		lpHelloWorld->m_XZoYArea.setX( event->x );
+//
+//		lpHelloWorld->m_desirablePoint.setX( event->x );
+//		lpHelloWorld->m_desirablePoint.setY( event->y );
+//
+//		Leg3DDrawWindow::solveForX = event->x;
+//		Leg3DDrawWindow::solveForY = event->y;
 
 //		onOptimize( lpHelloWorld );
 //		onOptimizeClone( lpHelloWorld );
@@ -397,25 +403,32 @@ bool onXYoZButtonMove(GdkEventMotion* event, HelloWorld * lpHelloWorld)
 bool onXZoYButtonPressed(GdkEventButton* event, HelloWorld * lpHelloWorld)
 {
 //	std::cout << "on_my_button_press_event" << std::endl;
-	lpHelloWorld->m_XZoYArea.setX( event->x );
-	lpHelloWorld->m_XZoYArea.setZ( event->y );
+	if( lpHelloWorld->m_moveBaseButton.get_active() )
+	{
+		lpHelloWorld->m_solver.getCurrentManipulator()->front()->setInitialPosition( event->x, lpHelloWorld->m_desirablePoint.getY(), event->y );
+	}
+	else
+	{
+		lpHelloWorld->m_XZoYArea.setX( event->x );
+		lpHelloWorld->m_XZoYArea.setZ( event->y );
 
-	lpHelloWorld->m_XYoZArea.setX( event->x );
+		lpHelloWorld->m_XYoZArea.setX( event->x );
 
-	lpHelloWorld->m_desirablePoint.setX( event->x );
-	lpHelloWorld->m_desirablePoint.setZ( event->y );
+		lpHelloWorld->m_desirablePoint.setX( event->x );
+		lpHelloWorld->m_desirablePoint.setZ( event->y );
 
-	Leg3DDrawWindow::solveForX = event->x;
-	Leg3DDrawWindow::solveForZ = event->y;
+		Leg3DDrawWindow::solveForX = event->x;
+		Leg3DDrawWindow::solveForZ = event->y;
+	}
 
-//	onOptimize( lpHelloWorld );
+	onOptimize( lpHelloWorld );
 //	onOptimizeClone( lpHelloWorld );
 //	onShuffledSolve( lpHelloWorld );
 //	onShuffledLessErrorSolve( lpHelloWorld );
 //	onShuffledLessAngleSolve( lpHelloWorld );
 //	onContIterShuffledLessAngleSolve( lpHelloWorld );
 //	onContIterShuffledSolve( lpHelloWorld );
-	onPerpendicularSolve( lpHelloWorld );
+//	onPerpendicularSolve( lpHelloWorld );
 //	onsolveFromCurrentAngledStochastic( lpHelloWorld );
 
 	std::vector<double>varAngles = ManipulatorUniConverter::getFormatedAngles( lpHelloWorld->m_solver.getCurrentManipulator() );
@@ -505,6 +518,7 @@ HelloWorld::HelloWorld()
   m_solvePerpButton.show();
   m_interpolateButton.show();
   m_optimizeCloneButton.show();
+  m_moveBaseButton.show();
   m_VBoxButtons.show();
 //  add(m_XYoZArea);
 
@@ -531,6 +545,10 @@ HelloWorld::HelloWorld()
 
   m_interpolateButton.set_label( "Interpolate Exp5" );
   m_interpolateButton.signal_clicked().connect( sigc::bind<HelloWorld*>( sigc::ptr_fun( &onInterpolateExp5 ), this ) );
+
+  m_moveBaseButton.set_label( "Move Base" );
+//  m_moveBaseButton.signal_clicked().connect( sigc::bind<HelloWorld*>( sigc::ptr_fun( &onMovebase ), this ) );
+  m_moveBaseButton.signal_toggled().connect( sigc::bind<HelloWorld*>( sigc::ptr_fun( &onMovebase ), this ) );
 
   m_XYoZArea.signal_button_press_event().connect( sigc::bind<HelloWorld*>( sigc::ptr_fun( &onXYoZButtonPressed ), this ) );
   m_XYoZArea.signal_motion_notify_event().connect( sigc::bind<HelloWorld*>( sigc::ptr_fun( &onXYoZButtonMove ), this ) );
@@ -563,7 +581,14 @@ HelloWorld::HelloWorld()
   m_VBoxButtons.pack_start( m_solvePerpButton, Gtk::PACK_SHRINK );
   m_VBoxButtons.pack_start( m_interpolateButton, Gtk::PACK_SHRINK );
   m_VBoxButtons.pack_start( m_optimizeCloneButton, Gtk::PACK_SHRINK );
+  m_VBoxButtons.pack_start( m_moveBaseButton, Gtk::PACK_SHRINK );
   m_HBox.pack_start( m_VBoxButtons, Gtk::PACK_SHRINK );
+
+  TypePrecision x, y, z;
+  m_solver.getCurrentManipulator()->back()->getCalulatedFinalPosition( x, y, z );
+  m_desirablePoint.setX( x );
+  m_desirablePoint.setY( y );
+  m_desirablePoint.setZ( z );
 }
 
 HelloWorld::~HelloWorld()

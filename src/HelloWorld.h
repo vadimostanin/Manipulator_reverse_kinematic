@@ -11,6 +11,7 @@
 #include "core/Solver.h"
 #include "Leg3DDrawWindow.h"
 #include <gtkmm/button.h>
+#include <gtkmm/togglebutton.h>
 #include <gtkmm/window.h>
 #include <gtkmm/drawingarea.h>
 #include <gtkmm/box.h>
@@ -34,7 +35,7 @@ public:
   Solver m_solver;
   Point3 m_prevDesirablePoint;
   Point3 m_desirablePoint;
-
+  Gtk::ToggleButton m_moveBaseButton;
 protected:
   //Signal handlers:
   void on_button_clicked( Glib::ustring& s);
@@ -50,6 +51,8 @@ protected:
   Gtk::Button m_solvePerpButton;
   Gtk::Button m_optimizeCloneButton;
   Gtk::Button m_interpolateButton;
+
+
   Gtk::ScrolledWindow m_scrolledXYoZArea;
   Gtk::ScrolledWindow m_scrolledXZoYArea;
   Gtk::Fixed m_widgetFixed;

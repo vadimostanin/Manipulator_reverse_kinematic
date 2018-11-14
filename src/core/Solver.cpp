@@ -158,7 +158,7 @@ void Solver::initPreSolvStochastic( int32_t targetX, int32_t targetY, int32_t ta
 	{
 		const double deltaAngleMax = m_ratioRadiansPer1PixelError * getErrorFunctionValue( func.errorFunction );//this->getErrorFunctionValue( x, y, z, angled, angleDegree );
 	//	const double minError = 0.0000001;
-		std::vector<double> errors = forwardv2_1( func.errorDerivativeFunctions );
+		std::vector<double> errors = forwardv3_2( func.errorDerivativeFunctions );
 		std::vector<double> learningRates;
 		for( auto error : errors )
 		{
@@ -907,10 +907,19 @@ void Solver::solveFromCurrent( int32_t x, int32_t y, int32_t z, double epsilon, 
 	std::vector<double> errorCurrent;
 	std::vector<double> errorPrev;
 
-	initPreSolv( x, y, z );
+/*
+	fillPredefinedErrorFunctions();
+	initPreSolv( withoutLastLegX, withoutLastLegY, withoutLastLegZ );
+*/
+	reInitGiNaCVars();
+	m_errorFunctionsTyped.clear();
+	reInitGiNaCDistanceErrorFunction();
+	notifyFuncInfoAboutGiNaCVars();
+	initPreSolvStochastic( x, y, z, false, 0.0 );
 
 	double accumulatedCurrentError = 0.0;
 	double accumulatedPrevError = 0.0;
+	double accumulatedErrorDelta = 0.0;
 	uint32_t stepsCounter = 0;
 //	printLearningRates();
 	do
@@ -923,10 +932,12 @@ void Solver::solveFromCurrent( int32_t x, int32_t y, int32_t z, double epsilon, 
 		accumulatedPrevError = accumulatedCurrentError;
 		accumulatedCurrentError = std::accumulate( std::begin( errorCurrent ), std::end( errorCurrent ), 0.0 );
 
+		accumulatedErrorDelta = std::abs( std::abs( accumulatedPrevError ) - std::abs( accumulatedCurrentError ) );
+
 		stepsCounter++;
-//		std::cout << "accumulatedCurrentError=" << accumulatedCurrentError << std::endl;
+		std::cout << "accumulatedErrorDelta=" << accumulatedErrorDelta << std::endl;
 	}
-	while( std::abs( accumulatedPrevError - accumulatedCurrentError ) >= epsilon && getErrorFunctionValue( x, y, z ) >= epsilon &&
+	while( accumulatedErrorDelta >= epsilon && getErrorFunctionValueAllTypes() >= epsilon &&
 		   stepsCounter < maxSteps );
 
 
@@ -977,8 +988,18 @@ void Solver::solveFromCurrentAngled( int32_t x, int32_t y, int32_t z, double ang
 void Solver::solveFromCurrentAngledStochastic( int32_t x, int32_t y, int32_t z, double angleDegree, double epsilon, uint32_t maxSteps, SolveEndCb cbPerStep, double gradientThreshold )
 {
 	std::vector<double> errorCurrent;
-	std::vector<double> errorPrev;
+	double accumulatedPrevError = 0.0;
 
+	initPreSolvStochastic( x, y, z, true, angleDegree );
+
+/*
+	fillPredefinedErrorFunctions();
+	initPreSolv( withoutLastLegX, withoutLastLegY, withoutLastLegZ );
+*/
+	reInitGiNaCVars();
+	m_errorFunctionsTyped.clear();
+	reInitGiNaCDistanceErrorFunction();
+	notifyFuncInfoAboutGiNaCVars();
 	initPreSolvStochastic( x, y, z, true, angleDegree );
 
 
@@ -989,21 +1010,17 @@ void Solver::solveFromCurrentAngledStochastic( int32_t x, int32_t y, int32_t z, 
 //	printLearningRates();
 	do
 	{
-		errorPrev = errorCurrent;
-		errorCurrent = oneStepStochastic( x, y, z, false, angleDegree );
+		errorCurrent = oneStepStochastic( x, y, z, true, angleDegree );
 
 		double accumulatedCurrentError = std::accumulate( std::begin( errorCurrent ), std::end( errorCurrent ), 0.0,
 				[](double inited, double next)
 				{
 			        return std::abs( std::abs( inited ) + std::abs( next ) );
 				} );
-		double accumulatedPrevError = std::accumulate( std::begin( errorPrev ), std::end( errorPrev ), 0.0,
-				[](double inited, double next)
-				{
-			        return std::abs( std::abs( inited ) + std::abs( next ) );
-				} );
 
 		accumalatedErrorDelta = std::abs( std::abs( accumulatedPrevError ) - std::abs( accumulatedCurrentError ) );
+
+		accumulatedPrevError = accumulatedCurrentError;
 
 		error = getErrorFunctionValueAllTypes();
 		std::cout << "accumalatedErrorDelta=" << accumalatedErrorDelta
@@ -1013,7 +1030,9 @@ void Solver::solveFromCurrentAngledStochastic( int32_t x, int32_t y, int32_t z, 
 		stepsCounter++;
 	}
 	while( accumalatedErrorDelta >= epsilon && error >= epsilon &&
-		   stepsCounter < maxSteps && std::abs( getSumOfLastGradients() ) > gradientThreshold );
+		   stepsCounter < maxSteps
+//		   && std::abs( getSumOfLastGradients() ) > gradientThreshold
+		   );
 
 	std::vector<double> afterAngles = getLegsAngles();
 	double accumulatedAnglesBefore = std::accumulate( std::begin( beforeAngles ), std::end( beforeAngles ), 0.0,
@@ -1049,16 +1068,6 @@ void Solver::solvePerpendicular( int32_t x, int32_t y, int32_t z, double angleDe
 	ShLegManipulator legMinusLast = std::make_shared<LegManipulator>( std::begin( *m_manipulator ), std::prev( std::end( *m_manipulator ) ) );
 	m_manipulator = legMinusLast;
 
-/*
-	fillPredefinedErrorFunctions();
-	initPreSolv( withoutLastLegX, withoutLastLegY, withoutLastLegZ );
-*/
-	reInitGiNaCVars();
-	m_errorFunctionsTyped.clear();
-	reInitGiNaCDistanceErrorFunction();
-	notifyFuncInfoAboutGiNaCVars();
-	initPreSolvStochastic( withoutLastLegX, withoutLastLegY, withoutLastLegZ, true, angleDegree );
-
 	solveFromCurrentAngledStochastic( withoutLastLegX, withoutLastLegY, withoutLastLegZ, angleDegree, epsilon, maxSteps, cbPerStep );
 
 	double lastLegAccumulativeAngle = lastLeg->getAccumulativeParentAngleXY();
@@ -1079,6 +1088,11 @@ void Solver::solvePerpendicularNative( int32_t x, int32_t y, int32_t z, double a
 //	fillPredefinedDerErrorFunctions();
 //	initPreSolv( x, y, z );
 
+	reInitGiNaCVars();
+	m_errorFunctionsTyped.clear();
+	reInitGiNaCDistanceErrorFunction();
+	notifyFuncInfoAboutGiNaCVars();
+	initPreSolvStochastic( x, y, z, true, angleDegree );
 	solveFromCurrentAngled( x, y, z, angleDegree, epsilon, maxSteps, cbPerStep );
 }
 
@@ -1540,15 +1554,9 @@ std::vector<double> Solver::oneStepStochastic( int32_t targetX, int32_t targetY,
 
 	for( const auto & func : m_errorFunctionsTyped )
 	{
-//		std::cout << __FUNCTION__ << " 1" << std::endl;
-//		m_errors = forwardv2_1( func.errorDerivativeFunctions );
 		m_errors = forwardv3_2( func.errorDerivativeFunctions );
-//		std::cout << __FUNCTION__ << " 2" << std::endl;
 		updateLearningRate( m_errors );
-//		std::cout << __FUNCTION__ << " 3" << std::endl;
 		backward( m_errors );
-//		std::cout << __FUNCTION__ << " 4" << std::endl;
-//		m_errors = forwardv2_1( func.errorDerivativeFunctions );
 		fillParams( targetX, targetY, targetZ, params );
 		NativeFuncDiffParam funcParams( params );
 		m_legAngleDataParams.setLegsCurrentAngles( std::move( getLegsAngles() ) );
@@ -1669,13 +1677,6 @@ std::vector<double> Solver::getLegsAngles()
 	}
 
 	return std::move( angles );
-}
-
-std::vector<double> Solver::forwardv2_1( IFuncSh funcDerivatives )
-{
-	std::vector<double> errors = funcDerivatives->evaluate();
-
-	return std::move(errors);
 }
 
 std::vector<double> Solver::forwardv2( int32_t expectedX, int32_t expectedY, int32_t expectedZ, bool angled, double angleDegree )

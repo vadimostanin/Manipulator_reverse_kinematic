@@ -10,6 +10,7 @@
 
 #include "DrawGL3DLeg.h"
 #include <thread>
+#include <mutex>
 
 class Leg3DDrawWindow {
 public:
@@ -55,6 +56,8 @@ private:
 
 	static Leg3DDrawWindow * lpThis;
 	int m_windowId{0};
+
+	std::mutex mContextMutex;
 };
 
 #endif /* LEG3DDRAWWINDOW_H_ */
