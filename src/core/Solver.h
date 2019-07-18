@@ -35,6 +35,7 @@ class Solver
 		std::shared_ptr<IFunction>         			errorFunction;
 	};
 public:
+	Solver( const ShLegManipulator & legs, bool headAngleSpecify );
 	Solver( const ShLegManipulator & legs );
 	virtual ~Solver();
 
@@ -132,6 +133,7 @@ private:
 	ErrorFuncType				m_preDefinedErrorFunction;
 
 	std::vector<ErrorFunctionInfo> m_errorFunctionsTyped;
+	const bool m_headAngleSpecify;
 
 	double m_minEcceptableDistance{0.05};
 

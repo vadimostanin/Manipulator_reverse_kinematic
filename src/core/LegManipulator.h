@@ -21,22 +21,22 @@ public:
 	virtual ~LegManipulator();
 
 	ShLeg add( int length );
-	ShLeg getLeg( int level );
-	Legs & getLegs();
+	ShLeg getLeg( int level ) const;
+	const Legs & getLegs() const;
 
-	ShLeg getFirstLeg();
-	ShLeg getLastLeg();
-	ShLeg getPreLastLeg();
+	ShLeg getFirstLeg() const;
+	ShLeg getLastLeg() const;
+	ShLeg getPreLastLeg() const;
 
-	void pair( ShLeg parent, ShLeg child );
-	void pair( const Legs & legs );
-	void pair();
+	void pair( ShLeg parent, ShLeg child ) const;
+	void pair( const Legs & legs ) const;
+	void pair() const;
 
-	void print();
+	void print() const;
 
 	ShLegManipulator clone();
-	LegManipulator & deepAssign( LegManipulator & src );
-	LegManipulator & deepAssign( ShLegManipulator & src );
+	const LegManipulator & deepAssign( const LegManipulator & src ) const;
+	const LegManipulator & deepAssign( const ShLegManipulator & src ) const;
 private:
 
 };

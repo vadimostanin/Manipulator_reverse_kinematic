@@ -32,12 +32,12 @@ ShLeg LegManipulator::add( int length )
 	return leg;
 }
 
-void LegManipulator::pair( ShLeg parent, ShLeg child )
+void LegManipulator::pair( ShLeg parent, ShLeg child ) const
 {
 	parent->setChild( child );
 }
 
-ShLeg LegManipulator::getLeg( int level )
+ShLeg LegManipulator::getLeg( int level ) const
 {
 	auto it = std::find_if( std::begin( *this ), std::end( *this ),
 			[&level]( const ShLeg & leg ) -> bool
@@ -52,22 +52,22 @@ ShLeg LegManipulator::getLeg( int level )
 	return *it;
 }
 
-ShLeg LegManipulator::getFirstLeg()
+ShLeg LegManipulator::getFirstLeg() const
 {
 	return front();
 }
 
-ShLeg LegManipulator::getLastLeg()
+ShLeg LegManipulator::getLastLeg() const
 {
 	return back();
 }
 
-ShLeg LegManipulator::getPreLastLeg()
+ShLeg LegManipulator::getPreLastLeg() const
 {
 	return *(this->rbegin()--);
 }
 
-void LegManipulator::pair()
+void LegManipulator::pair() const
 {
 	std::adjacent_find( std::begin( *this ), std::end( *this ),
 				[this]( const ShLeg & legLeft, const ShLeg & legRigth ) -> bool
@@ -78,7 +78,7 @@ void LegManipulator::pair()
 		);
 }
 
-void LegManipulator::pair( const Legs & legs )
+void LegManipulator::pair( const Legs & legs ) const
 {
 	std::adjacent_find( std::begin( legs ), std::end( legs ),
 					[this]( const ShLeg & legLeft, const ShLeg & legRigth ) -> bool
@@ -89,12 +89,12 @@ void LegManipulator::pair( const Legs & legs )
 			);
 }
 
-Legs & LegManipulator::getLegs()
+const Legs & LegManipulator::getLegs() const
 {
 	return *this;
 }
 
-void LegManipulator::print()
+void LegManipulator::print() const
 {
 	for( const auto & leg : *this )
 	{
@@ -130,23 +130,20 @@ ShLegManipulator LegManipulator::clone()
 	return std::move( clonedManipulator );
 }
 
-LegManipulator & LegManipulator::deepAssign( LegManipulator & src )
+const LegManipulator & LegManipulator::deepAssign( const LegManipulator & src ) const
 {
 	assert( size() == src.size() );
 
 	for( const auto & leg : *this )
 	{
 		(*leg) = src.getLeg( leg->getLevel() );
-		leg->setAngleXY( (*leg).getAngleXY() );
-		leg->setAngleXZ( (*leg).getAngleXZ() );
-		leg->setAngleZY( (*leg).getAngleZY() );
 	}
 	pair();
 
 	return *this;
 }
 
-LegManipulator & LegManipulator::deepAssign( ShLegManipulator & src )
+const LegManipulator & LegManipulator::deepAssign( const ShLegManipulator & src ) const
 {
 	return deepAssign( *src );
 }

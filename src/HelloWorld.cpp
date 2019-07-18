@@ -329,7 +329,7 @@ bool onXYoZButtonPressed(GdkEventButton* event, HelloWorld * lpHelloWorld)
 //		std::vector<double> varAngles = ManipulatorUniConverter::getFormatedAngles( lpHelloWorld->m_solver.getCurrentManipulator() );
 //		InterpolatedMove::get().setInitialVars( varAngles );
 //	}
-	onOptimize( lpHelloWorld );
+//	onOptimize( lpHelloWorld );
 //	onOptimizeClone( lpHelloWorld );
 //	onShuffledSolve( lpHelloWorld );
 //	onShuffledLessErrorSolve( lpHelloWorld );
@@ -339,7 +339,7 @@ bool onXYoZButtonPressed(GdkEventButton* event, HelloWorld * lpHelloWorld)
 //	onPerpendicularSolve( lpHelloWorld );
 //	onPerpendicularShuffleSolve( lpHelloWorld );
 //	onPerpendicularNativeStochasticSolve( lpHelloWorld );
-//	onsolveFromCurrentAngledStochastic( lpHelloWorld );
+	onsolveFromCurrentAngledStochastic( lpHelloWorld );
 //	onOneStep( lpHelloWorld );
 //	{
 //		std::vector<double> varAngles = ManipulatorUniConverter::getFormatedAngles( lpHelloWorld->m_solver.getCurrentManipulator() );

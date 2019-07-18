@@ -23,7 +23,14 @@
 #include "funcwrapper/GiNaCErrorFunction.h"
 #include "funcwrapper/NativeErrorFunction.h"
 
-Solver::Solver( const ShLegManipulator & manipulator ) : m_manipulator( manipulator )
+Solver::Solver( const ShLegManipulator & manipulator ) :
+Solver( manipulator, false )
+{
+
+}
+
+Solver::Solver( const ShLegManipulator & manipulator, bool headAngleSpecify ) :
+        m_manipulator( manipulator ), m_headAngleSpecify( headAngleSpecify )
 {
 //	fillPredefinedErrorFunctions();
 	reInitGiNaCVars();
@@ -213,9 +220,9 @@ void Solver::updateLearningRate( const std::vector<double> & currentErrors, uint
 
 		if( prevErrorSign != currErrorSign )
 		{
-			std::cout << "decrease learning rate from " << (*learningRateIter);
+//			std::cout << "decrease learning rate from " << (*learningRateIter);
 			(*learningRateIter) /= 2.0;
-			std::cout << " to " << (*learningRateIter) << std::endl;
+//			std::cout << " to " << (*learningRateIter) << std::endl;
 		}
 	}
 
@@ -363,7 +370,7 @@ void Solver::initGiNaCErrorFunction( bool isAngled )
 	}
 	m_errorFunction = errorFunction;
 
-//	std::cout << "errorFunction=" << m_errorFunction << std::endl;
+	std::cout << "errorFunction=" << m_errorFunction << std::endl;
 	m_errorDerivativeFunctions.clear();
 
 	auto angleXYSymbolIter = std::begin( m_ginacCurrentXYoZAngles );
@@ -409,7 +416,7 @@ void Solver::reInitGiNaCDistanceErrorFunction()
 		{
 			sumXYoZAngles += symbolXYoZAngle;//angle_1, angle_1 + angle_2, angle_1 + angle_2 + angle_3
 			sumXYoZSquaredAngles += GiNaC::pow( symbolXYoZAngle, 2 );
-			sumXYoZSquaredInitialDifferenceCurrentAngle += GiNaC::pow( GiNaC::sqrt( GiNaC::pow( symbolInitialXYoZAngle, 2 ) ) - symbolXYoZAngle, 2 );
+			sumXYoZSquaredInitialDifferenceCurrentAngle += GiNaC::pow( symbolInitialXYoZAngle - symbolXYoZAngle, 2 );
 		}
 //		if( true == leg->getAngleXZEnabled() )
 		{
@@ -491,7 +498,7 @@ void Solver::reInitGiNaCDistanceErrorFunction()
 		{
 			GiNaCFuncDiffParams diffParams( *angleXYSymbolIter, 1 );
 			const auto derivative = errorFunction->diff( diffParams );
-			std::cout << "derivative=" << *((GiNaCErrorFunction*)derivative.get())->getEx() << std::endl;
+//			std::cout << "derivative=" << *((GiNaCErrorFunction*)derivative.get())->getEx() << std::endl;
 			tFunc.errorDerivativeFunctions->emplace_back( derivative );
 		}
 		{
@@ -566,13 +573,13 @@ void Solver::initGiNaCAngleErrorFunction()
 		{
 			GiNaCFuncDiffParams diffParams( *angleXYSymbolIter, 1 );
 			const auto derivative = tFunc.errorFunction->diff( diffParams );
-			std::cout << "derivative=" << derivative << std::endl;
+//			std::cout << "derivative=" << derivative << std::endl;
 			tFunc.errorDerivativeFunctions->emplace_back( derivative );
 		}
 		{
 			GiNaCFuncDiffParams diffParams( *angleXZSymbolIter, 1 );
 			const auto derivative = tFunc.errorFunction->diff( diffParams );
-			std::cout << "derivative=" << derivative << std::endl;
+//			std::cout << "derivative=" << derivative << std::endl;
 			tFunc.errorDerivativeFunctions->emplace_back( derivative );
 		}
 	}
@@ -1023,9 +1030,9 @@ void Solver::solveFromCurrentAngledStochastic( int32_t x, int32_t y, int32_t z, 
 		accumulatedPrevError = accumulatedCurrentError;
 
 		error = getErrorFunctionValueAllTypes();
-		std::cout << "accumalatedErrorDelta=" << accumalatedErrorDelta
-				  << ", error=" << error
-				  << ", gradientSum=" << getSumOfLastGradients() << std::endl;
+//		std::cout << "accumalatedErrorDelta=" << accumalatedErrorDelta
+//				  << ", error=" << error
+//				  << ", gradientSum=" << getSumOfLastGradients() << std::endl;
 
 		stepsCounter++;
 	}
@@ -1863,7 +1870,7 @@ void Solver::backwardLeg( uint32_t legIndex, const std::vector<double> & angleEr
 			double angleNew = Utils::rad2Deg( radianNew );
 
 	//		std::cout << "angleDelta=" << Utils::rad2Deg( radianDelta ) << std::endl;
-	//		std::cout << "backward radianNew=" << radianNew << std::endl;
+			std::cout << "backward angleNew=" << angleNew << std::endl;
 
 			(*legIter)->setAngleXZ( angleNew );
 
@@ -1915,7 +1922,7 @@ void Solver::backward( const std::vector<double> & angleErrors )
 
 			double gradient = *errorIter;
 //			double gradient = *(errorIter + 1);
-			std::cout << "gradient=" << gradient << std::endl;
+//			std::cout << "gradient=" << gradient << std::endl;
 
 			double radianDelta = gradient * (*learningRateIter);
 //			double radianDelta = gradient * (*learningRateIter + 1);
@@ -1973,7 +1980,7 @@ void Solver::backward( const std::vector<double> & angleErrors )
 			double angleNew = Utils::rad2Deg( radianNew );
 
 	//		std::cout << "angleDelta=" << Utils::rad2Deg( radianDelta ) << std::endl;
-	//		std::cout << "backward radianNew=" << radianNew << std::endl;
+			std::cout << "backward angleNew=" << angleNew << std::endl;
 
 			(*legIter)->setAngleXZ( angleNew );
 
